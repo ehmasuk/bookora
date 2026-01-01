@@ -1,7 +1,7 @@
 import type { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { Error as MongooseError } from "mongoose";
 import { ZodError } from "zod";
-import { logger } from "../config/logger.js";
+// import { logger } from "../config/logger.js";
 import type { ErrorWithStatusCode } from "../types/index.js";
 import newError from "../utils/newError.js";
 
@@ -35,7 +35,7 @@ const catchGlobalErrors: ErrorRequestHandler = (err: ErrorWithStatusCode, _req: 
 
   // if there is no statusCode that means its not our newError, so there is a internal server error
   // add error in log
-  logger.error({ err, requestId: res.getHeader("x-request-id") });
+  // logger.error({ err, requestId: res.getHeader("x-request-id") });
   return res.status(500).json({
     code: 500,
     message: "Internal server error",

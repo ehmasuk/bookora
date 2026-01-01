@@ -1,6 +1,5 @@
 import { Error as MongooseError } from "mongoose";
 import { ZodError } from "zod";
-import { logger } from "../config/logger.js";
 import newError from "../utils/newError.js";
 const notFound = (_req, _res, next) => {
     const error = newError({ message: "Route not found", statusCode: 404 });
@@ -27,7 +26,7 @@ const catchGlobalErrors = (err, _req, res, _next) => {
     }
     // if there is no statusCode that means its not our newError, so there is a internal server error
     // add error in log
-    logger.error({ err, requestId: res.getHeader("x-request-id") });
+    // logger.error({ err, requestId: res.getHeader("x-request-id") });
     return res.status(500).json({
         code: 500,
         message: "Internal server error",
