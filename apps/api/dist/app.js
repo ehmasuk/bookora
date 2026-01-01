@@ -5,6 +5,7 @@ import { catchGlobalErrors, notFound } from "./middlewares/globalErrorHandlers.j
 import middlewares from "./middlewares/index.js";
 import routes from "./routes/index.js";
 const app = express();
+// end fix
 // load all middlewares
 middlewares(app);
 // configure swagger

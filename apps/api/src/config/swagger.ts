@@ -11,7 +11,7 @@ const docPath = path.join(__dirname, "../../swagger.yaml");
 const swaggerDocs = yamljs.load(docPath);
 
 const configSwagger = (app: Application): void => {
-  app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocs));
+  app.use("/", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocs));
 };
 
 export default configSwagger;
