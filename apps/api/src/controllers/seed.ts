@@ -1,8 +1,9 @@
-import type { RequestHandler } from "express";
+import type { NextFunction, RequestHandler, Response } from "express";
 import seedServices from "../lib/seed/index.js";
 import successResponse from "../utils/successResponse.js";
+import type { CustomRequest } from "../types/index.js";
 
-const seedUsers: RequestHandler = async (req, res, next) => {
+const seedUsers = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const number = req.params.number;
     if (!number) {
@@ -17,7 +18,7 @@ const seedUsers: RequestHandler = async (req, res, next) => {
   }
 };
 
-const seedBooks: RequestHandler = async (req, res, next) => {
+const seedBooks = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const number = req.params.number;
     if (!number) {

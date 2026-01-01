@@ -1,4 +1,4 @@
-import type { RequestHandler } from "express";
+import type { NextFunction, RequestHandler,Response } from "express";
 
 import type { Types } from "mongoose";
 import userServices from "../lib/user/index.js";
@@ -8,6 +8,7 @@ import { verifyPassword } from "../utils/passwordHandlers.js";
 import successResponse from "../utils/successResponse.js";
 import { createToken } from "../utils/tokenHandlers.js";
 import { userLoginSchema, userRegisterSchema } from "../zodSchemas/userSchemas.js";
+import type { CustomRequest } from "../types/index.js";
 
 export interface AuthResponseTypes {
   id: Types.ObjectId;
@@ -17,7 +18,7 @@ export interface AuthResponseTypes {
 }
 
 // register User
-const registerUser: RequestHandler = async (req, res, next) => {
+const registerUser = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { name, email, password } = userRegisterSchema.parse(req.body);
 
@@ -41,7 +42,7 @@ const registerUser: RequestHandler = async (req, res, next) => {
 };
 
 // login User
-const loginUser: RequestHandler = async (req, res, next) => {
+const loginUser = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { email, password } = userLoginSchema.parse(req.body);
 

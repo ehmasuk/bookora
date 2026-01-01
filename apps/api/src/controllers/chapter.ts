@@ -1,4 +1,4 @@
-import type { RequestHandler } from "express";
+import type { NextFunction, RequestHandler, Response } from "express";
 import { isValidObjectId } from "mongoose";
 import z from "zod";
 import chapterServices from "../lib/chapter/index.js";
@@ -6,9 +6,10 @@ import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { queryParamsSchema } from "../zodSchemas/bookSchemas.js";
 import { updateChapterSchema } from "../zodSchemas/chapterSchemas.js";
+import type { CustomRequest } from "../types/index.js";
 
 // get all chapters of a book
-const getChaptersOfaBook: RequestHandler = async (req, res, next) => {
+const getChaptersOfaBook = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { bookId } = req.params;
     if (!bookId) throw newError({ message: "Chapter id is required" });
@@ -35,7 +36,7 @@ const getChaptersOfaBook: RequestHandler = async (req, res, next) => {
 };
 
 // create a new chapter
-const createChapter: RequestHandler = async (req, res, next) => {
+const createChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const reqParamSchema = z.object({
       title: z.string().min(3).max(200),
@@ -53,7 +54,7 @@ const createChapter: RequestHandler = async (req, res, next) => {
 };
 
 // get a single chapter
-const getSingleChapter: RequestHandler = async (req, res, next) => {
+const getSingleChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { chapterId } = req.params;
     if (!chapterId) throw newError({ message: "Chapter id is required" });
@@ -80,7 +81,7 @@ const getSingleChapter: RequestHandler = async (req, res, next) => {
 };
 
 // delete a single chapter
-const deleteChapter: RequestHandler = async (req, res, next) => {
+const deleteChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { chapterId } = req.params;
     if (!chapterId || !isValidObjectId(chapterId)) {
@@ -94,7 +95,7 @@ const deleteChapter: RequestHandler = async (req, res, next) => {
 };
 
 // update a single chapter
-const updateChapter: RequestHandler = async (req, res, next) => {
+const updateChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { chapterId } = req.params;
     if (!chapterId || !isValidObjectId(chapterId)) {

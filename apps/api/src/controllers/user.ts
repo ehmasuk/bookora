@@ -1,11 +1,12 @@
-import type { RequestHandler } from "express";
+import type { NextFunction, RequestHandler, Response } from "express";
 import userServices from "../lib/user/index.js";
 import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { queryParamsSchema } from "../zodSchemas/bookSchemas.js";
+import type { CustomRequest } from "../types/index.js";
 
 // get all users
-const getAllUsers: RequestHandler = async (req, res, next) => {
+const getAllUsers = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const include = req.query.include as string | undefined;
 
@@ -25,7 +26,7 @@ const getAllUsers: RequestHandler = async (req, res, next) => {
 };
 
 // get a single user
-const getSingleUser: RequestHandler = async (req, res, next) => {
+const getSingleUser = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     // get userid
     const { userId } = req.params;

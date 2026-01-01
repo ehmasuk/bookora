@@ -1,4 +1,4 @@
-import type { RequestHandler } from "express";
+import type { NextFunction, RequestHandler, Response } from "express";
 import { isValidObjectId } from "mongoose";
 import z from "zod";
 import sectionServices from "../lib/section/index.js";
@@ -6,9 +6,10 @@ import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { queryParamsSchema } from "../zodSchemas/bookSchemas.js";
 import { updateSectionSchema } from "../zodSchemas/sectionSchemas.js";
+import type { CustomRequest } from "../types/index.js";
 
 // create a new Section
-const createSection: RequestHandler = async (req, res, next) => {
+const createSection = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const reqParamSchema = z.object({
       title: z.string().min(3).max(200),
@@ -26,7 +27,7 @@ const createSection: RequestHandler = async (req, res, next) => {
 };
 
 // get a single Section
-const getSingleSection: RequestHandler = async (req, res, next) => {
+const getSingleSection = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { sectionId } = req.params;
     if (!sectionId || !isValidObjectId(sectionId)) throw newError({ message: "Invalid id" });
@@ -53,7 +54,7 @@ const getSingleSection: RequestHandler = async (req, res, next) => {
 };
 
 // delete a single Section
-const deleteSection: RequestHandler = async (req, res, next) => {
+const deleteSection = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { sectionId } = req.params;
     if (!sectionId || !isValidObjectId(sectionId)) {
@@ -67,7 +68,7 @@ const deleteSection: RequestHandler = async (req, res, next) => {
 };
 
 // update a single Section
-const updateSection: RequestHandler = async (req, res, next) => {
+const updateSection = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { sectionId } = req.params;
     if (!sectionId || !isValidObjectId(sectionId)) {
@@ -91,7 +92,7 @@ const updateSection: RequestHandler = async (req, res, next) => {
 };
 
 // get sections of a chapter
-const getSectionsOfaChapter: RequestHandler = async (req, res, next) => {
+const getSectionsOfaChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
   try {
     const { chapterId } = req.params;
     if (!chapterId) throw newError({ message: "Chapter id is required" });
