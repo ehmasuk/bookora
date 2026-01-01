@@ -1,0 +1,138 @@
+{
+  "homepage": {
+    "title": "Create books online, share with World",
+    "description": "Bookora is your free online book creator. Write your stories, organize chapters, and bring your ideas to life.",
+    "hero_buttons": {
+      "start_writing": "Start Writing",
+      "explore_books": "Explore Books"
+    },
+    "features": {
+      "title": "Powerful Features for Every Writer",
+      "description": "From organizing chapters to exporting books, Bookora gives you all the tools you need to write with ease and confidence.",
+      "items": [
+        {
+          "title": "Multiple Books",
+          "description": "Create and manage as many books as you want."
+        },
+        {
+          "title": "Smart Chapters & Sections",
+          "description": "Organize chapters, add sections, and reorder them easily."
+        },
+        {
+          "title": "Auto Save",
+          "description": "Never lose your progress, everything saves automatically."
+        },
+        {
+          "title": "Multi-language & Dark Mode",
+          "description": "Personalize your writing space for comfort and focus."
+        },
+        {
+          "title": "Export & Share",
+          "description": "Download your book in PDF/Docx or share it with others easily."
+        }
+      ]
+    },
+    "reviews": {
+      "title": "Loved by thousands of people",
+      "description": "Here are what some of our users have to say about BookOra.",
+      "items": [
+        {
+          "name": "Sophia",
+          "username": "@sophiawrites",
+          "body": "Bookora makes writing so easy. I created my first novel outline in just one day!"
+        },
+        {
+          "name": "Ethan",
+          "username": "@ethan_author",
+          "body": "I love how I can organize chapters and sections. It feels like a professional writing tool."
+        },
+        {
+          "name": "Olivia",
+          "username": "@olivia_books",
+          "body": "Auto-save is a lifesaver. I never worry about losing my drafts anymore."
+        },
+        {
+          "name": "Liam",
+          "username": "@liamnovelist",
+          "body": "The dark mode is perfect for late-night writing. Bookora really thought of everything."
+        },
+        {
+          "name": "Ava",
+          "username": "@ava_creates",
+          "body": "Exporting my book to PDF was so smooth. Now I can easily share my work with friends."
+        },
+        {
+          "name": "Noah",
+          "username": "@noahwriter",
+          "body": "This is the tool I have been waiting for. Writing, organizing, and publishing all in one place."
+        }
+      ]
+    }
+  },
+  "loginpage": {
+    "title": "Welcome back",
+    "description": "Sign in to your BookOra account",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Login",
+    "devider": "Or continue with",
+    "google": "Google",
+    "footer": {
+      "text": "Don't have an account?",
+      "link": "Sign up"
+    }
+  },
+  "registerpage": {
+    "title": "Create an account",
+    "description": "Start your writing journey with BookOra",
+    "name": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Register",
+    "devider": "Or continue with",
+    "google": "Google",
+    "footer": {
+      "text": "Already have an account?",
+      "link": "Sign in"
+    }
+  },
+  "footer": {
+    "description": "Free online book creator. Write your stories, organize chapters, and bring your ideas to life.",
+    "product": {
+      "title": "Product",
+      "links": ["Features", "Pricing", "Integrations", "Case Studies"]
+    },
+    "resources": {
+      "title": "Resources",
+      "links": ["Documentation", "Blog", "Guides", "Support"]
+    },
+    "company": {
+      "title": "Company",
+      "links": ["About Us", "Careers", "Contact", "Privacy Policy"]
+    },
+    "copyright": "© 2025 BookOra. All rights reserved."
+  },
+  "profilepage": {
+    "sidebar": {
+      "my_books": "My Books",
+      "settings": "Settings"
+    },
+    "header": {
+      "title": "My Books",
+      "description": "Manage your personal book collection",
+      "create_button": "Create a new book"
+    },
+    "empty_message": "You haven't created any book yet"
+  },
+  "bookpage": {
+    "placeholder": "Start writing you imagination …",
+    "loading": "Loading..",
+    "characters": "characters",
+    "words": "words",
+    "chapters": "Chapters",
+    "brand": "A product by",
+    "saving": "Saving",
+    "entry-title": "Ready to write your story?",
+    "entry-description": "Create a new chapter to begin your journey or select an existing section to continue editing your masterpiece."
+  }
+}

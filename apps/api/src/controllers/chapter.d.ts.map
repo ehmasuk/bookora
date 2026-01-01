@@ -1,0 +1,1 @@
+{"version":3,"file":"chapter.d.ts","sourceRoot":"","sources":["chapter.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,cAAc,EAAE,MAAM,SAAS,CAAC;AAuH9C,MAAM,MAAM,sBAAsB,GAAG;IACnC,aAAa,EAAE,cAAc,CAAC;IAC9B,aAAa,EAAE,cAAc,CAAC;IAC9B,kBAAkB,EAAE,cAAc,CAAC;IACnC,gBAAgB,EAAE,cAAc,CAAC;IACjC,aAAa,EAAE,cAAc,CAAC;CAC/B,CAAC;AAEF,QAAA,MAAM,kBAAkB,EAAE,sBAMzB,CAAC;AAEF,eAAe,kBAAkB,CAAC"}

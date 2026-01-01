@@ -1,0 +1,1204 @@
+openapi: 3.0.0
+info:
+  title: Bookora - REST API
+  description: |-
+    This API powers a book-writing platform named Bookora where users can register, log in, and create multiple books with automatic saving while they write. Each book contains a summary, chapters, and sections, and users can edit, reorder, delete content, update the book cover, and choose whether the book is public or private. Books can be created manually by entering a title or generated with AI based on category, genre, age group, etc., allowing users to customize the suggested chapters and sections before saving or exporting the final book. Public books are viewable by anyone, and completed books can be exported when finished.
+
+    Some useful links:
+    - [Github repository](https://github.com/swagger-api/swagger-petstore)
+    - [Front-end url](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  contact:
+    email: ehmasuk@gmail.com
+
+  version: 2.0.0
+
+servers:
+  - url: http://localhost:8080/api
+  - url: https://bookora.vercel.app/api
+tags:
+  - name: Health
+    description: Test api health
+  - name: Seed
+    description: Seed data
+  - name: Auth
+    description: Authentication related endpoints
+  - name: User
+    description: User related endpoints
+  - name: Book
+    description: Book related endpoints
+  - name: Chapter
+    description: Chapter related endpoints
+  - name: Section
+    description: Section related endpoints
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: This endpoint ensures that the api is alive
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /seed/user/{number}:
+    get:
+      tags:
+        - Seed
+      summary: Seed users
+      description: Seed users
+
+      parameters:
+        - in: path
+          name: number
+          schema:
+            type: number
+          required: true
+
+      responses:
+        "200":
+          description: Seeded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Seeded successfully
+        "400": { $ref: "#/components/responses/400" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /seed/book/{number}:
+    get:
+      tags:
+        - Seed
+      summary: Seed books
+      description: Seed books
+
+      parameters:
+        - in: path
+          name: number
+          schema:
+            type: number
+          required: true
+
+      responses:
+        "200":
+          description: Seeded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Seeded successfully
+        "400": { $ref: "#/components/responses/400" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register user
+      description: Register user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: john
+                email:
+                  type: string
+                  example: xyz@example.com
+                password:
+                  type: string
+
+      responses:
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 201
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/LocalStoreageStates"
+                      - type: object
+                        properties:
+                          token:
+                            type: string
+                            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+        "400": { $ref: "#/components/responses/400" }
+        "404": { $ref: "#/components/responses/404" }
+        "409": { $ref: "#/components/responses/409" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      description: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: xyz@example.com
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: login successfull
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/LocalStoreageStates"
+                      - type: object
+                        properties:
+                          token:
+                            type: string
+                            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        "400": { $ref: "#/components/responses/400" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /user:
+    get:
+      tags:
+        - User
+      summary: Get all users
+      description: Get all users
+
+      parameters:
+        - in: query
+          name: include
+          schema:
+            type: string
+            enum: [books]
+          required: false
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: sucsess
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserWithRefs"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /user/{userId}:
+    get:
+      tags:
+        - User
+      summary: Get a single user with userid
+      description: Get a single user with userid
+
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: include
+          schema:
+            type: string
+            enum: [books]
+          required: false
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: sucsess
+                  data:
+                    $ref: "#/components/schemas/BaseUser"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /user/{userId}/book:
+    get:
+      tags:
+        - Book
+      summary: Get all books of an user
+      description: Get all books of an user
+
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BaseBook"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /book:
+    get:
+      tags:
+        - Book
+      summary: get all books
+      description: get all books
+      parameters:
+        - in: query
+          name: include
+          required: false
+          explode: false #can add multiple query in one value e.x. ?include=author,chapters
+          schema:
+            type: array
+            items:
+              type: string
+              enum: ["author", "chapters"]
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: number
+            example: 1
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 10
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BaseBook"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Book
+      summary: Create a new book
+      description: Create a new book
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Memories of clara"
+
+      responses:
+        "201":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 201
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    $ref: "#/components/schemas/BaseBook"
+        "400": { $ref: "#/components/responses/401" }
+        "401": { $ref: "#/components/responses/401" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /book/{bookId}:
+    get:
+      tags:
+        - Book
+      summary: get single book with bookId
+      description: get single book with bookId
+
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: include
+          required: false
+          explode: false #can add multiple query in one value e.x. ?include=author,chapters
+          schema:
+            type: array
+            items:
+              type: string
+              enum: ["author", "chapters"]
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    $ref: "#/components/schemas/BaseBook"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Book
+      summary: delete a book with bookId
+      description: delete a book with bookId
+
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: book deleted successfully
+
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+    patch:
+      security:
+        - bearerAuth: []
+      tags:
+        - Book
+      summary: update book information
+      description: update book information
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BaseBook"
+
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: book updated successfully
+
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /book/{bookId}/chapter:
+    get:
+      tags:
+        - Chapter
+      summary: get chapters of a book
+      description: get chapters of a book
+
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: include
+          schema:
+            type: string
+            enum: [book, sections]
+          required: false
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BaseChapter"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /chapter:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Chapter
+      summary: create new chapter
+      description: create new chapter
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "My chapter title"
+                bookId:
+                  type: string
+                  example: "543HGHDRYET"
+
+      responses:
+        "201":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 201
+                  message:
+                    type: string
+                    example: Chapter created successfully
+                  data:
+                    $ref: "#/components/schemas/BaseChapter"
+
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /chapter/{chapterId}:
+    get:
+      tags:
+        - Chapter
+      summary: get single chapter with chapterId
+      description: get single chapter with chapterId
+
+      parameters:
+        - in: path
+          name: chapterId
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: include
+          schema:
+            type: string
+            enum: [book, sections]
+          required: false
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    $ref: "#/components/schemas/BaseChapter"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Chapter
+      summary: delete a chapter
+      description: delete a chapter
+
+      parameters:
+        - in: path
+          name: chapterId
+          schema:
+            type: string
+          required: true
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: chapter deleted successfully
+
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+    patch:
+      security:
+        - bearerAuth: []
+      tags:
+        - Chapter
+      summary: update chapter information
+      description: update chapter information
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BaseChapter"
+
+      parameters:
+        - in: path
+          name: chapterId
+          schema:
+            type: string
+          required: true
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: book updated successfully
+
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /chapter/{chapterId}/section:
+    get:
+      tags:
+        - Section
+      summary: get all sections of a chapter
+      description: get all sections of a chapter
+
+      parameters:
+        - in: path
+          name: chapterId
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: include
+          schema:
+            type: string
+            enum: [chapter]
+          required: false
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BaseSection"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /section/{sectionId}:
+    get:
+      tags:
+        - Section
+      summary: get single section with sectionId
+      description: get single section with sectionId
+
+      parameters:
+        - in: path
+          name: sectionId
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: include
+          schema:
+            type: string
+            enum: [chapter]
+          required: false
+
+      responses:
+        "201":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    $ref: "#/components/schemas/BaseSection"
+
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Section
+      summary: delete a section
+      description: delete a section
+
+      parameters:
+        - in: path
+          name: sectionId
+          schema:
+            type: string
+          required: true
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: section deleted successfully
+
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+    patch:
+      security:
+        - bearerAuth: []
+      tags:
+        - Section
+      summary: update section information
+      description: update section information
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BaseSection"
+
+      parameters:
+        - in: path
+          name: sectionId
+          schema:
+            type: string
+          required: true
+
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: section updated successfully
+
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /section:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Section
+      summary: create new section
+      description: create new section
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "My section title"
+                chapterId:
+                  type: string
+                  example: "764TEC64GDR"
+
+      responses:
+        "201":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 201
+                  message:
+                    type: string
+                    example: Section created successfully
+
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
+components:
+  responses:
+    #-----Bad request---------
+    400:
+      description: Invalid request body
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 400
+              message:
+                type: string
+                example: Bad request
+    #----Unauthorized-------
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 401
+              message:
+                type: string
+                example: Unauthorized
+    #-----Not found------
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 404
+              message:
+                type: string
+                example: Not found
+    #-----conflict------
+    409:
+      description: User already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 409
+              message:
+                type: string
+                example: Conflict
+    #--server error -------
+    500:
+      description: Something wrong with API
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 500
+              message:
+                type: string
+                example: Internal server error
+
+  schemas:
+    # ===================== Auth user storeage =====================
+    LocalStoreageStates:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        email:
+          type: string
+          example: "john@example.com"
+        status:
+          type: string
+          enum: [verified, unverified, banned]
+          example: "verified"
+
+    # ===================== Base user =====================
+    BaseUser:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        email:
+          type: string
+          example: "john@example.com"
+        status:
+          type: string
+          enum: [verified, unverified, banned]
+          example: "verified"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+    # ===================== user with refs=====================
+    UserWithRefs:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        email:
+          type: string
+          example: "john@example.com"
+        password:
+          type: string
+          format: password
+          example: "hashed_password_here"
+        books:
+          type: array
+          items:
+            $ref: "#/components/schemas/BaseBook"
+        status:
+          type: string
+          enum: [verified, unverified, banned]
+          example: "verified"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+    # ===================== Base book =====================
+    BaseBook:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        title:
+          type: string
+          example: "The Great Adventure"
+        status:
+          type: string
+          enum: [public, private]
+          example: "public"
+        cover:
+          type: string
+          example: "https://example.com/cover.jpg"
+        summary:
+          type: string
+          example: "A thrilling tale of courage and discovery."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+    # ===================== Book with refs =====================
+    BookWithRefs:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        title:
+          type: string
+          example: "The Great Adventure"
+        author:
+          $ref: "#/components/schemas/BaseUser"
+        status:
+          type: string
+          enum: [public, private]
+          example: "public"
+        cover:
+          type: string
+          example: "https://example.com/cover.jpg"
+        summary:
+          type: string
+          example: "A thrilling tale of courage and discovery."
+        chapters:
+          type: array
+          items:
+            $ref: "#/components/schemas/BaseChapter"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+    # ===================== Base chapter =====================
+    BaseChapter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        title:
+          type: string
+          example: "Chapter 1: The Beginning"
+        summary:
+          type: string
+          example: "This chapter introduces the main characters."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+    # ===================== Chapter with refs =====================
+    ChapterWithRefs:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        title:
+          type: string
+          example: "Chapter 1: The Beginning"
+        book:
+          $ref: "#/components/schemas/BaseBook"
+        summary:
+          type: string
+          example: "This chapter introduces the main characters."
+        sections:
+          type: array
+          items:
+            $ref: "#/components/schemas/Section"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+    # ===================== Base section =====================
+    BaseSection:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        title:
+          type: string
+          example: "Introduction"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+    # ===================== Section with refs =====================
+    SectionWithRefs:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        title:
+          type: string
+          example: "Introduction"
+        chapter:
+          $ref: "#/components/schemas/Chapter"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

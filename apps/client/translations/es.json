@@ -1,0 +1,138 @@
+{
+  "homepage": {
+    "title": "Crea libros en línea, compártelos con el mundo",
+    "description": "Bookora es tu creador de libros en línea gratuito. Escribe tus historias, organiza capítulos y da vida a tus ideas.",
+    "hero_buttons": {
+      "start_writing": "Comenzar a escribir",
+      "explore_books": "Explorar libros"
+    },
+    "features": {
+      "title": "Potentes funciones para cada escritor",
+      "description": "Desde organizar capítulos hasta exportar libros, Bookora te brinda todas las herramientas que necesitas para escribir con facilidad y confianza.",
+      "items": [
+        {
+          "title": "Múltiples libros",
+          "description": "Crea y gestiona todos los libros que quieras."
+        },
+        {
+          "title": "Capítulos y secciones inteligentes",
+          "description": "Organiza capítulos, añade secciones y reordénalos fácilmente."
+        },
+        {
+          "title": "Guardado automático",
+          "description": "Nunca pierdas tu progreso, todo se guarda automáticamente."
+        },
+        {
+          "title": "Multi-idioma y modo oscuro",
+          "description": "Personaliza tu espacio de escritura para mayor comodidad y concentración."
+        },
+        {
+          "title": "Exportar y compartir",
+          "description": "Descarga tu libro en PDF/Docx o compártelo fácilmente con otros."
+        }
+      ]
+    },
+    "reviews": {
+      "title": "Amado por miles de personas",
+      "description": "Esto es lo que algunos de nuestros usuarios opinan sobre BookOra.",
+      "items": [
+        {
+          "name": "Sofía",
+          "username": "@sofiaescribe",
+          "body": "Bookora hace que escribir sea muy fácil. ¡Creé el esquema de mi primera novela en un solo día!"
+        },
+        {
+          "name": "Ethan",
+          "username": "@ethan_autor",
+          "body": "Me encanta cómo puedo organizar capítulos y secciones. Se siente como una herramienta de escritura profesional."
+        },
+        {
+          "name": "Olivia",
+          "username": "@olivia_libros",
+          "body": "El guardado automático es un salvavidas. Ya no me preocupo por perder mis borradores."
+        },
+        {
+          "name": "Liam",
+          "username": "@liamnovelista",
+          "body": "El modo oscuro es perfecto para escribir de noche. Bookora realmente pensó en todo."
+        },
+        {
+          "name": "Ava",
+          "username": "@ava_crea",
+          "body": "Exportar mi libro a PDF fue muy sencillo. Ahora puedo compartir mi trabajo con amigos fácilmente."
+        },
+        {
+          "name": "Noé",
+          "username": "@noeautor",
+          "body": "Esta es la herramienta que estaba esperando. Escribir, organizar y publicar todo en un solo lugar."
+        }
+      ]
+    }
+  },
+  "loginpage": {
+    "title": "Bienvenido de nuevo",
+    "description": "Inicia sesión en tu cuenta de BookOra",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submit": "Iniciar sesión",
+    "devider": "O continúa con",
+    "google": "Google",
+    "footer": {
+      "text": "¿No tienes una cuenta?",
+      "link": "Regístrate"
+    }
+  },
+  "registerpage": {
+    "title": "Crea una cuenta",
+    "description": "Comienza tu camino de escritura con BookOra",
+    "name": "Nombre completo",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submit": "Registrarse",
+    "devider": "O continúa con",
+    "google": "Google",
+    "footer": {
+      "text": "¿Ya tienes una cuenta?",
+      "link": "Inicia sesión"
+    }
+  },
+  "footer": {
+    "description": "Creador de libros en línea gratuito. Escribe tus historias, organiza capítulos y da vida a tus ideas.",
+    "product": {
+      "title": "Producto",
+      "links": ["Funciones", "Precios", "Integraciones", "Casos de estudio"]
+    },
+    "resources": {
+      "title": "Recursos",
+      "links": ["Documentación", "Blog", "Guías", "Soporte"]
+    },
+    "company": {
+      "title": "Compañía",
+      "links": ["Sobre nosotros", "Carreras", "Contacto", "Política de privacidad"]
+    },
+    "copyright": "© 2025 BookOra. Todos los derechos reservados."
+  },
+  "profilepage": {
+    "sidebar": {
+      "my_books": "Mis libros",
+      "settings": "Configuración"
+    },
+    "header": {
+      "title": "Mis libros",
+      "description": "Gestiona tu colección personal de libros",
+      "create_button": "Crear un nuevo libro"
+    },
+    "empty_message": "Aún no has creado ningún libro"
+  },
+  "bookpage": {
+    "placeholder": "Comienza a escribir tu imaginación…",
+    "loading": "Cargando..",
+    "characters": "caracteres",
+    "words": "palabras",
+    "chapters": "Capítulos",
+    "brand": "Un producto de",
+    "saving": "Guardando",
+    "entry-title": "¿Listo para escribir tu historia?",
+    "entry-description": "Crea un nuevo capítulo para comenzar tu viaje o selecciona una sección existente para continuar editando tu obra maestra."
+  }
+}
