@@ -5,9 +5,7 @@ export type SortTypes = "ASC" | "DESC";
 
 // common
 export interface CustomRequest extends Request {
-  user?: {
-    id: string;
-  };
+  user?: any
 }
 export interface ErrorWithStatusCode extends Error {
   statusCode?: number;

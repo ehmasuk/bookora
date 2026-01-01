@@ -1,8 +1,8 @@
-import express from "express";
+import {Router} from "express";
 import userControllers from "../controllers/user.js";
 import bookControllers from "../controllers/book.js";
 
-const router: express.Router = express.Router();
+const router:Router = Router();
 
 // get all users
 router.get("/", userControllers.getAllUsers);

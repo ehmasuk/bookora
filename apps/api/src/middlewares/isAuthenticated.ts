@@ -1,11 +1,11 @@
-import type { RequestHandler } from "express";
+import type { NextFunction, Response } from "express";
 
 import userServices from "../lib/user/index.js";
 import type { CustomRequest } from "../types/index.js";
 import newError from "../utils/newError.js";
 import { verifyToken } from "../utils/tokenHandlers.js";
 
-const isAuthenticated: RequestHandler = async (req: CustomRequest, _res, next): Promise<void> => {
+const isAuthenticated = async (req: CustomRequest, _res:Response, next:NextFunction): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {

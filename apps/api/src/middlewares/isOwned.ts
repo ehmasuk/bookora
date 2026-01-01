@@ -1,4 +1,5 @@
-import type { Request, RequestHandler } from "express";
+import type { Request, Response, NextFunction } from "express";
+
 import { Model } from "mongoose";
 
 import newErros from "../utils/newError.js";
@@ -17,8 +18,8 @@ interface Params {
 }
 
 const isOwned =
-  ({ model, paramName, ownerField }: Params): RequestHandler =>
-  async (req: CustomRequest, _res, next) => {
+  ({ model, paramName, ownerField }: Params) =>
+  async (req: CustomRequest, _res:Response, next:NextFunction) => {
     // get user id from header to know logedin user's id
     const userId = req.user?.id;
     if (!userId) throw newErros({ message: "Unauthorized", statusCode: 401 });

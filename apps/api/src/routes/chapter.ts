@@ -1,7 +1,7 @@
-import express from "express";
+import {Router} from "express";
 import chapterControllers from "../controllers/chapter.js";
 import sectionControllers from "../controllers/section.js";
-const router: express.Router = express.Router();
+const router:Router = Router();
 
 // create chapter
 router.post("/", chapterControllers.createChapter);

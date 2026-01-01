@@ -1,8 +1,7 @@
-import type { Router } from "express";
-import express from "express";
+import { Router } from "express"
 import authControllers from "../controllers/auth.js";
 
-const router: Router = express.Router();
+const router:Router = Router();
 
 // register
 router.post("/register", authControllers.registerUser);

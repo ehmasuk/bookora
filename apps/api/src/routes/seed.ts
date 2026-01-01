@@ -1,6 +1,6 @@
-import express from "express";
+import {Router} from "express";
 import seedControllers from "../controllers/seed.js";
-const router: express.Router = express.Router();
+const router:Router = Router();
 // routes
 
 router.get("/user/:number", seedControllers.seedUsers);

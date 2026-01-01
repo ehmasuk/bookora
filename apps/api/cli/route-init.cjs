@@ -5,8 +5,8 @@ const args = process.argv
 // routes
 const routesDirectory = path.resolve(__dirname, "../src/routes");
 const routeFileContent = `
-import express from "express";
-const router = express.Router();
+import {Router} from "express";
+const router:Router = Router();
 // routes
 export default router;
 `;

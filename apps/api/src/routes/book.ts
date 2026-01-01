@@ -1,10 +1,10 @@
-import express from "express";
+import {Router} from "express";
 import bookControllers from "../controllers/book.js";
 import chapterControllers from "../controllers/chapter.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import isOwned from "../middlewares/isOwned.js";
 import { Book } from "../models/index.js";
-const router: express.Router = express.Router();
+const router:Router = Router();
 
 // get all books
 router.get("/", bookControllers.getAllBook);
