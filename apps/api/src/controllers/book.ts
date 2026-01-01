@@ -1,4 +1,5 @@
-import type { RequestHandler } from "express";
+import type { NextFunction, RequestHandler, Response } from "express";
+
 
 import bookServices from "../lib/book/index.js";
 import type { CustomRequest } from "../types/index.js";
@@ -7,7 +8,7 @@ import successResponse from "../utils/successResponse.js";
 import { createBookSchema, queryParamsSchema, updateBookSchema } from "../zodSchemas/bookSchemas.js";
 
 // get all books
-const getAllBook: RequestHandler = async (req, res, next) => {
+const getAllBook = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const { include, page, limit } = queryParamsSchema.parse(req.query);
 
@@ -33,7 +34,7 @@ const getAllBook: RequestHandler = async (req, res, next) => {
 };
 
 // create a new book
-const createBook: RequestHandler = async (req: CustomRequest, res, next) => {
+const createBook = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const { title } = createBookSchema.parse(req.body);
     const id = req.user?.id as string;
@@ -46,7 +47,7 @@ const createBook: RequestHandler = async (req: CustomRequest, res, next) => {
 };
 
 // get a single book with book id
-const getSingleBook: RequestHandler = async (req, res, next) => {
+const getSingleBook = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     // get userid
     const { bookId } = req.params;
@@ -74,7 +75,7 @@ const getSingleBook: RequestHandler = async (req, res, next) => {
 };
 
 // delete a book
-const deleteBook: RequestHandler = async (req, res, next) => {
+const deleteBook = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const { bookId } = req.params;
     if (!bookId) throw newError({ message: "Book id is required", statusCode: 404 });
@@ -86,7 +87,7 @@ const deleteBook: RequestHandler = async (req, res, next) => {
 };
 
 // update a book informations
-const updateBook: RequestHandler = async (req, res, next) => {
+const updateBook = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const { bookId } = req.params;
     if (!bookId) throw newError({ message: "Book id is required", statusCode: 404 });
@@ -110,7 +111,7 @@ const updateBook: RequestHandler = async (req, res, next) => {
 };
 
 // get all books of a user
-const getBooksOfaUser: RequestHandler = async (req: CustomRequest, res, next) => {
+const getBooksOfaUser = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const { userId } = req.params;
     if (!userId) throw newError({ message: "User id is required", statusCode: 404 });

@@ -1,15 +1,12 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Response, NextFunction } from "express";
 
 import { Model } from "mongoose";
 
 import newErros from "../utils/newError.js";
 import newError from "../utils/newError.js";
+import type { CustomRequest } from "../types/index.js";
 
-interface CustomRequest extends Request {
-  user?: {
-    id: string;
-  };
-}
+
 
 interface Params {
   model: Model<any>;
@@ -17,8 +14,7 @@ interface Params {
   ownerField: string;
 }
 
-const isOwned =
-  ({ model, paramName, ownerField }: Params) =>
+const isOwned = ({ model, paramName, ownerField }: Params) =>
   async (req: CustomRequest, _res:Response, next:NextFunction) => {
     // get user id from header to know logedin user's id
     const userId = req.user?.id;
