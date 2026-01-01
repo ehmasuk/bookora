@@ -3,11 +3,11 @@
 import usePost from "@/hooks/usePost";
 import { BookType } from "@/types/book";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Button } from "@workspace/ui/components/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@workspace/ui/components/tooltip";
 import { BookMarkedIcon } from "lucide-react";
 
 import { useRouter } from "next/navigation";
@@ -53,10 +53,12 @@ function CreateBookModal({ children, tooltip = true }: Props) {
       url: "/book",
       data: book,
       onSuccess: (res) => {
-        toast.success("Book created successfully");
-        const { id: newBookId } = res?.data;
-        router.push(`/book/${newBookId}`);
-        setIsOpen(false);
+        if (res?.data) {
+          toast.success("Book created successfully");
+          const { id: newBookId } = res.data;
+          router.push(`/book/${newBookId}`);
+          setIsOpen(false);
+        }
       },
       onError: (errMessage) => {
         toast.error(errMessage);

@@ -156,7 +156,7 @@
 }
 
 .container {
-  @apply mx-auto !max-w-7xl px-4 sm:px-6 lg:px-8;
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
 }
 .main-book-editor {
   @apply outline-none text-[#1a1a1a] dark:text-gray-100;
@@ -190,7 +190,7 @@
 
 .main-book-editor blockquote::after {
   content: "";
-  @apply left-[5px] top-[25px] w-px h-full bg-current;
+  @apply left-1.25 top-6.25 w-px h-full bg-current;
 }
 
 .tiptap p.is-editor-empty:first-child::before {
