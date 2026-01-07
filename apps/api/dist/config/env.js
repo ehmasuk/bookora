@@ -5,6 +5,8 @@ const envSchema = z.object({
     MONGODB_URL: z.string(),
     JWT_SECRET: z.string(),
     DB_NAME: z.string(),
+    GEMINI_API_KEY: z.string(),
+    GROQ_API_KEY: z.string(),
 });
 const result = envSchema.safeParse(process.env);
 if (!result.success) {

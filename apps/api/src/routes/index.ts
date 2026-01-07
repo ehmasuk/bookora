@@ -1,6 +1,7 @@
 import authRoutes from "./auth.js";
 import bookRoutes from "./book.js";
 import chapterRoutes from "./chapter.js";
+import generateRoutes from "./generate.js";
 import healthRoute from "./health.js";
 import sectionRoutes from "./section.js";
 import seedRoutes from "./seed.js";
@@ -14,6 +15,7 @@ const routes = (app: any): void => {
   app.use("/api/seed", seedRoutes);
   app.use("/api/chapter", chapterRoutes);
   app.use("/api/section", sectionRoutes);
+  app.use("/api/generate", generateRoutes);
 };
 
 export default routes;

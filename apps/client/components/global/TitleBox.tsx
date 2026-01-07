@@ -173,7 +173,7 @@ function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props)
         style={style}
         className={`text-sm group ${
           isSection && sectionQuery === id ? "bg-gray-100 dark:bg-gray-800" : ""
-        } h-[40px] mb-1 font-medium py-1 px-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded cursor-pointer gap-1 flex items-center justify-between`}
+        } h-10 mb-1 font-medium py-1 px-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded cursor-pointer gap-1 flex items-center justify-between`}
       >
         <div className="flex items-center gap-1 flex-1" onClick={isSection ? handleSectionClick : handleChapterClick}>
           <div className="text-gray-500 dark:text-gray-400 group h-6 min-w-[40px] text-sm grid place-items-center rounded">

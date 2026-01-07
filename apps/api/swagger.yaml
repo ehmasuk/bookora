@@ -933,6 +933,171 @@ paths:
         "404": { $ref: "#/components/responses/404" }
         "500": { $ref: "#/components/responses/500" }
 
+  /generate/chapter:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Generate
+      summary: Generate AI chapters for a book outline
+      description: >
+        Generates chapters using Gemini (via LangChain) based on the provided prompt and metadata.
+        Returns chapters with title, summary, and position. No database interaction - frontend handles saving.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - prompt
+              properties:
+                prompt:
+                  type: string
+                  example: "An adventurous fantasy story about a young hero discovering a hidden kingdom."
+                category:
+                  type: string
+                  example: "Fiction"
+                genre:
+                  type: string
+                  example: "Fantasy"
+                tone:
+                  type: string
+                  example: "Inspiring and adventurous"
+                targetAudience:
+                  type: string
+                  example: "Young adults"
+
+      responses:
+        "201":
+          description: Chapters generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 201
+                  message:
+                    type: string
+                    example: Chapters generated successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/GeneratedChapter"
+              example:
+                code: 201
+                message: Chapters generated successfully
+                data:
+                  - title: "Chapter 1: The Hidden Kingdom"
+                    summary: "The protagonist stumbles upon clues that reveal the existence of a hidden kingdom."
+                    position: 1
+                  - title: "Chapter 2: The Journey Begins"
+                    summary: "Our hero embarks on a quest to find the hidden kingdom."
+                    position: 2
+                  - title: "Chapter 3: First Encounters"
+                    summary: "The hero meets allies and faces initial challenges."
+                    position: 3
+                  - title: "Chapter 4: The Path Forward"
+                    summary: "Decisions are made and the journey continues."
+                    position: 4
+                  - title: "Chapter 5: The Revelation"
+                    summary: "Secrets are uncovered and the truth is revealed."
+                    position: 5
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+        "500": { $ref: "#/components/responses/500" }
+
+  /generate/section:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Generate
+      summary: Generate section titles for chapters
+      description: >
+        Generates three section titles per chapter using Gemini (via LangChain) based on the provided chapters array.
+        Returns a flat array of sections with title and position. No database interaction - frontend handles saving.
+        The request body should be a direct array of chapter objects.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                  - title
+                  - summary
+                  - position
+                properties:
+                  title:
+                    type: string
+                    example: "Chapter 1: The Hidden Kingdom"
+                  summary:
+                    type: string
+                    example: "The protagonist stumbles upon clues that reveal the existence of a hidden kingdom."
+                  position:
+                    type: number
+                    example: 1
+              example:
+                - title: "Chapter 1: The Hidden Kingdom"
+                  summary: "The protagonist stumbles upon clues that reveal the existence of a hidden kingdom."
+                  position: 1
+                - title: "Chapter 2: The Journey Begins"
+                  summary: "Our hero embarks on a quest to find the hidden kingdom."
+                  position: 2
+
+      responses:
+        "201":
+          description: Sections generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 201
+                  message:
+                    type: string
+                    example: Sections generated successfully
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: "The Discovery"
+                        position:
+                          type: number
+                          example: 1
+                    description: Flat array of sections (3 sections per chapter, ordered by chapter position)
+              example:
+                code: 201
+                message: Sections generated successfully
+                data:
+                  - title: "The Discovery"
+                    position: 1
+                  - title: "Following the Clues"
+                    position: 2
+                  - title: "The Revelation"
+                    position: 3
+                  - title: "The Quest Begins"
+                    position: 1
+                  - title: "First Challenges"
+                    position: 2
+                  - title: "New Allies"
+                    position: 3
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+        "500": { $ref: "#/components/responses/500" }
+
 components:
   responses:
     #-----Bad request---------
@@ -1176,6 +1341,12 @@ components:
         title:
           type: string
           example: "Introduction"
+        content:
+          type: string
+          example: "This section introduces the main concepts and sets the stage for the chapter."
+        position:
+          type: number
+          example: 1
         timestamp:
           type: string
           format: date-time
@@ -1196,6 +1367,72 @@ components:
           type: string
           format: date-time
           example: "2025-11-07T12:00:00Z"
+
+    # ===================== Draft AI book =====================
+    DraftAiBook:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        user:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        prompt:
+          type: string
+          example: "An adventurous fantasy story about a young hero discovering a hidden kingdom."
+        category:
+          type: string
+          example: "Fiction"
+        genre:
+          type: string
+          example: "Fantasy"
+        tone:
+          type: string
+          example: "Inspiring and adventurous"
+        targetAudience:
+          type: string
+          example: "Young adults"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+    # ===================== Generated chapter for draft =====================
+    GeneratedChapter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6FGY8767HJG25H07P"
+        title:
+          type: string
+          example: "Chapter 1: The Hidden Kingdom"
+        summary:
+          type: string
+          example: "The protagonist stumbles upon clues that reveal the existence of a hidden kingdom."
+        position:
+          type: number
+          example: 1
+        book:
+          type: string
+          description: Id of the draftAiBook this chapter belongs to
+          example: "6FGY8767HJG25H07P"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-11-07T12:00:00Z"
+
+    # ===================== Draft AI book with chapters response =====================
+    DraftAiBookWithChapters:
+      type: object
+      properties:
+        draft:
+          $ref: "#/components/schemas/DraftAiBook"
+        chapters:
+          type: array
+          items:
+            $ref: "#/components/schemas/GeneratedChapter"
 
   securitySchemes:
     bearerAuth:
