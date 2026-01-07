@@ -15,21 +15,23 @@ export type GeneratedSection = {
 };
 
 const generateSections = async (chapters: ChapterInput[], count: number): Promise<GeneratedSection[][]> => {
-  const SectionsSchema = z.object({
-    sections: z
+  const OutputSchema = z.object({
+    chapters: z
       .array(
-        z
-          .array(
-            z.object({
-              title: z.string().describe("Section title"),
-              position: z.number().describe("1-based position within the chapter"),
-            })
-          )
-          .length(count)
-          .describe(`Exactly ${count} sections for one chapter`)
+        z.object({
+          sections: z
+            .array(
+              z.object({
+                title: z.string().describe("Section title"),
+                position: z.number().describe("1-based position within the chapter"),
+              })
+            )
+            .length(count)
+            .describe(`Exactly ${count} sections for this chapter`),
+        })
       )
       .length(chapters.length)
-      .describe(`One array per chapter`),
+      .describe(`One entry per chapter`),
   });
 
   const model = new ChatGroq({
@@ -40,7 +42,7 @@ const generateSections = async (chapters: ChapterInput[], count: number): Promis
     maxRetries: 2,
   });
 
-  const structuredModel = model.withStructuredOutput(SectionsSchema);
+  const structuredModel = model.withStructuredOutput(OutputSchema);
 
   const chaptersString: string = JSON.stringify(chapters);
 
@@ -51,15 +53,15 @@ const generateSections = async (chapters: ChapterInput[], count: number): Promis
     chaptersString,
     "",
     `For each chapter, generate exactly ${count} section titles according to chapter context.`,
-    `Return the sections as a JSON object with a 'sections' array. The 'sections' array should contain ${chapters.length} sub-arrays, one for each chapter.`,
-    `Each sub-array should contain exactly ${count} section objects with 'title' and 'position' properties.`,
-    `The sections should be ordered by chapter (first sub-array for chapter 1, second for chapter 2, etc.).`,
+    `Return the output as a JSON object with a 'chapters' array.`,
+    `The 'chapters' array should contain ${chapters.length} objects (one per chapter), and each object must have a 'sections' array.`,
+    `Each 'sections' array must contain exactly ${count} section objects with 'title' and 'position' properties.`,
   ].join("\n");
 
   const result = await structuredModel.invoke(promptText);
 
-  const sections: GeneratedSection[][] = result.sections.map((chapterSections: any[]) =>
-    chapterSections.map((s: any, index: number) => ({
+  const sections: GeneratedSection[][] = result.chapters.map((chapter) =>
+    chapter.sections.map((s, index) => ({
       title: String(s.title ?? `Section ${index + 1}`),
       position: typeof s.position === "number" ? s.position : index + 1,
     }))
