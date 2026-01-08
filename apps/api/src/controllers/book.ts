@@ -9,7 +9,9 @@ import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { createBookSchema, queryParamsSchema, updateBookSchema } from "../zodSchemas/bookSchemas.js";
 
-
+import { generateHTML } from "@tiptap/html";
+import StarterKit from '@tiptap/starter-kit';
+import htmlToDocx from "html-to-docx";
 
 
 // get all books
@@ -137,6 +139,49 @@ const getBooksOfaUser = async (req: CustomRequest, res: Response, next: NextFunc
 };
 
 
+
+function buildBookHTML(book: any) {
+  return `
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <title>${book.title}</title>
+    </head>
+    <body>
+      <h1>${book.title}</h1>
+
+      ${book.chapters
+        .sort((a: any, b: any) => a.position - b.position)
+        .map(
+          (chapter: any) => `
+          <h2>${chapter.title}</h2>
+
+          ${chapter.sections
+            .sort((a: any, b: any) => a.position - b.position)
+            .map(
+              (section: any) => `
+              <h3>${section.title}</h3>
+              ${generateHTML(section.content, [StarterKit])}
+            `
+            )
+            .join("")}
+        `
+        )
+        .join("")}
+    </body>
+  </html>
+  `;
+}
+
+
+
+
+
+
+
+
+
+
 const exportBook = async (req: CustomRequest, res: Response, next: NextFunction)=>{
   try {
     const { bookId } = req.params;
@@ -175,13 +220,34 @@ const exportBook = async (req: CustomRequest, res: Response, next: NextFunction)
         })),
     }));
 
+    const structuredBook = {
+      title: book.title,
+      chapters: exportChapters,
+    }
+
+    const bookHtml = buildBookHTML(structuredBook);
+
+    const buffer = await htmlToDocx(bookHtml);
+
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${book.title}.docx"`
+    );
+
     successResponse({
       res,
-      data: {
-        title: book.title,
-        chapters: exportChapters,
-      },
+      data: buffer,
     });
+
+
+
+
   } catch (error) {
     next(error);
   }
