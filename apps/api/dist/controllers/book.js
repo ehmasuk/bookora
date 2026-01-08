@@ -1,7 +1,12 @@
 import bookServices from "../lib/book/index.js";
+import chapterServices from "../lib/chapter/index.js";
+import sectionServices from "../lib/section/index.js";
 import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { createBookSchema, queryParamsSchema, updateBookSchema } from "../zodSchemas/bookSchemas.js";
+import { generateHTML } from "@tiptap/html";
+import StarterKit from '@tiptap/starter-kit';
+import htmlToDocx from "html-to-docx";
 // get all books
 const getAllBook = async (req, res, next) => {
     try {
@@ -121,6 +126,88 @@ const getBooksOfaUser = async (req, res, next) => {
         next(error);
     }
 };
+function buildBookHTML(book) {
+    return `
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <title>${book.title}</title>
+    </head>
+    <body>
+      <h1>${book.title}</h1>
+
+      ${book.chapters
+        .sort((a, b) => a.position - b.position)
+        .map((chapter) => `
+          <h2>${chapter.title}</h2>
+
+          ${chapter.sections
+        .sort((a, b) => a.position - b.position)
+        .map((section) => `
+              <h3>${section.title}</h3>
+              ${generateHTML(section.content, [StarterKit])}
+            `)
+        .join("")}
+        `)
+        .join("")}
+    </body>
+  </html>
+  `;
+}
+const exportBook = async (req, res, next) => {
+    try {
+        const { bookId } = req.params;
+        if (!bookId)
+            throw newError({ message: "Book id is required", statusCode: 404 });
+        const book = await bookServices.findOne({
+            filter: { _id: bookId },
+            select: { title: 1 },
+        });
+        if (!book)
+            throw newError({ message: "Book not found", statusCode: 404 });
+        const chapters = await chapterServices.findAll({
+            filter: { book: bookId },
+            select: { title: 1, position: 1 },
+            sort: "ASC",
+        });
+        if (chapters.length == 0)
+            throw newError({ message: "Minimum one chapter is required to export a book", statusCode: 404 });
+        const sections = await sectionServices.findAll({
+            filter: { chapter: { $in: chapters.map(c => c._id) } },
+            select: { title: 1, position: 1, content: 1, chapter: 1 },
+            sort: "ASC",
+            limit: 'none',
+        });
+        if (sections.length == 0)
+            throw newError({ message: "Minimum one section is required to export a book", statusCode: 404 });
+        const exportChapters = chapters.map(ch => ({
+            title: ch.title,
+            position: ch.position,
+            sections: sections
+                .filter(sec => sec.chapter.toString() === ch._id.toString())
+                .map(sec => ({
+                title: sec.title,
+                position: sec.position,
+                content: sec.content,
+            })),
+        }));
+        const structuredBook = {
+            title: book.title,
+            chapters: exportChapters,
+        };
+        const bookHtml = buildBookHTML(structuredBook);
+        const buffer = await htmlToDocx(bookHtml);
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        res.setHeader("Content-Disposition", `attachment; filename="${book.title}.docx"`);
+        successResponse({
+            res,
+            data: buffer,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+};
 const bookControllers = {
     createBook,
     deleteBook,
@@ -128,6 +215,7 @@ const bookControllers = {
     getSingleBook,
     updateBook,
     getBooksOfaUser,
+    exportBook,
 };
 export default bookControllers;
 //# sourceMappingURL=book.js.map

@@ -6,6 +6,7 @@ export type bookControllersType = {
     getSingleBook: RequestHandler;
     updateBook: RequestHandler;
     getBooksOfaUser: RequestHandler;
+    exportBook: RequestHandler;
 };
 declare const bookControllers: bookControllersType;
 export default bookControllers;

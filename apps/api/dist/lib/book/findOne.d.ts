@@ -1,8 +1,9 @@
 export interface Props {
     filter: object;
     populate?: string[] | null;
+    select?: Record<string, string | number | boolean | object> | null;
 }
-declare const findOne: ({ filter, populate }: Props) => Promise<(import("mongoose").Document<unknown, {}, {
+declare const findOne: ({ filter, populate, select }: Props) => Promise<(import("mongoose").Document<unknown, {}, {
     title: string;
     author: import("mongoose").Types.ObjectId;
     status: "public" | "private";

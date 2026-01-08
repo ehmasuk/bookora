@@ -17,5 +17,7 @@ router.delete("/:bookId", isAuthenticated, isOwned({ model: Book, paramName: "bo
 router.patch("/:bookId", isAuthenticated, bookControllers.updateBook);
 // get all chapters of a book
 router.get("/:bookId/chapter", chapterControllers.getChaptersOfaBook);
+//export book
+router.get("/:bookId/export", bookControllers.exportBook);
 export default router;
 //# sourceMappingURL=book.js.map

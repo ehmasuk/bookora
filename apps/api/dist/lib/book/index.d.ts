@@ -25,7 +25,7 @@ declare const _default: {
     } & {
         __v: number;
     })[]>;
-    findOne: ({ filter, populate }: import("./findOne.js").Props) => Promise<(import("mongoose").Document<unknown, {}, {
+    findOne: ({ filter, populate, select }: import("./findOne.js").Props) => Promise<(import("mongoose").Document<unknown, {}, {
         title: string;
         author: import("mongoose").Types.ObjectId;
         status: "public" | "private";

@@ -3,7 +3,7 @@ export interface Props {
     filter?: object;
     select?: Record<string, string | number | boolean | object> | null;
     populate?: string[] | null;
-    limit?: number;
+    limit?: number | 'none';
     page?: number;
     sort?: SortTypes;
 }
