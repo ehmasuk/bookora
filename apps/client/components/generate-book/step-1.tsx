@@ -9,7 +9,7 @@ import { Button } from "@workspace/ui/components/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@workspace/ui/components/form";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@workspace/ui/components/select";
 import { Textarea } from "@workspace/ui/components/textarea";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -53,8 +53,11 @@ interface Step1Props {
 
 function Step1({ setStep }: Step1Props) {
   const [loading, setLoading] = useState(false);
+  const formData = useStoreState<StoreType>((state) => state.generateBook.formData);
+  const chapters = useStoreState<StoreType>((state) => state.generateBook.chapters);
   const setFormData = useStoreActions<StoreType>((actions) => actions.generateBook.setFormData);
   const setChapters = useStoreActions<StoreType>((actions) => actions.generateBook.setChapters);
+  const setSections = useStoreActions<StoreType>((actions) => actions.generateBook.setSections);
 
   const formSchema = z.object({
     prompt: z.string().min(10, { message: "prompt is required" }),
@@ -77,18 +80,29 @@ function Step1({ setStep }: Step1Props) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // Check if data has changed
+      const isDataChanged = JSON.stringify(values) !== JSON.stringify(formData);
+
+      if (!isDataChanged && chapters.length > 0) {
+        toast.info("Using existing chapters");
+        setStep(2);
+        return;
+      }
+
       setLoading(true);
       setFormData(values);
+      // Clear sections if we are regenerating chapters
+      setSections([]);
 
       const response = await axiosInstance.post("/generate/chapter", values);
-      const chapters = response.data?.data || [];
+      const newChapters = response.data?.data || [];
 
-      if (chapters.length === 0) {
+      if (newChapters.length === 0) {
         toast.error("No chapters generated. Please try again.");
         return;
       }
 
-      setChapters(chapters);
+      setChapters(newChapters);
       toast.success("Chapters generated successfully!");
       setStep(2);
     } catch (error: unknown) {

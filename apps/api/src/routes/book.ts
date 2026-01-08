@@ -24,4 +24,7 @@ router.patch("/:bookId", isAuthenticated, bookControllers.updateBook);
 // get all chapters of a book
 router.get("/:bookId/chapter", chapterControllers.getChaptersOfaBook);
 
+//export book
+router.get("/:bookId/export", bookControllers.exportBook);
+
 export default router;

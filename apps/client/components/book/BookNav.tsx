@@ -77,17 +77,14 @@ function BookNav({ isOpen, setIsOpen }: Props) {
 
         {/* Loading state */}
 
-        {bookIsUpdating ? <LoaderIcon className="w-4 dark:text-white cursor-pointer animate-spin" /> : <CloudCheck size={18}/>}
+        {bookIsUpdating ? <LoaderIcon size={18} className="animate-spin" /> : <CloudCheck size={18} color="blue" />}
       </div>
 
       {/* desktop */}
       <div className="hidden md:flex gap-3 items-center">
         <AvatarDropdown />
-        <LanguageChanger />
         <AnimatedThemeToggler />
-        <Button variant="black" onClick={handleHelp}>
-          Help
-        </Button>
+        <Button variant="outline" onClick={handleHelp}>Help</Button>
       </div>
 
       {/* Mobile Hamburger */}

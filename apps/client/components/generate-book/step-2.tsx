@@ -20,6 +20,7 @@ interface Step2Props {
 export default function Step2({ setStep }: Step2Props) {
   const [loading, setLoading] = useState(false);
   const chapters = useStoreState<StoreType>((state) => state.generateBook.chapters);
+  const sections = useStoreState<StoreType>((state) => state.generateBook.sections);
   const updateChapter = useStoreActions<StoreType>((actions) => actions.generateBook.updateChapter);
   const setSections = useStoreActions<StoreType>((actions) => actions.generateBook.setSections);
 
@@ -46,9 +47,19 @@ export default function Step2({ setStep }: Step2Props) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // Check if data has changed compared to store
+      // We rely on JSON.stringify for deep comparison of the arrays of objects
+      const isDataChanged = JSON.stringify(values.chapters) !== JSON.stringify(chapters);
+
+      if (!isDataChanged && sections.length > 0) {
+        toast.info("Using existing sections");
+        setStep(3);
+        return;
+      }
+
       setLoading(true);
 
-      // Sync form values back to store just in case
+      // Sync form values back to store
       values.chapters.forEach((chapter, index) => {
         updateChapter({ index, chapter });
       });

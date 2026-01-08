@@ -7,16 +7,18 @@
 
 import EditorFloatingToolbar from "@/components/book/EditorFloatingToolbar";
 import EditorToolbar from "@/components/book/EditorToolbar";
+import ExportBook from "@/components/book/export-book";
 import SelectSection from "@/components/book/SelectSection";
-import { Skeleton } from "@workspace/ui/components/skeleton";
 import useUpdate from "@/hooks/useUpdate";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
 import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { Skeleton } from "@workspace/ui/components/skeleton";
+import { Download } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { notFound, useSearchParams } from "next/navigation";
+import { notFound, useParams, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import useSWR from "swr";
 
@@ -25,6 +27,8 @@ function BookTiptapEditor() {
   const querySectionId = searchParams.get("section");
   const querySectionIdRef = useRef(querySectionId);
   const t = useTranslations("bookpage");
+
+  const { bookId } = useParams();
 
   // Update the ref whenever querySectionId changes
   useEffect(() => {
@@ -111,9 +115,15 @@ function BookTiptapEditor() {
       <div className="flex justify-between items-center text-gray-500 dark:text-gray-400 text-sm md:py-5 py-2 md:mt-5">
         <EditorToolbar editor={editor} />
 
-        <div className="text-xs md:relative fixed bottom-0 right-0">
-          <span className="font-semibold text-slate-800 dark:text-white">{editor?.storage.characterCount.characters()}</span> {t("characters")},{" "}
-          <span className="font-semibold text-slate-800 dark:text-white">{editor?.storage.characterCount.words()}</span> {t("words")}
+        <div className="text-xs flex gap-5 items-center md:relative fixed bottom-0 right-0">
+          <div>
+            <span className="font-semibold text-slate-800 dark:text-white">{editor?.storage.characterCount.characters()}</span> {t("characters")},{" "}
+            <span className="font-semibold text-slate-800 dark:text-white">{editor?.storage.characterCount.words()}</span> {t("words")}
+          </div>
+
+          <ExportBook bookId={typeof bookId === "string" ? bookId : ''}>
+            <Download size={16} className="cursor-pointer text-black" />
+          </ExportBook>
         </div>
       </div>
 

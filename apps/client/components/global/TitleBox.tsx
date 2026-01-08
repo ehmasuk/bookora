@@ -191,7 +191,7 @@ function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props)
           </div>
 
           {/* Title */}
-          <TitleAsInput title={title} maxCharachter={isSection ? 25 : null} handleSubmit={handleUpdateTitle} />
+          <TitleAsInput title={title} maxCharachter={20} handleSubmit={handleUpdateTitle} />
         </div>
         <div className="flex gap-2 items-center">
           <div className="hidden transition group-hover:block overflow-hidden">
@@ -211,7 +211,7 @@ function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props)
       {isOpen && allSections && allSections?.length > 0 && (
         <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={handleSectionDragEnd}>
           <SortableContext items={allSections?.map((item: SectionType) => item.id)} strategy={verticalListSortingStrategy}>
-            <div className="ml-[50px] border-l border-gray-300 dark:border-slate-700">
+            <div className="ml-[23px] border-l border-gray-300 dark:border-slate-700">
               {allSections?.map((section: SectionType, index: number) => (
                 <TitleBox key={section.title} id={section.id} title={section.title} index={index} isSection={true} parentChaperId={section.chapter} />
               ))}
@@ -226,7 +226,7 @@ function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props)
         </div>
       )}
 
-      {isLoading && <div className="animate-pulse text-sm bg-gray-200 dark:bg-slate-700 group h-[30px] rounded ml-[40px]"></div>}
+      {/* {isLoading && <div className="animate-pulse text-sm bg-gray-200 dark:bg-slate-700 group h-[30px] rounded ml-[40px]"></div>} */}
     </div>
   );
 }

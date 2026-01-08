@@ -2,10 +2,15 @@ import type { NextFunction, RequestHandler, Response } from "express";
 
 
 import bookServices from "../lib/book/index.js";
+import chapterServices from "../lib/chapter/index.js";
+import sectionServices from "../lib/section/index.js";
 import type { CustomRequest } from "../types/index.js";
 import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { createBookSchema, queryParamsSchema, updateBookSchema } from "../zodSchemas/bookSchemas.js";
+
+
+
 
 // get all books
 const getAllBook = async (req: CustomRequest, res: Response, next: NextFunction) => {
@@ -131,6 +136,57 @@ const getBooksOfaUser = async (req: CustomRequest, res: Response, next: NextFunc
   }
 };
 
+
+const exportBook = async (req: CustomRequest, res: Response, next: NextFunction)=>{
+  try {
+    const { bookId } = req.params;
+    if (!bookId) throw newError({ message: "Book id is required", statusCode: 404 });
+
+    const book = await bookServices.findOne({
+      filter: { _id: bookId },
+      select: { title: 1 },
+    });
+    if (!book) throw newError({ message: "Book not found", statusCode: 404 });
+
+    const chapters = await chapterServices.findAll({
+      filter: { book: bookId },
+      select: { title: 1, position: 1 },
+      sort: "ASC",
+    });
+    if (chapters.length == 0) throw newError({ message: "Minimum one chapter is required to export a book", statusCode: 404 });
+
+    const sections = await sectionServices.findAll({
+      filter: { chapter: { $in: chapters.map(c => c._id) } },
+      select: { title: 1, position: 1, content: 1, chapter: 1 },
+      sort: "ASC",
+      limit: 'none', 
+    });
+    if (sections.length == 0) throw newError({ message: "Minimum one section is required to export a book", statusCode: 404 });
+
+    const exportChapters = chapters.map(ch => ({
+      title: ch.title,
+      position: ch.position,
+      sections: sections
+        .filter(sec => sec.chapter.toString() === ch._id.toString())
+        .map(sec => ({
+          title: sec.title,
+          position: sec.position,
+          content: sec.content,
+        })),
+    }));
+
+    successResponse({
+      res,
+      data: {
+        title: book.title,
+        chapters: exportChapters,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export type bookControllersType = {
   createBook: RequestHandler;
   deleteBook: RequestHandler;
@@ -138,6 +194,7 @@ export type bookControllersType = {
   getSingleBook: RequestHandler;
   updateBook: RequestHandler;
   getBooksOfaUser: RequestHandler;
+  exportBook: RequestHandler;
 };
 
 const bookControllers: bookControllersType = {
@@ -147,6 +204,7 @@ const bookControllers: bookControllersType = {
   getSingleBook,
   updateBook,
   getBooksOfaUser,
+  exportBook,
 };
 
 export default bookControllers;

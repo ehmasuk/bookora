@@ -573,6 +573,48 @@ paths:
         "404": { $ref: "#/components/responses/404" }
         "500": { $ref: "#/components/responses/500" }
 
+  /book/{bookId}/export:
+    get:
+      tags:
+        - Book
+      summary: export a book
+      description: export a book with all chapters and sections
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      book:
+                        $ref: "#/components/schemas/BaseBook"
+                      allChapters:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/BaseChapter"
+                      allSections:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/BaseSection"
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
   /chapter:
     post:
       security:
