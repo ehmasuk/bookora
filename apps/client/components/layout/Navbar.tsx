@@ -10,6 +10,8 @@ import AvatarDropdown from "../global/AvatarDropdown";
 import LanguageChanger from "../global/LanguageChanger";
 import Logo from "../global/Logo";
 import { Button } from "@workspace/ui/components/button";
+import LoginModal from "../auth/login-modal";
+import RegisterModal from "../auth/register-modal";
 
 function Navbar() {
   const { data: session, status } = useSession();
@@ -25,12 +27,8 @@ function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           {status === "unauthenticated" && (
             <>
-              <Link href="/register">
-                <Button variant="black">Get Started</Button>
-              </Link>
-              <Link href="/login">
-                <Button variant="outline">Log In</Button>
-              </Link>
+              <RegisterModal />
+              <LoginModal />
             </>
           )}
 

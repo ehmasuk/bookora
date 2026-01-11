@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOutIcon, User } from "lucide-react";
+import { Book, LogOutIcon, User } from "lucide-react";
 
 import useAuth from "@/hooks/useAuth";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@workspace/ui/components/dropdown-menu";
@@ -20,8 +20,8 @@ export default function AvatarDropdown() {
         <DropdownMenuGroup>
           <Link href="/profile" className="cursor-pointer">
             <DropdownMenuItem>
-              <User size={16} className="opacity-60" aria-hidden="true" />
-              <span>Profile</span>
+              <Book size={16} className="opacity-60" aria-hidden="true" />
+              <span>My books</span>
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>

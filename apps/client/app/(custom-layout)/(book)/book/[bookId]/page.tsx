@@ -7,7 +7,6 @@
 
 import EditorFloatingToolbar from "@/components/book/EditorFloatingToolbar";
 import EditorToolbar from "@/components/book/EditorToolbar";
-import ExportBook from "@/components/book/export-book";
 import SelectSection from "@/components/book/SelectSection";
 import useUpdate from "@/hooks/useUpdate";
 import CharacterCount from "@tiptap/extension-character-count";
@@ -16,7 +15,6 @@ import TextAlign from "@tiptap/extension-text-align";
 import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Skeleton } from "@workspace/ui/components/skeleton";
-import { Download } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { notFound, useParams, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -121,9 +119,7 @@ function BookTiptapEditor() {
             <span className="font-semibold text-slate-800 dark:text-white">{editor?.storage.characterCount.words()}</span> {t("words")}
           </div>
 
-          <ExportBook bookId={typeof bookId === "string" ? bookId : ''}>
-            <Download size={16} className="cursor-pointer text-black" />
-          </ExportBook>
+
         </div>
       </div>
 

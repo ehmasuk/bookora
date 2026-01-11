@@ -13,6 +13,7 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Sparkle } from "lucide-react";
 
 const categoryOptions = [
   { value: "fiction", label: "Fiction" },
@@ -84,7 +85,6 @@ function Step1({ setStep }: Step1Props) {
       const isDataChanged = JSON.stringify(values) !== JSON.stringify(formData);
 
       if (!isDataChanged && chapters.length > 0) {
-        toast.info("Using existing chapters");
         setStep(2);
         return;
       }
@@ -103,7 +103,6 @@ function Step1({ setStep }: Step1Props) {
       }
 
       setChapters(newChapters);
-      toast.success("Chapters generated successfully!");
       setStep(2);
     } catch (error: unknown) {
       let errorMessage = "Failed to generate chapters";
@@ -118,42 +117,55 @@ function Step1({ setStep }: Step1Props) {
   }
 
   return (
+
+<div>
+  <div>
+      <h1 className="mt-8 max-w-2xl text-balance text-5xl font-bold lg:text-6xl">Write Your Book 10x Faster</h1>
+<p className="text-foreground my-6 max-w-2xl text-balance text-2xl">Craft. Outline. Generate your next masterpiece with AI support.</p>
+  </div>
+
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="prompt"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                <p className="font-medium text-lg">Prompt</p>
+                <p className="font-medium text-lg">Book Concept or Plot Summary</p>
               </FormLabel>
-              <FormDescription>This is your public display name.</FormDescription>
+              <FormDescription>
+                Describe your book's core idea, key characters, and setting. The more specific you are, the better the generated chapters will be.
+              </FormDescription>
               <FormControl>
-                <Textarea placeholder="Type your message here." {...field} />
+                <Textarea 
+                  placeholder="e.g., A retired detective is pulled back into a case when a mysterious letter arrives from a long-lost friend..." 
+                  className="min-h-[120px]"
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <div className="grid sm:grid-cols-2 sm:gap-4">
+        <div className="grid sm:grid-cols-2 gap-6">
           <FormField
             control={form.control}
             name="category"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  <p className="font-medium text-lg">Category</p>
+                  <p className="font-medium text-lg">Book Category</p>
                 </FormLabel>
-                <FormControl>
+                <FormControl className="w-full">
                   <Select name={field.name} value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select" className="w-full" />
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="w-full">
                       <SelectGroup>
-                        <SelectLabel>Category</SelectLabel>
+                        <SelectLabel>Categories</SelectLabel>
                         {categoryOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -167,22 +179,23 @@ function Step1({ setStep }: Step1Props) {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="genre"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  <p className="font-medium text-lg">Genre</p>
+                  <p className="font-medium text-lg">Literary Genre</p>
                 </FormLabel>
-                <FormControl>
+                <FormControl className="w-full">
                   <Select name={field.name} value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select" className="w-full" />
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a genre" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="w-full">
                       <SelectGroup>
-                        <SelectLabel>Genere</SelectLabel>
+                        <SelectLabel>Genres</SelectLabel>
                         {genreOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -196,6 +209,7 @@ function Step1({ setStep }: Step1Props) {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="targetAudience"
@@ -204,14 +218,14 @@ function Step1({ setStep }: Step1Props) {
                 <FormLabel>
                   <p className="font-medium text-lg">Target Audience</p>
                 </FormLabel>
-                <FormControl>
+                <FormControl className="w-full">
                   <Select name={field.name} value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select" className="w-full" />
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Who is this for?" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="w-full">
                       <SelectGroup>
-                        <SelectLabel>Target Audience</SelectLabel>
+                        <SelectLabel>Audiences</SelectLabel>
                         {targetAudienceOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -225,22 +239,23 @@ function Step1({ setStep }: Step1Props) {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="tone"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  <p className="font-medium text-lg">Tone</p>
+                  <p className="font-medium text-lg">Writing Tone & Style</p>
                 </FormLabel>
-                <FormControl>
+                <FormControl className="w-full">
                   <Select name={field.name} value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select" className="w-full" />
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a tone" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="w-full">
                       <SelectGroup>
-                        <SelectLabel>Tone</SelectLabel>
+                        <SelectLabel>Tones</SelectLabel>
                         {toneOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -256,13 +271,18 @@ function Step1({ setStep }: Step1Props) {
           />
         </div>
 
-        <div className="flex justify-end">
-          <Button type="submit" loading={loading}>
-            Generate Chapters
+        <div className="flex justify-end pt-4">
+          <Button type="submit" size="lg" loading={loading} className="px-8">
+            <Sparkle/>
+            Generate Book Outline
           </Button>
         </div>
       </form>
     </Form>
+
+
+
+</div>
   );
 }
 

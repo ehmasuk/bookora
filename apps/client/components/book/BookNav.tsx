@@ -17,6 +17,7 @@ import AvatarDropdown from "../global/AvatarDropdown";
 import LanguageChanger from "../global/LanguageChanger";
 import TitleAsInput from "../global/TitleAsInput";
 import { AnimatedThemeToggler } from "../magicui/animated-theme-toggler";
+import ManageBookDropdown from "./manage-book-dropdown";
 
 interface Props {
   isOpen: boolean;
@@ -27,11 +28,8 @@ function BookNav({ isOpen, setIsOpen }: Props) {
   const bookIsUpdating = useStoreState<StoreType>((state) => state.book.bookIsUpdating);
 
   const { updateData } = useUpdate();
-  const { startNextStep } = useNextStep();
 
-  const handleHelp = () => {
-    startNextStep("mainTour");
-  };
+
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -77,15 +75,18 @@ function BookNav({ isOpen, setIsOpen }: Props) {
 
         {/* Loading state */}
 
-        {bookIsUpdating ? <LoaderIcon size={18} className="animate-spin" /> : <CloudCheck size={18} color="blue" />}
+        {bookIsUpdating ? <LoaderIcon size={18} className="animate-spin" /> : <CloudCheck size={18} />}
       </div>
 
       {/* desktop */}
       <div className="hidden md:flex gap-3 items-center">
-        <AvatarDropdown />
+        {/* <AvatarDropdown />
         <AnimatedThemeToggler />
-        <Button variant="outline" onClick={handleHelp}>Help</Button>
+        <Button variant="outline" onClick={handleHelp}>Help</Button> */}
+        <ManageBookDropdown />
       </div>
+
+
 
       {/* Mobile Hamburger */}
       <div className="md:hidden flex items-center gap-2">

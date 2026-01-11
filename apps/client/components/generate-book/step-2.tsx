@@ -52,7 +52,6 @@ export default function Step2({ setStep }: Step2Props) {
       const isDataChanged = JSON.stringify(values.chapters) !== JSON.stringify(chapters);
 
       if (!isDataChanged && sections.length > 0) {
-        toast.info("Using existing sections");
         setStep(3);
         return;
       }
@@ -68,7 +67,6 @@ export default function Step2({ setStep }: Step2Props) {
       const sectionsData = response.data?.data || [];
 
       setSections(sectionsData);
-      toast.success("Sections generated successfully!");
       setStep(3);
     } catch (error: unknown) {
       let errorMessage = "Failed to generate sections";

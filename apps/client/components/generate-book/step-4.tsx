@@ -50,7 +50,6 @@ function Step4({ setStep }: Step4Props) {
         }
 
         const bookId = bookResponse.data.id;
-        toast.success("Book created successfully!");
 
         // Step 2: Create chapters sequentially to maintain order
         setCreatingChapters(true);
@@ -65,7 +64,6 @@ function Step4({ setStep }: Step4Props) {
               return;
             }
 
-            toast.success("Chapters created successfully!");
             setCreatingChapters(false);
 
             // Step 3: Create sections
@@ -94,7 +92,6 @@ function Step4({ setStep }: Step4Props) {
             });
 
             Promise.all(sectionPromises).then(() => {
-              toast.success("Sections created successfully!");
               setCreatingSections(false);
 
               // Reset store and navigate

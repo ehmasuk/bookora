@@ -4,14 +4,15 @@ import type { NextFunction, RequestHandler, Response } from "express";
 import bookServices from "../lib/book/index.js";
 import chapterServices from "../lib/chapter/index.js";
 import sectionServices from "../lib/section/index.js";
-import type { CustomRequest } from "../types/index.js";
+import { ExportBookFormatTypes, type CustomRequest, type ExportBookResponse_BookType, type ExportBookResponse_ChapterType } from "../types/index.js";
 import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { createBookSchema, queryParamsSchema, updateBookSchema } from "../zodSchemas/bookSchemas.js";
 
-import { generateHTML } from "@tiptap/html";
-import StarterKit from '@tiptap/starter-kit';
+
 import htmlToDocx from "html-to-docx";
+import buildBookHTML from "../utils/build-book-html.js";
+import { htmlToPdf } from "../utils/html-to-pdf.js";
 
 
 // get all books
@@ -139,53 +140,18 @@ const getBooksOfaUser = async (req: CustomRequest, res: Response, next: NextFunc
 };
 
 
-
-function buildBookHTML(book: any) {
-  return `
-  <html>
-    <head>
-      <meta charset="utf-8" />
-      <title>${book.title}</title>
-    </head>
-    <body>
-      <h1>${book.title}</h1>
-
-      ${book.chapters
-        .sort((a: any, b: any) => a.position - b.position)
-        .map(
-          (chapter: any) => `
-          <h2>${chapter.title}</h2>
-
-          ${chapter.sections
-            .sort((a: any, b: any) => a.position - b.position)
-            .map(
-              (section: any) => `
-              <h3>${section.title}</h3>
-              ${generateHTML(section.content, [StarterKit])}
-            `
-            )
-            .join("")}
-        `
-        )
-        .join("")}
-    </body>
-  </html>
-  `;
-}
-
-
-
-
-
-
-
-
-
-
 const exportBook = async (req: CustomRequest, res: Response, next: NextFunction)=>{
   try {
     const { bookId } = req.params;
     if (!bookId) throw newError({ message: "Book id is required", statusCode: 404 });
+
+
+    const { format } = req.query;
+    if (!format) throw newError({ message: "Enter export format", statusCode: 404 });
+
+    if (format !== ExportBookFormatTypes.PDF && format !== ExportBookFormatTypes.DOCX) {
+      throw newError({ message: "Invalid format", statusCode: 404 });
+    }
 
     const book = await bookServices.findOne({
       filter: { _id: bookId },
@@ -208,7 +174,7 @@ const exportBook = async (req: CustomRequest, res: Response, next: NextFunction)
     });
     if (sections.length == 0) throw newError({ message: "Minimum one section is required to export a book", statusCode: 404 });
 
-    const exportChapters = chapters.map(ch => ({
+    const exportChapters:ExportBookResponse_ChapterType[] = chapters.map(ch => ({
       title: ch.title,
       position: ch.position,
       sections: sections
@@ -220,31 +186,32 @@ const exportBook = async (req: CustomRequest, res: Response, next: NextFunction)
         })),
     }));
 
-    const structuredBook = {
+    const structuredBook:ExportBookResponse_BookType = {
       title: book.title,
       chapters: exportChapters,
     }
 
     const bookHtml = buildBookHTML(structuredBook);
+    
+    let fileBuffer;
 
-    const buffer = await htmlToDocx(bookHtml);
+    if(format === "docx"){
+        fileBuffer = await htmlToDocx(bookHtml);
+        res.setHeader("Content-Type","application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    }
+
+    // if(format === "pdf"){
+    //   fileBuffer = await htmlToPdf(bookHtml);
+    //   res.setHeader("Content-Type", "application/pdf");
+    // }
 
 
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    );
-
+    const fileName = `${book.title}.${format}`;
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename="${book.title}.docx"`
+      `attachment; filename="${fileName}"`
     );
-
-
-    return res.end(buffer);
-
-
-
+    return res.end(fileBuffer);
 
   } catch (error) {
     next(error);
