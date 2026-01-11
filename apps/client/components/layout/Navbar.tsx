@@ -12,6 +12,7 @@ import Logo from "../global/Logo";
 import { Button } from "@workspace/ui/components/button";
 import LoginModal from "../auth/login-modal";
 import RegisterModal from "../auth/register-modal";
+import { GithubButton } from "@workspace/ui/components/github-button";
 
 function Navbar() {
   const { data: session, status } = useSession();
@@ -36,6 +37,14 @@ function Navbar() {
 
           <LanguageChanger />
           <AnimatedThemeToggler />
+          <GithubButton
+            initialStars={1}
+            targetStars={2}
+            separator={true}
+            repoUrl="https://github.com/ehmasuk/bookora"
+            variant="outline"
+          />
+
         </div>
 
         {/* Mobile Hamburger */}

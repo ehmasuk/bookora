@@ -1,12 +1,13 @@
 import bookServices from "../lib/book/index.js";
 import chapterServices from "../lib/chapter/index.js";
 import sectionServices from "../lib/section/index.js";
+import { ExportBookFormatTypes } from "../types/index.js";
 import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { createBookSchema, queryParamsSchema, updateBookSchema } from "../zodSchemas/bookSchemas.js";
-import { generateHTML } from "@tiptap/html";
-import StarterKit from '@tiptap/starter-kit';
 import htmlToDocx from "html-to-docx";
+import buildBookHTML from "../utils/build-book-html.js";
+import { htmlToPdf } from "../utils/html-to-pdf.js";
 // get all books
 const getAllBook = async (req, res, next) => {
     try {
@@ -126,39 +127,17 @@ const getBooksOfaUser = async (req, res, next) => {
         next(error);
     }
 };
-function buildBookHTML(book) {
-    return `
-  <html>
-    <head>
-      <meta charset="utf-8" />
-      <title>${book.title}</title>
-    </head>
-    <body>
-      <h1>${book.title}</h1>
-
-      ${book.chapters
-        .sort((a, b) => a.position - b.position)
-        .map((chapter) => `
-          <h2>${chapter.title}</h2>
-
-          ${chapter.sections
-        .sort((a, b) => a.position - b.position)
-        .map((section) => `
-              <h3>${section.title}</h3>
-              ${generateHTML(section.content, [StarterKit])}
-            `)
-        .join("")}
-        `)
-        .join("")}
-    </body>
-  </html>
-  `;
-}
 const exportBook = async (req, res, next) => {
     try {
         const { bookId } = req.params;
         if (!bookId)
             throw newError({ message: "Book id is required", statusCode: 404 });
+        const { format } = req.query;
+        if (!format)
+            throw newError({ message: "Enter export format", statusCode: 404 });
+        if (format !== ExportBookFormatTypes.PDF && format !== ExportBookFormatTypes.DOCX) {
+            throw newError({ message: "Invalid format", statusCode: 404 });
+        }
         const book = await bookServices.findOne({
             filter: { _id: bookId },
             select: { title: 1 },
@@ -196,10 +175,18 @@ const exportBook = async (req, res, next) => {
             chapters: exportChapters,
         };
         const bookHtml = buildBookHTML(structuredBook);
-        const buffer = await htmlToDocx(bookHtml);
-        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-        res.setHeader("Content-Disposition", `attachment; filename="${book.title}.docx"`);
-        return res.end(buffer);
+        let fileBuffer;
+        if (format === "docx") {
+            fileBuffer = await htmlToDocx(bookHtml);
+            res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        }
+        // if(format === "pdf"){
+        //   fileBuffer = await htmlToPdf(bookHtml);
+        //   res.setHeader("Content-Type", "application/pdf");
+        // }
+        const fileName = `${book.title}.${format}`;
+        res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+        return res.end(fileBuffer);
     }
     catch (error) {
         next(error);

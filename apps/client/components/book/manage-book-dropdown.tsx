@@ -30,7 +30,9 @@ import ExportBook from "./export-book"
 function ManageBookDropdown() {
 
   // get book id from url
-  const { bookId } = useParams();
+  const params = useParams();
+  const rawBookId = params.bookId;
+  const bookId = Array.isArray(rawBookId) ? rawBookId[0] : rawBookId;
 
   // HELP
   const { startNextStep } = useNextStep();
@@ -72,12 +74,14 @@ function ManageBookDropdown() {
             )
           }
 
-          <ExportBook bookId={bookId} format="docx">
-            <DropdownMenuItem>
-            <Share className="mr-2 h-4 w-4" />
-            <span>Export</span>
-          </DropdownMenuItem>
-          </ExportBook>
+          {bookId && (
+            <ExportBook bookId={bookId} format="docx">
+              <DropdownMenuItem>
+                <Share className="mr-2 h-4 w-4" />
+                <span>Export</span>
+              </DropdownMenuItem>
+            </ExportBook>
+          )}
 
 
         </DropdownMenuGroup>

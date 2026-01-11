@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
 import { Moon, SunDim } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -46,8 +47,8 @@ export const AnimatedThemeToggler = ({ className }: props) => {
     );
   };
   return (
-    <button ref={buttonRef} onClick={changeTheme} className={`cursor-pointer rounded-md border dark:bg-transparent h-[36px] w-[36px] grid place-items-center ${cn(className)}`}>
+    <Button ref={buttonRef} onClick={changeTheme} variant="outline" className={cn(className)}>
       {isDarkMode ? <SunDim /> : <Moon size={18} strokeWidth={2} />}
-    </button>
+    </Button>
   );
 };

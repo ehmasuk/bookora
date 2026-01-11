@@ -416,7 +416,7 @@ importers:
         specifier: ^0.475.0
         version: 0.475.0(react@19.2.3)
       motion:
-        specifier: ^12.23.12
+        specifier: ^12.23.26
         version: 12.23.26(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       next-themes:
         specifier: ^0.4.6
