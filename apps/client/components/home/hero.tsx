@@ -3,16 +3,26 @@ import { useTranslations } from "next-intl";
 
 import { GridBg } from "@workspace/ui/components/GridBg";
 import { Button } from "@workspace/ui/components/button";
+import { Volume2, VolumeX } from "lucide-react";
 import { motion } from "motion/react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
+import { useRef, useState } from "react";
 import RegisterModal from "../auth/register-modal";
 
 export default function HeroSection() {
   const t = useTranslations("homepage");
 
   const { status } = useSession();
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
 
   return (
     <GridBg>
@@ -65,7 +75,6 @@ export default function HeroSection() {
             }}
             className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
           >
-
             {status === "unauthenticated" ? (
               <RegisterModal>
                 <Button variant="default" size="lg">
@@ -101,8 +110,15 @@ export default function HeroSection() {
             }}
             className="relative z-10 mt-20 rounded-3xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-900"
           >
-            <div className="w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
-              <Image src="/images/hero.png" alt="Landing page preview" className="aspect-video h-auto w-full object-contain" height={1000} width={1000} />
+            <div className="group relative w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
+              <video ref={videoRef} src="/videos/hero-video.mp4" className="aspect-video h-auto w-full object-cover" autoPlay muted loop playsInline />
+              <button
+                onClick={toggleMute}
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-all hover:bg-black/70"
+                aria-label={isMuted ? "Unmute video" : "Mute video"}
+              >
+                {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+              </button>
             </div>
           </motion.div>
         </div>
