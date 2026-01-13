@@ -1,6 +1,6 @@
 import { Chapter } from "../../models/index.js";
 // find alll chapters
-const findAll = async ({ filter = {}, select = null, populate = null, limit = 10, page = 1, sort = "ASC" }) => {
+const findAll = async ({ filter = {}, select = null, populate = null, limit = 10, page = 1, sort = "ASC", }) => {
     try {
         const query = Chapter.find(filter);
         query.limit(limit);

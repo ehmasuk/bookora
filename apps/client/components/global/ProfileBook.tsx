@@ -32,7 +32,10 @@ function ProfileBook({ bookId, userId }: Props) {
         </div>
       </Link>
 
-      <DeleteConfirmationModal onConfirm={handleDeleteBook} text="Are you sure you want to delete this book?">
+      <DeleteConfirmationModal
+        onConfirm={handleDeleteBook}
+        text="Are you sure you want to delete this book?"
+      >
         <div className="text-sm cursor-pointer flex items-center gap-1 text-red-500 hover:text-red-600">
           <Trash size={15} />
           Delete

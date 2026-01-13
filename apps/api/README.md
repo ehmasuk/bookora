@@ -210,7 +210,6 @@ api/
 
 - `GET /api/user/:id` - Get user by ID (authenticated)
 - `GET /api/user/:id/book` - Get all books of a user (authenticated)
-- `GET /api/user/:id/draft_book` - Get draft books of a user (authenticated)
 
 ### Books
 

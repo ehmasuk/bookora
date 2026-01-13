@@ -4,8 +4,20 @@ import usePost from "@/hooks/usePost";
 import { BookType } from "@/types/book";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@workspace/ui/components/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@workspace/ui/components/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@workspace/ui/components/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@workspace/ui/components/form";
 import { ArrowRightIcon, BookMarkedIcon, SparklesIcon } from "lucide-react";
 
 import { useRouter } from "next/navigation";
@@ -20,7 +32,11 @@ import React from "react";
 import { Separator } from "@workspace/ui/components/separator";
 
 import { IconPencilStar, IconWand } from "@tabler/icons-react";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@workspace/ui/components/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@workspace/ui/components/input-group";
 import Link from "next/link";
 
 interface Props {
@@ -90,18 +106,30 @@ function CreateBookModal({ children }: Props) {
                     <IconPencilStar className="size-5 text-foreground" />
                   </div>
                   <div className="space-y-0.5">
-                    <h3 className="text-sm font-medium text-foreground">Create Manually</h3>
-                    <p className="text-sm text-muted-foreground">Start with a blank book</p>
+                    <h3 className="text-sm font-medium text-foreground">
+                      Create Manually
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Start with a blank book
+                    </p>
                   </div>
                 </div>
                 <Separator className="my-4" />
-                <h4 className="text-sm font-medium text-foreground">How it works?</h4>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">Enter a title and build your book from scratch with full control.</p>
+                <h4 className="text-sm font-medium text-foreground">
+                  How it works?
+                </h4>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                  Enter a title and build your book from scratch with full
+                  control.
+                </p>
               </div>
             </div>
             <div className="border-t p-4">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-4"
+                >
                   <FormField
                     control={form.control}
                     name="title"
@@ -109,12 +137,21 @@ function CreateBookModal({ children }: Props) {
                       <FormItem>
                         <FormControl>
                           <InputGroup className="h-10">
-                            <InputGroupInput placeholder="Book name" type="text" {...field} />
+                            <InputGroupInput
+                              placeholder="Book name"
+                              type="text"
+                              {...field}
+                            />
                             <InputGroupAddon>
                               <BookMarkedIcon />
                             </InputGroupAddon>
                             <InputGroupAddon align="inline-end">
-                              <Button loading={loading} variant="black" type="submit" className="size-8 p-0">
+                              <Button
+                                loading={loading}
+                                variant="black"
+                                type="submit"
+                                className="size-8 p-0"
+                              >
                                 <ArrowRightIcon />
                               </Button>
                             </InputGroupAddon>
@@ -138,13 +175,22 @@ function CreateBookModal({ children }: Props) {
                     <IconWand className="size-5 text-foreground" />
                   </div>
                   <div className="space-y-0.5">
-                    <h3 className="text-sm font-medium text-foreground">Generate with AI</h3>
-                    <p className="text-sm text-muted-foreground">Let AI build your book structure</p>
+                    <h3 className="text-sm font-medium text-foreground">
+                      Generate with AI
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Let AI build your book structure
+                    </p>
                   </div>
                 </div>
                 <Separator className="my-4" />
-                <h4 className="text-sm font-medium text-foreground">How it works?</h4>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">Quickly generate a complete book structure with chapters and sections.</p>
+                <h4 className="text-sm font-medium text-foreground">
+                  How it works?
+                </h4>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                  Quickly generate a complete book structure with chapters and
+                  sections.
+                </p>
               </div>
             </div>
             <div className="flex items-center justify-end border-t p-5">

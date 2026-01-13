@@ -10,7 +10,14 @@ export interface Props {
   sort?: SortTypes;
 }
 // find alll chapters
-const findAll = async ({ filter = {}, select = null, populate = null, limit = 10, page = 1, sort = "ASC" }: Props) => {
+const findAll = async ({
+  filter = {},
+  select = null,
+  populate = null,
+  limit = 10,
+  page = 1,
+  sort = "ASC",
+}: Props) => {
   try {
     const query = Chapter.find(filter);
     query.limit(limit);

@@ -6,6 +6,6 @@ interface SuccessResponseParams {
     data?: unknown;
     extra?: object;
 }
-declare const successResponse: ({ res, statusCode, message, data, extra }: SuccessResponseParams) => Response;
+declare const successResponse: ({ res, statusCode, message, data, extra, }: SuccessResponseParams) => Response;
 export default successResponse;
 //# sourceMappingURL=successResponse.d.ts.map

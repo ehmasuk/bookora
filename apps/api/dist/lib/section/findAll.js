@@ -1,9 +1,9 @@
 import { Section } from "../../models/index.js";
 // find alll sections
-const findAll = async ({ filter = {}, select = null, populate = null, limit = 10, page = 1, sort = "ASC" }) => {
+const findAll = async ({ filter = {}, select = null, populate = null, limit = 10, page = 1, sort = "ASC", }) => {
     try {
         const query = Section.find(filter);
-        if (limit == 'none') {
+        if (limit == "none") {
             query.limit(10_000);
         }
         else {

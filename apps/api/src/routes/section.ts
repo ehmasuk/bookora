@@ -1,6 +1,6 @@
-import {Router} from "express";
+import { Router } from "express";
 import sectionControllers from "../controllers/section.js";
-const router:Router = Router();
+const router: Router = Router();
 
 // create section
 router.post("/", sectionControllers.createSection);
@@ -13,6 +13,5 @@ router.delete("/:sectionId", sectionControllers.deleteSection);
 
 // update a section
 router.patch("/:sectionId", sectionControllers.updateSection);
-
 
 export default router;

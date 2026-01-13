@@ -1,6 +1,6 @@
 declare const _default: {
-    createOne: ({ title, authorId }: import("./createOne.js").Props) => Promise<object>;
-    findAll: ({ filter, select, populate, limit, page, sort }: import("./findAll.js").Props) => Promise<(import("mongoose").Document<unknown, {}, {
+    createOne: ({ title, authorId, summary, }: import("./createOne.js").Props) => Promise<object>;
+    findAll: ({ filter, select, populate, limit, page, sort, }: import("./findAll.js").Props) => Promise<(import("mongoose").Document<unknown, {}, {
         title: string;
         author: import("mongoose").Types.ObjectId;
         status: "public" | "private";

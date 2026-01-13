@@ -1,28 +1,54 @@
 "use client";
 
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
+import useAuth from "@/hooks/useAuth";
+import { IconBook, IconBrandGithub, IconCompass } from "@tabler/icons-react";
+import { Button } from "@workspace/ui/components/button";
+import { LogOut, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { Menu, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import AvatarDropdown from "../global/AvatarDropdown";
-import LanguageChanger from "../global/LanguageChanger";
-import Logo from "../global/Logo";
-import { Button } from "@workspace/ui/components/button";
 import LoginModal from "../auth/login-modal";
 import RegisterModal from "../auth/register-modal";
-import { GithubButton } from "@workspace/ui/components/github-button";
+import LanguageChanger from "../global/LanguageChanger";
+import Logo from "../global/Logo";
 
 function Navbar() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
+  const { handleLogout } = useAuth();
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Logo />
+
+        <div className="flex items-center gap-2">
+          <Link href="/public-books">
+            <Button variant="ghost">
+              <IconCompass />
+              Explore books
+            </Button>
+          </Link>
+
+          {status === "authenticated" && (
+            <>
+              <Link href="/profile">
+                <Button variant="ghost">
+                  <IconBook />
+                  My books
+                </Button>
+              </Link>
+              <Button variant="ghost" onClick={handleLogout}>
+                <LogOut />
+                Logout
+              </Button>
+            </>
+          )}
+        </div>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-3">
@@ -33,18 +59,14 @@ function Navbar() {
             </>
           )}
 
-          {status === "authenticated" && session?.user && <AvatarDropdown />}
-
           <LanguageChanger />
           <AnimatedThemeToggler />
-          <GithubButton
-            initialStars={1}
-            targetStars={2}
-            separator={true}
-            repoUrl="https://github.com/ehmasuk/bookora"
-            variant="outline"
-          />
 
+          <Link href="https://github.com/ehmasuk/bookora" target="_blank">
+            <Button variant="secondary" size="icon">
+              <IconBrandGithub />
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Hamburger */}
@@ -79,12 +101,6 @@ function Navbar() {
                     </Button>
                   </Link>
                 </>
-              )}
-
-              {status === "authenticated" && session?.user && (
-                <div onClick={() => setIsOpen(false)}>
-                  <AvatarDropdown />
-                </div>
               )}
             </div>
           </motion.div>

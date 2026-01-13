@@ -20,9 +20,18 @@ const useUpdate = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
-  const setBookIsUpdating = useStoreActions<StoreType>((models) => models.book.setBookIsUpdating);
+  const setBookIsUpdating = useStoreActions<StoreType>(
+    (models) => models.book.setBookIsUpdating,
+  );
 
-  const updateData = async ({ data, endpoint, doMutation = false, onSuccess, onError, onFinally }: Props) => {
+  const updateData = async ({
+    data,
+    endpoint,
+    doMutation = false,
+    onSuccess,
+    onError,
+    onFinally,
+  }: Props) => {
     try {
       setBookIsUpdating(true);
       setLoading(true);

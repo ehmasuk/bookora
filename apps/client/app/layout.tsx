@@ -9,7 +9,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Poppins } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
-import "@workspace/ui/globals.css"
+import "@workspace/ui/globals.css";
 
 const poppins = Poppins({
   weight: "400",
@@ -38,7 +38,12 @@ export default async function RootLayout({
               <StepProvider>
                 <NextIntlClientProvider messages={messages}>
                   <NextTopLoader color="#155dfb" />
-                  <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                  <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                  >
                     {children}
                     <Toaster position="bottom-right" />
                   </ThemeProvider>

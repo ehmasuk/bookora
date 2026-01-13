@@ -91,7 +91,13 @@ export default function HeroSection() {
             className="relative z-10 mt-20 rounded-3xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-900"
           >
             <div className="w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
-              <Image src="/images/hero.png" alt="Landing page preview" className="aspect-[16/9] h-auto w-full object-contain" height={1000} width={1000} />
+              <Image
+                src="/images/hero.png"
+                alt="Landing page preview"
+                className="aspect-[16/9] h-auto w-full object-contain"
+                height={1000}
+                width={1000}
+              />
             </div>
           </motion.div>
         </div>

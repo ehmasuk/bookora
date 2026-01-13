@@ -1,7 +1,7 @@
 import express, {} from "express";
 // import { configLogger } from "./config/logger.js";
 import configSwagger from "./config/swagger.js";
-import { catchGlobalErrors, notFound } from "./middlewares/globalErrorHandlers.js";
+import { catchGlobalErrors, notFound, } from "./middlewares/globalErrorHandlers.js";
 import middlewares from "./middlewares/index.js";
 import routes from "./routes/index.js";
 const app = express();

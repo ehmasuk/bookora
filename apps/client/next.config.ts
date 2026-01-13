@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    domains: ["i.pravatar.cc","res.cloudinary.com"],
+    domains: ["i.pravatar.cc", "res.cloudinary.com"],
   },
   transpilePackages: ["@workspace/ui"],
 };

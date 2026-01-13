@@ -1,18 +1,20 @@
 import bookServices from "../lib/book/index.js";
 import chapterServices from "../lib/chapter/index.js";
 import sectionServices from "../lib/section/index.js";
-import { ExportBookFormatTypes } from "../types/index.js";
+import { ExportBookFormatTypes, } from "../types/index.js";
 import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
-import { createBookSchema, queryParamsSchema, updateBookSchema } from "../zodSchemas/bookSchemas.js";
+import { createBookSchema, queryParamsSchema, updateBookSchema, } from "../zodSchemas/bookSchemas.js";
 import htmlToDocx from "html-to-docx";
 import buildBookHTML from "../utils/build-book-html.js";
-import { htmlToPdf } from "../utils/html-to-pdf.js";
+import { uploadToCloudinary } from "../utils/uploadCloudinary.js";
 // get all books
 const getAllBook = async (req, res, next) => {
     try {
-        const { include, page, limit } = queryParamsSchema.parse(req.query);
-        const query = {};
+        const { include, page, limit, status } = queryParamsSchema.parse(req.query);
+        const query = {
+            filter: {},
+        };
         if (page) {
             query.page = page;
         }
@@ -22,8 +24,15 @@ const getAllBook = async (req, res, next) => {
         if (include) {
             query.populate = include.split(",");
         }
+        if (status) {
+            query.filter.status = status;
+        }
         const allBooks = await bookServices.findAll(query);
-        return successResponse({ res, data: allBooks, extra: { ...query, total: allBooks.length } });
+        return successResponse({
+            res,
+            data: allBooks,
+            extra: { ...query, total: allBooks.length },
+        });
     }
     catch (error) {
         next(error);
@@ -32,11 +41,15 @@ const getAllBook = async (req, res, next) => {
 // create a new book
 const createBook = async (req, res, next) => {
     try {
-        const { title } = createBookSchema.parse(req.body);
+        const { title, summary } = createBookSchema.parse(req.body);
         const id = req.user?.id;
         if (!id)
             throw newError({ message: "User not found", statusCode: 404 });
-        const newBook = await bookServices.createOne({ title, authorId: id });
+        const newBook = await bookServices.createOne({
+            title,
+            authorId: id,
+            summary,
+        });
         return successResponse({ res, statusCode: 201, data: newBook });
     }
     catch (error) {
@@ -100,8 +113,23 @@ const updateBook = async (req, res, next) => {
             updateFields.status = status;
         if (Object.keys(updateFields).length === 0)
             throw newError({ message: "No fields to update", statusCode: 400 });
+        // Validation for making book public
+        if (status === "public") {
+            const book = await bookServices.findOne({
+                filter: { _id: bookId },
+            });
+            if (!book)
+                throw newError({ message: "Book not found", statusCode: 404 });
+            // 1. Check cover
+            if (!book.cover) {
+                throw newError({
+                    message: "A book must have a cover image to be public",
+                    statusCode: 400,
+                });
+            }
+        }
         await bookServices.updateOne({ id: bookId, update: updateFields });
-        return successResponse({ res, message: "Book updatded successfully" });
+        return successResponse({ res, message: "Book updated successfully" });
     }
     catch (error) {
         next(error);
@@ -135,7 +163,8 @@ const exportBook = async (req, res, next) => {
         const { format } = req.query;
         if (!format)
             throw newError({ message: "Enter export format", statusCode: 404 });
-        if (format !== ExportBookFormatTypes.PDF && format !== ExportBookFormatTypes.DOCX) {
+        if (format !== ExportBookFormatTypes.PDF &&
+            format !== ExportBookFormatTypes.DOCX) {
             throw newError({ message: "Invalid format", statusCode: 404 });
         }
         const book = await bookServices.findOne({
@@ -150,21 +179,27 @@ const exportBook = async (req, res, next) => {
             sort: "ASC",
         });
         if (chapters.length == 0)
-            throw newError({ message: "Minimum one chapter is required to export a book", statusCode: 404 });
+            throw newError({
+                message: "Minimum one chapter is required to export a book",
+                statusCode: 404,
+            });
         const sections = await sectionServices.findAll({
-            filter: { chapter: { $in: chapters.map(c => c._id) } },
+            filter: { chapter: { $in: chapters.map((c) => c._id) } },
             select: { title: 1, position: 1, content: 1, chapter: 1 },
             sort: "ASC",
-            limit: 'none',
+            limit: "none",
         });
         if (sections.length == 0)
-            throw newError({ message: "Minimum one section is required to export a book", statusCode: 404 });
-        const exportChapters = chapters.map(ch => ({
+            throw newError({
+                message: "Minimum one section is required to export a book",
+                statusCode: 404,
+            });
+        const exportChapters = chapters.map((ch) => ({
             title: ch.title,
             position: ch.position,
             sections: sections
-                .filter(sec => sec.chapter.toString() === ch._id.toString())
-                .map(sec => ({
+                .filter((sec) => sec.chapter.toString() === ch._id.toString())
+                .map((sec) => ({
                 title: sec.title,
                 position: sec.position,
                 content: sec.content,
@@ -192,6 +227,28 @@ const exportBook = async (req, res, next) => {
         next(error);
     }
 };
+const updateBookCover = async (req, res, next) => {
+    try {
+        const { bookId } = req.params;
+        if (!bookId)
+            throw newError({ message: "Book id is required", statusCode: 404 });
+        if (!req.file)
+            throw newError({ message: "No file uploaded", statusCode: 400 });
+        const result = await uploadToCloudinary(req.file.buffer, "book-covers");
+        await bookServices.updateOne({
+            id: bookId,
+            update: { cover: result.secure_url },
+        });
+        return successResponse({
+            res,
+            message: "Cover updated successfully",
+            data: { cover: result.secure_url },
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+};
 const bookControllers = {
     createBook,
     deleteBook,
@@ -200,6 +257,7 @@ const bookControllers = {
     updateBook,
     getBooksOfaUser,
     exportBook,
+    updateBookCover,
 };
 export default bookControllers;
 //# sourceMappingURL=book.js.map

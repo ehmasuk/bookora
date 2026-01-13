@@ -12,16 +12,16 @@ const entitySchemas = {
     summary: z.string().optional(),
     status: z.enum(["public", "private"]).optional(),
   },
-  chapter:{
+  chapter: {
     title: z.string().min(3).max(200),
     summary: z.string().min(1),
     position: z.number(),
   },
-  section:{
+  section: {
     title: z.string().min(3).max(200),
     content: z.any(),
     position: z.number(),
-  }
+  },
 };
 
 export default entitySchemas;

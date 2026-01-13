@@ -1,5 +1,5 @@
 import { generateHTML } from "@tiptap/html";
-import StarterKit from '@tiptap/starter-kit';
+import StarterKit from "@tiptap/starter-kit";
 function buildBookHTML(book) {
     return `
   <html>
@@ -19,7 +19,19 @@ function buildBookHTML(book) {
         .sort((a, b) => a.position - b.position)
         .map((section) => `
               <h3>${section.title}</h3>
-              ${generateHTML(section.content, [StarterKit])}
+              ${(() => {
+        const content = section.content &&
+            typeof section.content === "object" &&
+            "type" in section.content
+            ? section.content
+            : { type: "doc", content: [] };
+        try {
+            return generateHTML(content, [StarterKit]);
+        }
+        catch (e) {
+            return "";
+        }
+    })()}
             `)
         .join("")}
         `)

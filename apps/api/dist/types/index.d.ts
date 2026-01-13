@@ -3,6 +3,7 @@ import type { JwtPayload } from "jsonwebtoken";
 export type SortTypes = "ASC" | "DESC";
 export interface CustomRequest extends Request {
     user?: any;
+    file?: any;
 }
 export interface ErrorWithStatusCode extends Error {
     statusCode?: number;

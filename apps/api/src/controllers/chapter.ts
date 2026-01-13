@@ -2,14 +2,18 @@ import type { NextFunction, RequestHandler, Response } from "express";
 import { isValidObjectId } from "mongoose";
 import z from "zod";
 import chapterServices from "../lib/chapter/index.js";
+import type { CustomRequest } from "../types/index.js";
 import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
 import { queryParamsSchema } from "../zodSchemas/bookSchemas.js";
 import { updateChapterSchema } from "../zodSchemas/chapterSchemas.js";
-import type { CustomRequest } from "../types/index.js";
 
 // get all chapters of a book
-const getChaptersOfaBook = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const getChaptersOfaBook = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { bookId } = req.params;
     if (!bookId) throw newError({ message: "Chapter id is required" });
@@ -27,7 +31,8 @@ const getChaptersOfaBook = async (req:CustomRequest, res:Response, next:NextFunc
     }
 
     const chapters = await chapterServices.findAll(query);
-    if (!chapters) throw newError({ message: "Chapter not found", statusCode: 404 });
+    if (!chapters)
+      throw newError({ message: "Chapter not found", statusCode: 404 });
 
     return successResponse({ res, data: chapters });
   } catch (error) {
@@ -36,16 +41,21 @@ const getChaptersOfaBook = async (req:CustomRequest, res:Response, next:NextFunc
 };
 
 // create a new chapter
-const createChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const createChapter = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const reqParamSchema = z.object({
       title: z.string().min(3).max(200),
       bookId: z.string().min(1),
+      summary: z.string().optional(),
     });
 
-    const { title, bookId } = reqParamSchema.parse(req.body);
+    const { title, bookId, summary } = reqParamSchema.parse(req.body);
 
-    const chapter = await chapterServices.createOne({ title, bookId });
+    const chapter = await chapterServices.createOne({ title, bookId, summary });
 
     return successResponse({ res, data: chapter });
   } catch (error) {
@@ -54,7 +64,11 @@ const createChapter = async (req:CustomRequest, res:Response, next:NextFunction)
 };
 
 // get a single chapter
-const getSingleChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const getSingleChapter = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { chapterId } = req.params;
     if (!chapterId) throw newError({ message: "Chapter id is required" });
@@ -72,7 +86,8 @@ const getSingleChapter = async (req:CustomRequest, res:Response, next:NextFuncti
     }
 
     const chapter = await chapterServices.findOne(query);
-    if (!chapter) throw newError({ message: "Chapter not found", statusCode: 404 });
+    if (!chapter)
+      throw newError({ message: "Chapter not found", statusCode: 404 });
 
     return successResponse({ res, data: chapter });
   } catch (error) {
@@ -81,7 +96,11 @@ const getSingleChapter = async (req:CustomRequest, res:Response, next:NextFuncti
 };
 
 // delete a single chapter
-const deleteChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const deleteChapter = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { chapterId } = req.params;
     if (!chapterId || !isValidObjectId(chapterId)) {
@@ -95,7 +114,11 @@ const deleteChapter = async (req:CustomRequest, res:Response, next:NextFunction)
 };
 
 // update a single chapter
-const updateChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const updateChapter = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { chapterId } = req.params;
     if (!chapterId || !isValidObjectId(chapterId)) {
@@ -112,7 +135,11 @@ const updateChapter = async (req:CustomRequest, res:Response, next:NextFunction)
 
     const updated = await chapterServices.updateOne({ id: chapterId, update });
 
-    return successResponse({ res, message: "Chapter updated successfully", data: updated });
+    return successResponse({
+      res,
+      message: "Chapter updated successfully",
+      data: updated,
+    });
   } catch (error) {
     next(error);
   }

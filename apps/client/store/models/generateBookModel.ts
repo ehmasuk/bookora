@@ -26,8 +26,18 @@ export interface GenerateBookModelType {
   setFormData: Action<GenerateBookModelType, BookFormData>;
   setChapters: Action<GenerateBookModelType, GeneratedChapter[]>;
   setSections: Action<GenerateBookModelType, GeneratedSection[][]>;
-  updateChapter: Action<GenerateBookModelType, { index: number; chapter: Partial<GeneratedChapter> }>;
-  updateSection: Action<GenerateBookModelType, { chapterIndex: number; sectionIndex: number; section: Partial<GeneratedSection> }>;
+  updateChapter: Action<
+    GenerateBookModelType,
+    { index: number; chapter: Partial<GeneratedChapter> }
+  >;
+  updateSection: Action<
+    GenerateBookModelType,
+    {
+      chapterIndex: number;
+      sectionIndex: number;
+      section: Partial<GeneratedSection>;
+    }
+  >;
   reset: Action<GenerateBookModelType, void>;
 }
 
@@ -62,7 +72,10 @@ export const generateBookModel: GenerateBookModelType = {
   }),
 
   updateSection: action((state, { chapterIndex, sectionIndex, section }) => {
-    if (state.sections[chapterIndex] && state.sections[chapterIndex][sectionIndex]) {
+    if (
+      state.sections[chapterIndex] &&
+      state.sections[chapterIndex][sectionIndex]
+    ) {
       const existing = state.sections[chapterIndex][sectionIndex];
       state.sections[chapterIndex][sectionIndex] = {
         title: section.title ?? existing.title,

@@ -5,9 +5,14 @@ import userServices from "../user/index.js";
 export interface Props {
   title: string;
   authorId: string;
+  summary?: string | undefined;
 }
 
-const createOne = async ({ title, authorId }: Props): Promise<object> => {
+const createOne = async ({
+  title,
+  authorId,
+  summary,
+}: Props): Promise<object> => {
   try {
     const user = await userServices.findOne({ filter: { _id: authorId } });
     if (!user) {
@@ -16,6 +21,7 @@ const createOne = async ({ title, authorId }: Props): Promise<object> => {
     const newBook = new Book({
       title,
       author: authorId,
+      summary,
     });
     return await newBook.save();
   } catch (error) {

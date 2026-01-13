@@ -25,7 +25,11 @@ import handleDragEnd from "@/lib/handleDragEnd";
 import { SectionType } from "@/types/book";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { ChevronRight, GripVertical, Plus, Trash } from "lucide-react";
 import { useQueryState } from "next-usequerystate";
@@ -46,9 +50,16 @@ type Props = {
   parentChaperId?: string | null;
 };
 
-function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props) {
+function TitleBox({
+  id,
+  title,
+  index,
+  isSection,
+  parentChaperId = null,
+}: Props) {
   // dnd kit config
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -90,7 +101,12 @@ function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props)
 
   // ARCHITECTURE DECISION: fetch sections only when the user clicks on the chapter
   // fetch all sections of the chapter
-  const { data: res, isLoading, error, mutate: fetchSections } = useSWR(id ? `/chapter/${id}/section` : null);
+  const {
+    data: res,
+    isLoading,
+    error,
+    mutate: fetchSections,
+  } = useSWR(id ? `/chapter/${id}/section` : null);
 
   useEffect(() => {
     setAllSections(res?.data || []);
@@ -125,7 +141,9 @@ function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props)
           return;
         }
         // after delete a section , remove its id from query param
-        mutate(`/chapter/${parentChaperId}/section`, undefined, { revalidate: true });
+        mutate(`/chapter/${parentChaperId}/section`, undefined, {
+          revalidate: true,
+        });
         // after delete a section , remove its id from query param
         if (id === sectionQuery) setSectionQuery(null);
         break;
@@ -175,33 +193,55 @@ function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props)
           isSection && sectionQuery === id ? "bg-gray-100 dark:bg-gray-800" : ""
         } h-10 mb-1 font-medium py-1 px-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded cursor-pointer gap-1 flex items-center justify-between`}
       >
-        <div className="flex items-center gap-1 flex-1" onClick={isSection ? handleSectionClick : handleChapterClick}>
+        <div
+          className="flex items-center gap-1 flex-1"
+          onClick={isSection ? handleSectionClick : handleChapterClick}
+        >
           <div className="text-gray-500 dark:text-gray-400 group h-6 min-w-[40px] text-sm grid place-items-center rounded">
-            <span className="group-hover:hidden pt-[2px] hover:bg-slate-200 dark:hover:bg-blue-400 dark:hover:text-white">{index + 1}</span>
+            <span className="group-hover:hidden pt-[2px] hover:bg-slate-200 dark:hover:bg-blue-400 dark:hover:text-white">
+              {index + 1}
+            </span>
             <div className="flex">
               <div className="hidden rounded group-hover:block hover:bg-slate-200 dark:hover:bg-blue-400 dark:hover:text-white">
-                <GripVertical onClick={(e) => e.stopPropagation()} {...attributes} {...listeners} className="w-4 cursor-grab outline-none" />
+                <GripVertical
+                  onClick={(e) => e.stopPropagation()}
+                  {...attributes}
+                  {...listeners}
+                  className="w-4 cursor-grab outline-none"
+                />
               </div>
               {!isSection && (
                 <div className="hidden rounded group-hover:block hover:bg-slate-200 dark:hover:bg-blue-400 dark:hover:text-white">
-                  <ChevronRight className={`w-4 outline-none transition ${isOpen ? "rotate-90" : ""}`} />
+                  <ChevronRight
+                    className={`w-4 outline-none transition ${isOpen ? "rotate-90" : ""}`}
+                  />
                 </div>
               )}
             </div>
           </div>
 
           {/* Title */}
-          <TitleAsInput title={title} maxCharachter={20} handleSubmit={handleUpdateTitle} />
+          <TitleAsInput
+            title={title}
+            maxCharachter={20}
+            handleSubmit={handleUpdateTitle}
+          />
         </div>
         <div className="flex gap-2 items-center">
           <div className="hidden transition group-hover:block overflow-hidden">
-            <DeleteConfirmationModal onConfirm={handleDelete} text={`Are you sure you want to delete this ${isSection ? "section" : "chapter"}?`}>
+            <DeleteConfirmationModal
+              onConfirm={handleDelete}
+              text={`Are you sure you want to delete this ${isSection ? "section" : "chapter"}?`}
+            >
               <Trash className="p-1 text-gray-500 dark:text-gray-400 size-6 rounded hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-red-500" />
             </DeleteConfirmationModal>
           </div>
 
           {!isSection && (
-            <CreateSectionModal onSuccess={onSuccessCreateSection} chapterId={id}>
+            <CreateSectionModal
+              onSuccess={onSuccessCreateSection}
+              chapterId={id}
+            >
               <Plus className="p-1 hidden transition group-hover:block text-gray-500 dark:text-gray-400 size-6 rounded hover:bg-gray-200 dark:hover:bg-gray-700" />
             </CreateSectionModal>
           )}
@@ -209,11 +249,24 @@ function TitleBox({ id, title, index, isSection, parentChaperId = null }: Props)
       </div>
 
       {isOpen && allSections && allSections?.length > 0 && (
-        <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={handleSectionDragEnd}>
-          <SortableContext items={allSections?.map((item: SectionType) => item.id)} strategy={verticalListSortingStrategy}>
+        <DndContext
+          modifiers={[restrictToVerticalAxis]}
+          onDragEnd={handleSectionDragEnd}
+        >
+          <SortableContext
+            items={allSections?.map((item: SectionType) => item.id)}
+            strategy={verticalListSortingStrategy}
+          >
             <div className="ml-[23px] border-l border-gray-300 dark:border-slate-700">
               {allSections?.map((section: SectionType, index: number) => (
-                <TitleBox key={section.title} id={section.id} title={section.title} index={index} isSection={true} parentChaperId={section.chapter} />
+                <TitleBox
+                  key={section.title}
+                  id={section.id}
+                  title={section.title}
+                  index={index}
+                  isSection={true}
+                  parentChaperId={section.chapter}
+                />
               ))}
             </div>
           </SortableContext>

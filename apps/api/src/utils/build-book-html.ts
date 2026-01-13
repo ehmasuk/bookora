@@ -1,7 +1,10 @@
 import { generateHTML } from "@tiptap/html";
-import StarterKit from '@tiptap/starter-kit';
-import type { ExportBookResponse_BookType, ExportBookResponse_ChapterType, ExportBookResponse_SectionType  } from "../types/index.js";
-
+import StarterKit from "@tiptap/starter-kit";
+import type {
+  ExportBookResponse_BookType,
+  ExportBookResponse_ChapterType,
+  ExportBookResponse_SectionType,
+} from "../types/index.js";
 
 function buildBookHTML(book: ExportBookResponse_BookType) {
   return `
@@ -14,21 +17,43 @@ function buildBookHTML(book: ExportBookResponse_BookType) {
       <h1>${book.title}</h1>
 
       ${book.chapters
-        .sort((a: ExportBookResponse_ChapterType, b: ExportBookResponse_ChapterType) => a.position - b.position)
+        .sort(
+          (
+            a: ExportBookResponse_ChapterType,
+            b: ExportBookResponse_ChapterType,
+          ) => a.position - b.position,
+        )
         .map(
           (chapter: ExportBookResponse_ChapterType) => `
           <h2>${chapter.title}</h2>
 
           ${chapter.sections
-            .sort((a: ExportBookResponse_SectionType, b: ExportBookResponse_SectionType) => a.position - b.position)
+            .sort(
+              (
+                a: ExportBookResponse_SectionType,
+                b: ExportBookResponse_SectionType,
+              ) => a.position - b.position,
+            )
             .map(
               (section: ExportBookResponse_SectionType) => `
               <h3>${section.title}</h3>
-              ${generateHTML(section.content, [StarterKit])}
-            `
+              ${(() => {
+                const content =
+                  section.content &&
+                  typeof section.content === "object" &&
+                  "type" in section.content
+                    ? section.content
+                    : { type: "doc", content: [] };
+                try {
+                  return generateHTML(content as any, [StarterKit]);
+                } catch (e) {
+                  return "";
+                }
+              })()}
+            `,
             )
             .join("")}
-        `
+        `,
         )
         .join("")}
     </body>
@@ -36,5 +61,4 @@ function buildBookHTML(book: ExportBookResponse_BookType) {
   `;
 }
 
-
-export default buildBookHTML
+export default buildBookHTML;

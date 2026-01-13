@@ -5,7 +5,10 @@ const updateOne = async ({ id, update }) => {
         const section = await Section.findById(id);
         if (!section)
             throw newError({ message: "Section not found", statusCode: 404 });
-        const updatedsection = await Section.findByIdAndUpdate(id, update, { new: true, runValidators: true });
+        const updatedsection = await Section.findByIdAndUpdate(id, update, {
+            new: true,
+            runValidators: true,
+        });
         return updatedsection;
     }
     catch (error) {

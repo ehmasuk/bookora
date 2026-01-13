@@ -5,9 +5,14 @@ import bookServices from "../book/index.js";
 export interface Props {
   title: string;
   bookId: string;
+  summary?: string | undefined;
 }
 
-const createOne = async ({ title, bookId }: Props): Promise<object> => {
+const createOne = async ({
+  title,
+  bookId,
+  summary,
+}: Props): Promise<object> => {
   try {
     // book is available or not
     const book = await bookServices.findOne({ filter: { _id: bookId } });
@@ -16,7 +21,10 @@ const createOne = async ({ title, bookId }: Props): Promise<object> => {
     }
 
     // get the last chapter's position for this book
-    const lastChapter = await Chapter.findOne({ book: bookId }).sort({ position: -1 }).select("position").lean();
+    const lastChapter = await Chapter.findOne({ book: bookId })
+      .sort({ position: -1 })
+      .select("position")
+      .lean();
 
     // assign next position safely
     const nextPosition = lastChapter ? lastChapter.position + 1 : 0;
@@ -26,6 +34,7 @@ const createOne = async ({ title, bookId }: Props): Promise<object> => {
       title,
       book: bookId,
       position: nextPosition,
+      summary,
     });
 
     return await newChapter.save();

@@ -1,7 +1,10 @@
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 
-const getChangedOrderItems = <T extends { id: string }>(oldArr: T[], newArr: T[]) => {
+const getChangedOrderItems = <T extends { id: string }>(
+  oldArr: T[],
+  newArr: T[],
+) => {
   const oldMap = new Map(oldArr.map((item, index) => [item.id, index]));
 
   return newArr
@@ -17,7 +20,7 @@ const getChangedOrderItems = <T extends { id: string }>(oldArr: T[], newArr: T[]
 
 const handleDragEnd = <T extends { id: string }>(
   event: DragEndEvent,
-  data: T[]
+  data: T[],
 ) => {
   const { active, over } = event;
   if (!over) return null;
@@ -37,6 +40,5 @@ const handleDragEnd = <T extends { id: string }>(
     changedItems,
   };
 };
-
 
 export default handleDragEnd;

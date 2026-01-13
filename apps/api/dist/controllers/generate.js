@@ -3,11 +3,17 @@ import generateChapters, {} from "../utils/generateChapters.js";
 import generateSections from "../utils/generateSections.js";
 import newError from "../utils/newError.js";
 import successResponse from "../utils/successResponse.js";
-import { draftAiBookPayloadSchema } from "../zodSchemas/draftAiBookSchemas.js";
+import { generateBookChaptersSchema } from "../zodSchemas/bookSchemas.js";
 const generateChapter = async (req, res, next) => {
     try {
-        const { prompt, category, genre, tone, targetAudience } = draftAiBookPayloadSchema.parse(req.body);
-        const payload = { prompt, category, genre, tone, targetAudience };
+        const { prompt, category, genre, tone, targetAudience } = generateBookChaptersSchema.parse(req.body);
+        const payload = {
+            prompt,
+            category,
+            genre,
+            tone,
+            targetAudience,
+        };
         const generatedChapters = await generateChapters(payload, 5);
         return successResponse({
             res,
@@ -29,7 +35,10 @@ const generateSection = async (req, res, next) => {
         }));
         const chapters = chaptersSchema.parse(req.body);
         if (chapters.length === 0) {
-            throw newError({ message: "Chapters array cannot be empty", statusCode: 400 });
+            throw newError({
+                message: "Chapters array cannot be empty",
+                statusCode: 400,
+            });
         }
         const generatedSections = await generateSections(chapters, 3);
         return successResponse({

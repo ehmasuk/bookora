@@ -5,7 +5,6 @@ export interface Props {
   populate?: string[] | null;
 }
 
-
 // find one chapter
 const findOne = async ({ filter, populate = null }: Props) => {
   try {

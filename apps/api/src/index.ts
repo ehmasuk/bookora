@@ -19,6 +19,6 @@ connectDb()
     console.log("Database connected");
     startListening();
   })
-  .catch((err:Error) => {
+  .catch((err: Error) => {
     console.error("Error connecting database: ", err.message);
   });

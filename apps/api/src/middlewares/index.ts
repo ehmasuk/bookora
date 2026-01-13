@@ -10,7 +10,8 @@ const middlewares = (app: any): void => {
     cors({
       origin: ["http://localhost:3000", "https://bookora.vercel.app"],
       credentials: true,
-    })
+      exposedHeaders: ["Content-Disposition"],
+    }),
   );
 };
 

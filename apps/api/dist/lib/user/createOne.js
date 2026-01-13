@@ -7,7 +7,10 @@ const createOne = async ({ name, email, password }) => {
         // check user already exist
         const userIsExist = await checkUserExist(email);
         if (userIsExist)
-            throw newError({ message: "User already register, please login", statusCode: 409 });
+            throw newError({
+                message: "User already register, please login",
+                statusCode: 409,
+            });
         // hash user password
         const hashedPassword = hashPassword(password);
         if (!hashedPassword)

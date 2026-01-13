@@ -1,13 +1,27 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
 import { Input } from "@workspace/ui/components/input";
 import Link from "next/link";
 
 import { BorderBeam } from "@/components/magicui/border-beam";
 import BackgroundMeteors from "@workspace/ui/components/backgroundmeteors";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@workspace/ui/components/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@workspace/ui/components/form";
 import usePost from "@/hooks/usePost";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
@@ -25,9 +39,18 @@ function RegisterPage() {
   const router = useRouter();
 
   const formSchema = z.object({
-    name: z.string().min(1, { message: "Name is required" }).min(3, { message: "Name must be minimum 3 characters" }),
-    email: z.string().min(1, { message: "Email is required" }).email({ message: "Invalid email" }),
-    password: z.string().min(1, { message: "Password is required" }).min(8, { message: "Password Must be 8 characters long" }),
+    name: z
+      .string()
+      .min(1, { message: "Name is required" })
+      .min(3, { message: "Name must be minimum 3 characters" }),
+    email: z
+      .string()
+      .min(1, { message: "Email is required" })
+      .email({ message: "Invalid email" }),
+    password: z
+      .string()
+      .min(1, { message: "Password is required" })
+      .min(8, { message: "Password Must be 8 characters long" }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,12 +83,19 @@ function RegisterPage() {
         <Card className="w-full max-w-md dark:bg-slate-800 relative">
           <BorderBeam duration={8} size={100} />
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">{t("title")}</CardTitle>
-            <CardDescription className="text-center">{t("description")}</CardDescription>
+            <CardTitle className="text-2xl font-bold text-center">
+              {t("title")}
+            </CardTitle>
+            <CardDescription className="text-center">
+              {t("description")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={form.control}
                   name="name"
@@ -99,13 +129,22 @@ function RegisterPage() {
                     <FormItem>
                       <FormLabel>{t("password")}</FormLabel>
                       <FormControl>
-                        <Input minLength={8} placeholder="Enter password" {...field} />
+                        <Input
+                          minLength={8}
+                          placeholder="Enter password"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button variant="primary" type="submit" className="w-full" loading={loading}>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-full"
+                  loading={loading}
+                >
                   {t("submit")}
                 </Button>
               </form>

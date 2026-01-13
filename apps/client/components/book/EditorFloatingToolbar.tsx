@@ -1,5 +1,15 @@
 import { Editor } from "@tiptap/react";
-import { AlignCenterIcon, AlignLeftIcon, AlignRightIcon, BoldIcon, Heading1Icon, ItalicIcon, ListIcon, ListOrderedIcon, QuoteIcon } from "lucide-react";
+import {
+  AlignCenterIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
+  BoldIcon,
+  Heading1Icon,
+  ItalicIcon,
+  ListIcon,
+  ListOrderedIcon,
+  QuoteIcon,
+} from "lucide-react";
 
 interface Props {
   editor: Editor;

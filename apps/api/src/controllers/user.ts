@@ -6,7 +6,11 @@ import { queryParamsSchema } from "../zodSchemas/bookSchemas.js";
 import type { CustomRequest } from "../types/index.js";
 
 // get all users
-const getAllUsers = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const getAllUsers = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const include = req.query.include as string | undefined;
 
@@ -26,11 +30,16 @@ const getAllUsers = async (req:CustomRequest, res:Response, next:NextFunction) =
 };
 
 // get a single user
-const getSingleUser = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const getSingleUser = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     // get userid
     const { userId } = req.params;
-    if (!userId) throw newError({ message: "User id not found", statusCode: 404 });
+    if (!userId)
+      throw newError({ message: "User id not found", statusCode: 404 });
 
     const query: { filter: object; populate?: string[] } = {
       filter: {
@@ -54,7 +63,6 @@ const getSingleUser = async (req:CustomRequest, res:Response, next:NextFunction)
     next(error);
   }
 };
-
 
 export type UserControllersType = {
   getAllUsers: RequestHandler;

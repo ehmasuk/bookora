@@ -9,7 +9,11 @@ import { updateSectionSchema } from "../zodSchemas/sectionSchemas.js";
 import type { CustomRequest } from "../types/index.js";
 
 // create a new Section
-const createSection = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const createSection = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const reqParamSchema = z.object({
       title: z.string().min(3).max(200),
@@ -27,10 +31,15 @@ const createSection = async (req:CustomRequest, res:Response, next:NextFunction)
 };
 
 // get a single Section
-const getSingleSection = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const getSingleSection = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { sectionId } = req.params;
-    if (!sectionId || !isValidObjectId(sectionId)) throw newError({ message: "Invalid id" });
+    if (!sectionId || !isValidObjectId(sectionId))
+      throw newError({ message: "Invalid id" });
 
     const query: { filter: object; populate?: string[] } = {
       filter: {
@@ -45,7 +54,8 @@ const getSingleSection = async (req:CustomRequest, res:Response, next:NextFuncti
     }
 
     const section = await sectionServices.findOne(query);
-    if (!section) throw newError({ message: "Chapter not found", statusCode: 404 });
+    if (!section)
+      throw newError({ message: "Chapter not found", statusCode: 404 });
 
     return successResponse({ res, data: section });
   } catch (error) {
@@ -54,7 +64,11 @@ const getSingleSection = async (req:CustomRequest, res:Response, next:NextFuncti
 };
 
 // delete a single Section
-const deleteSection = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const deleteSection = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { sectionId } = req.params;
     if (!sectionId || !isValidObjectId(sectionId)) {
@@ -68,7 +82,11 @@ const deleteSection = async (req:CustomRequest, res:Response, next:NextFunction)
 };
 
 // update a single Section
-const updateSection = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const updateSection = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { sectionId } = req.params;
     if (!sectionId || !isValidObjectId(sectionId)) {
@@ -80,19 +98,27 @@ const updateSection = async (req:CustomRequest, res:Response, next:NextFunction)
     const update = {
       title,
       content,
-      position
+      position,
     };
 
     const updated = await sectionServices.updateOne({ id: sectionId, update });
 
-    return successResponse({ res, message: "Section updated successfully", data: updated });
+    return successResponse({
+      res,
+      message: "Section updated successfully",
+      data: updated,
+    });
   } catch (error) {
     next(error);
   }
 };
 
 // get sections of a chapter
-const getSectionsOfaChapter = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const getSectionsOfaChapter = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { chapterId } = req.params;
     if (!chapterId) throw newError({ message: "Chapter id is required" });
@@ -110,7 +136,8 @@ const getSectionsOfaChapter = async (req:CustomRequest, res:Response, next:NextF
     }
 
     const chapters = await sectionServices.findAll(query);
-    if (!chapters) throw newError({ message: "Chapter not found", statusCode: 404 });
+    if (!chapters)
+      throw newError({ message: "Chapter not found", statusCode: 404 });
 
     return successResponse({ res, data: chapters });
   } catch (error) {

@@ -1,7 +1,7 @@
 import Book from "../../models/book.js";
 import newError from "../../utils/newError.js";
 import userServices from "../user/index.js";
-const createOne = async ({ title, authorId }) => {
+const createOne = async ({ title, authorId, summary, }) => {
     try {
         const user = await userServices.findOne({ filter: { _id: authorId } });
         if (!user) {
@@ -10,6 +10,7 @@ const createOne = async ({ title, authorId }) => {
         const newBook = new Book({
             title,
             author: authorId,
+            summary,
         });
         return await newBook.save();
     }

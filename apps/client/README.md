@@ -83,6 +83,7 @@ This application is part of the [Bookora Monorepo](../../README.md) and works in
 ### Shared Packages
 
 This app uses shared packages from the monorepo:
+
 - `@workspace/ui` - Shared UI component library
 - `@workspace/eslint-config` - Shared ESLint configuration
 - `@workspace/typescript-config` - Shared TypeScript configuration
@@ -152,12 +153,12 @@ This application is part of a monorepo. Follow these steps:
 
 Create a `.env.local` file in the `apps/client` directory with the following variables:
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `NEXT_PUBLIC_API_URI` | Base URL of the API backend (e.g., `http://localhost:8080/api` or `https://bookora.vercel.app/api`) | Yes |
-| `AUTH_SECRET` | Secret for NextAuth.js (generate with `openssl rand -base64 32`) | Yes (for production) |
-| `AUTH_GOOGLE_ID` | Google OAuth Client ID | Optional |
-| `AUTH_GOOGLE_SECRET` | Google OAuth Client Secret | Optional |
+| Variable              | Description                                                                                         | Required             |
+| --------------------- | --------------------------------------------------------------------------------------------------- | -------------------- |
+| `NEXT_PUBLIC_API_URI` | Base URL of the API backend (e.g., `http://localhost:8080/api` or `https://bookora.vercel.app/api`) | Yes                  |
+| `AUTH_SECRET`         | Secret for NextAuth.js (generate with `openssl rand -base64 32`)                                    | Yes (for production) |
+| `AUTH_GOOGLE_ID`      | Google OAuth Client ID                                                                              | Optional             |
+| `AUTH_GOOGLE_SECRET`  | Google OAuth Client Secret                                                                          | Optional             |
 
 Example `.env.local` file:
 
@@ -170,13 +171,13 @@ AUTH_SECRET=your-auth-secret-here
 
 Run these commands from the `apps/client` directory or use Turborepo filtering from the root:
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Runs the app in development mode on `http://localhost:3000` |
-| `pnpm build` | Builds the app for production to the `.next` folder |
-| `pnpm start` | Starts a Next.js production server |
-| `pnpm lint` | Runs ESLint to find and fix problems in your code |
-| `pnpm check-types` | Type-checks TypeScript without emitting files |
+| Command            | Description                                                 |
+| ------------------ | ----------------------------------------------------------- |
+| `pnpm dev`         | Runs the app in development mode on `http://localhost:3000` |
+| `pnpm build`       | Builds the app for production to the `.next` folder         |
+| `pnpm start`       | Starts a Next.js production server                          |
+| `pnpm lint`        | Runs ESLint to find and fix problems in your code           |
+| `pnpm check-types` | Type-checks TypeScript without emitting files               |
 
 From the root directory:
 
@@ -225,8 +226,8 @@ Components can be added to the `components/` directory. For shared UI components
 Import components from the shared UI package:
 
 ```tsx
-import { Button } from "@workspace/ui/components/button"
-import { Card } from "@workspace/ui/components/card"
+import { Button } from "@workspace/ui/components/button";
+import { Card } from "@workspace/ui/components/card";
 ```
 
 ### Adding shadcn/ui Components
@@ -240,6 +241,7 @@ pnpm dlx shadcn@latest add button -c packages/ui
 ### Internationalization
 
 Translation files are located in `translations/`. Supported languages:
+
 - English (`en.json`)
 - Spanish (`es.json`)
 - German (`de.json`)
@@ -257,9 +259,9 @@ Add new translations by updating the JSON files.
 The app uses Axios with an interceptor for authentication. API calls are made through:
 
 ```tsx
-import axiosInstance from "@/lib/axiosInstance"
+import axiosInstance from "@/lib/axiosInstance";
 
-const response = await axiosInstance.get("/book")
+const response = await axiosInstance.get("/book");
 ```
 
 The base URL is configured via `NEXT_PUBLIC_API_URI` environment variable.
@@ -267,6 +269,7 @@ The base URL is configured via `NEXT_PUBLIC_API_URI` environment variable.
 ### Authentication
 
 Authentication is handled by NextAuth.js. The configuration is in `auth.ts`. The app uses:
+
 - Credentials provider (email/password)
 - Optional Google OAuth provider
 

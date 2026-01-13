@@ -35,9 +35,10 @@ const createChapter = async (req, res, next) => {
         const reqParamSchema = z.object({
             title: z.string().min(3).max(200),
             bookId: z.string().min(1),
+            summary: z.string().optional(),
         });
-        const { title, bookId } = reqParamSchema.parse(req.body);
-        const chapter = await chapterServices.createOne({ title, bookId });
+        const { title, bookId, summary } = reqParamSchema.parse(req.body);
+        const chapter = await chapterServices.createOne({ title, bookId, summary });
         return successResponse({ res, data: chapter });
     }
     catch (error) {
@@ -96,7 +97,11 @@ const updateChapter = async (req, res, next) => {
             position,
         };
         const updated = await chapterServices.updateOne({ id: chapterId, update });
-        return successResponse({ res, message: "Chapter updated successfully", data: updated });
+        return successResponse({
+            res,
+            message: "Chapter updated successfully",
+            data: updated,
+        });
     }
     catch (error) {
         next(error);

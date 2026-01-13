@@ -27,7 +27,8 @@ export const AnimatedThemeToggler = ({ className }: props) => {
       });
     }).ready;
 
-    const { top, left, width, height } = buttonRef.current.getBoundingClientRect();
+    const { top, left, width, height } =
+      buttonRef.current.getBoundingClientRect();
     const y = top + height / 2;
     const x = left + width / 2;
 
@@ -37,18 +38,27 @@ export const AnimatedThemeToggler = ({ className }: props) => {
 
     document.documentElement.animate(
       {
-        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxRad}px at ${x}px ${y}px)`],
+        clipPath: [
+          `circle(0px at ${x}px ${y}px)`,
+          `circle(${maxRad}px at ${x}px ${y}px)`,
+        ],
       },
       {
         duration: 700,
         easing: "ease-in-out",
         pseudoElement: "::view-transition-new(root)",
-      }
+      },
     );
   };
   return (
-    <Button ref={buttonRef} onClick={changeTheme} variant="outline" className={cn(className)}>
-      {isDarkMode ? <SunDim /> : <Moon size={18} strokeWidth={2} />}
+    <Button
+      ref={buttonRef}
+      onClick={changeTheme}
+      variant="secondary"
+      size="icon"
+      className={cn(className)}
+    >
+      {isDarkMode ? <SunDim /> : <Moon />}
     </Button>
   );
 };

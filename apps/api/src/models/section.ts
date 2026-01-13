@@ -24,7 +24,7 @@ const sectionSchema = new Schema(
     timestamps: true,
     toJSON: { virtuals: true, minimize: false },
     toObject: { virtuals: true, minimize: false },
-  }
+  },
 );
 
 export default model("section", sectionSchema);

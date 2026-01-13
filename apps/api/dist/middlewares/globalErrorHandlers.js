@@ -9,11 +9,21 @@ const catchGlobalErrors = (err, _req, res, _next) => {
     // global error consoler, it must be removed in prod server
     console.log(err);
     if (err instanceof MongooseError) {
-        return res.status(400).json({ code: 400, message: "Bad request", requestId: res.getHeader("x-request-id") });
+        return res
+            .status(400)
+            .json({
+            code: 400,
+            message: "Bad request",
+            requestId: res.getHeader("x-request-id"),
+        });
     }
     if (err instanceof ZodError) {
-        const message = err.issues.map((e) => `${e.path.join(".")} : ${e.message}`).join(", ");
-        return res.status(400).json({ code: 400, message, requestId: res.getHeader("x-request-id") });
+        const message = err.issues
+            .map((e) => `${e.path.join(".")} : ${e.message}`)
+            .join(", ");
+        return res
+            .status(400)
+            .json({ code: 400, message, requestId: res.getHeader("x-request-id") });
     }
     // if there is a statusCode that means its our newError
     if (err.statusCode) {

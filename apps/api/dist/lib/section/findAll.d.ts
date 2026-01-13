@@ -3,11 +3,11 @@ export interface Props {
     filter?: object;
     select?: Record<string, string | number | boolean | object> | null;
     populate?: string[] | null;
-    limit?: number | 'none';
+    limit?: number | "none";
     page?: number;
     sort?: SortTypes;
 }
-declare const findAll: ({ filter, select, populate, limit, page, sort }: Props) => Promise<(import("mongoose").Document<unknown, {}, {
+declare const findAll: ({ filter, select, populate, limit, page, sort, }: Props) => Promise<(import("mongoose").Document<unknown, {}, {
     title: string;
     chapter: import("mongoose").Types.ObjectId;
     position: number;

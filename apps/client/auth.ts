@@ -50,13 +50,22 @@ const nextAuth = NextAuth({
           const { email, password } = CredentialsSchema.parse(credentials);
 
           // signin request to the server with the provided credentials
-          const res: AxiosResponse<LoginResponse> = await axios.post(process.env.NEXT_PUBLIC_API_URI + "/auth/login", { email, password });
+          const res: AxiosResponse<LoginResponse> = await axios.post(
+            process.env.NEXT_PUBLIC_API_URI + "/auth/login",
+            { email, password },
+          );
           const { data, token }: LoginResponse = res.data;
 
           // id there is no data means authentication failed -> return null
           if (!data) return null;
 
-          return { id: data.id, name: data.name, email: data.email, token, status: data.status };
+          return {
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            token,
+            status: data.status,
+          };
         } catch (err) {
           console.log(err);
           return null;

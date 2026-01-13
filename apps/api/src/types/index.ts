@@ -5,7 +5,8 @@ export type SortTypes = "ASC" | "DESC";
 
 // common
 export interface CustomRequest extends Request {
-  user?: any
+  user?: any;
+  file?: any; // Using any to avoid 'global.Express' has no exported member 'Multer' lint error
 }
 export interface ErrorWithStatusCode extends Error {
   statusCode?: number;
@@ -14,7 +15,6 @@ export interface ErrorWithStatusCode extends Error {
 export interface DecodedTokenType extends JwtPayload {
   id: string;
 }
-
 
 export interface ExportBookResponse_SectionType {
   title: string;
@@ -28,12 +28,10 @@ export interface ExportBookResponse_ChapterType {
   sections: ExportBookResponse_SectionType[];
 }
 
-
 export interface ExportBookResponse_BookType {
   title: string;
   chapters: ExportBookResponse_ChapterType[];
 }
-
 
 export enum ExportBookFormatTypes {
   PDF = "pdf",

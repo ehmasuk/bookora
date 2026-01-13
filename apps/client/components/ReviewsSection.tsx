@@ -3,7 +3,6 @@ import { cn } from "@workspace/ui/lib/utils";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-
 type Review = {
   img: string;
   name: string;
@@ -18,13 +17,21 @@ const ReviewCard = ({ img, name, username, body }: Review) => {
       className={cn(
         "relative h-full w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
         "border-gray-950/10 bg-gray-950/10 hover:bg-gray-950/5",
-        "dark:border-gray-50/10 dark:bg-gray-50/10 dark:hover:bg-gray-50/15"
+        "dark:border-gray-50/10 dark:bg-gray-50/10 dark:hover:bg-gray-50/15",
       )}
     >
       <div className="flex flex-row items-center gap-2">
-        <Image className="rounded-full" width={32} height={32} alt="item" src={img} />
+        <Image
+          className="rounded-full"
+          width={32}
+          height={32}
+          alt="item"
+          src={img}
+        />
         <div className="flex flex-col">
-          <figcaption className="text-sm font-medium dark:text-white">{name}</figcaption>
+          <figcaption className="text-sm font-medium dark:text-white">
+            {name}
+          </figcaption>
           <p className="text-xs font-medium dark:text-white/40">{username}</p>
         </div>
       </div>
@@ -48,8 +55,12 @@ export function ReviewsSection() {
 
   return (
     <div className="relative py-20 flex w-full max-w-4xl px-4 mx-auto flex-col items-center justify-center overflow-hidden">
-      <h2 className="text-neutrl-900 md:text-3xl text-2xl font-medium tracking-tight text-center dark:text-white">{t("title")}</h2>
-      <p className="mt-2 md:text-lg text-base text-neutral-600 text-center dark:text-neutral-200 mb-10">{t("description")}</p>
+      <h2 className="text-neutrl-900 md:text-3xl text-2xl font-medium tracking-tight text-center dark:text-white">
+        {t("title")}
+      </h2>
+      <p className="mt-2 md:text-lg text-base text-neutral-600 text-center dark:text-neutral-200 mb-10">
+        {t("description")}
+      </p>
       <Marquee pauseOnHover className="[--duration:20s]">
         {firstRow.map((review) => (
           <ReviewCard key={review.username} {...review} />
@@ -65,4 +76,3 @@ export function ReviewsSection() {
     </div>
   );
 }
-

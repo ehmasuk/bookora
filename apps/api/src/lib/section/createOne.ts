@@ -14,7 +14,9 @@ const createOne = async ({ title, chapterId }: Props): Promise<object> => {
     }
 
     // get the last chapter's position for this book
-    const lastSection = await Section.findOne({ chapter: chapterId }).sort({ position: -1 }).select("position")
+    const lastSection = await Section.findOne({ chapter: chapterId })
+      .sort({ position: -1 })
+      .select("position");
 
     // assign next position safely
     const nextPosition = lastSection ? lastSection.position + 1 : 0;

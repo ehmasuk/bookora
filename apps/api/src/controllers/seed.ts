@@ -3,7 +3,11 @@ import seedServices from "../lib/seed/index.js";
 import successResponse from "../utils/successResponse.js";
 import type { CustomRequest } from "../types/index.js";
 
-const seedUsers = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const seedUsers = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const number = req.params.number;
     if (!number) {
@@ -12,13 +16,21 @@ const seedUsers = async (req:CustomRequest, res:Response, next:NextFunction) => 
     const count = parseInt(number);
 
     const seededUsers = await seedServices.users(count);
-    return successResponse({ res, message: "Seeded successfully", data: seededUsers });
+    return successResponse({
+      res,
+      message: "Seeded successfully",
+      data: seededUsers,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-const seedBooks = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const seedBooks = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const number = req.params.number;
     if (!number) {
@@ -27,7 +39,11 @@ const seedBooks = async (req:CustomRequest, res:Response, next:NextFunction) => 
     const count = parseInt(number);
 
     const seededBooks = await seedServices.books(count);
-    return successResponse({ res, message: "Seeded successfully", data: seededBooks });
+    return successResponse({
+      res,
+      message: "Seeded successfully",
+      data: seededBooks,
+    });
   } catch (error) {
     next(error);
   }

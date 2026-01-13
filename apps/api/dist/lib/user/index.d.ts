@@ -1,5 +1,5 @@
 declare const _default: {
-    findAll: ({ filter, select, populate, limit, page, sort }: import("./findAll.js").Props) => Promise<(import("mongoose").Document<unknown, {}, {
+    findAll: ({ filter, select, populate, limit, page, sort, }: import("./findAll.js").Props) => Promise<(import("mongoose").Document<unknown, {}, {
         name: string;
         status: string[];
         email: string;

@@ -2,10 +2,28 @@
 
 import usePost from "@/hooks/usePost";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@workspace/ui/components/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@workspace/ui/components/tooltip";
 import { Button } from "@workspace/ui/components/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@workspace/ui/components/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@workspace/ui/components/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
 import { BookMarkedIcon } from "lucide-react";
 
@@ -70,8 +88,12 @@ function CreateChapterModal({ children, bookId }: Props) {
       <DialogContent className="w-sm">
         <div className="mb-2 flex flex-col items-center gap-2">
           <DialogHeader>
-            <DialogTitle className="sm:text-center">Create a new Chapter</DialogTitle>
-            <DialogDescription className="sm:text-center">Enter chapter name</DialogDescription>
+            <DialogTitle className="sm:text-center">
+              Create a new Chapter
+            </DialogTitle>
+            <DialogDescription className="sm:text-center">
+              Enter chapter name
+            </DialogDescription>
           </DialogHeader>
         </div>
 
@@ -84,7 +106,12 @@ function CreateChapterModal({ children, bookId }: Props) {
                 <FormItem>
                   <FormControl>
                     <div className="relative">
-                      <Input className="peer ps-9" placeholder="Chapter name" type="text" {...field} />
+                      <Input
+                        className="peer ps-9"
+                        placeholder="Chapter name"
+                        type="text"
+                        {...field}
+                      />
                       <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                         <BookMarkedIcon size={16} aria-hidden="true" />
                       </div>
@@ -95,7 +122,12 @@ function CreateChapterModal({ children, bookId }: Props) {
               )}
             />
 
-            <Button loading={loading} variant="primary" type="submit" className="w-full">
+            <Button
+              loading={loading}
+              variant="primary"
+              type="submit"
+              className="w-full"
+            >
               Create
             </Button>
           </form>

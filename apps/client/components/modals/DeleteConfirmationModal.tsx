@@ -19,7 +19,11 @@ interface Props {
   text: string;
 }
 
-export default function DeleteConfirmationModal({ children, text, onConfirm }: Props) {
+export default function DeleteConfirmationModal({
+  children,
+  text,
+  onConfirm,
+}: Props) {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
@@ -27,7 +31,10 @@ export default function DeleteConfirmationModal({ children, text, onConfirm }: P
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-full border" aria-hidden="true">
+          <div
+            className="flex size-9 shrink-0 items-center justify-center rounded-full border"
+            aria-hidden="true"
+          >
             <CircleAlertIcon className="text-red-500" size={20} />
           </div>
           <AlertDialogHeader>

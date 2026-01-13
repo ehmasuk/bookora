@@ -20,7 +20,7 @@ const entitySchemas = {
         title: z.string().min(3).max(200),
         content: z.any(),
         position: z.number(),
-    }
+    },
 };
 export default entitySchemas;
 //# sourceMappingURL=entitySchemas.js.map

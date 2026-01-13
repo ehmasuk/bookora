@@ -46,7 +46,7 @@ const logger = pino(
   {
     timestamp: pino.stdTimeFunctions.isoTime,
   },
-  transports
+  transports,
 );
 
 // config logger function
@@ -62,7 +62,7 @@ const configLogger = (app: Application) => {
         res.setHeader("X-Request-Id", id);
         return id;
       },
-    })
+    }),
   );
 };
 

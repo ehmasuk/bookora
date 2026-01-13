@@ -12,9 +12,8 @@ import { toast } from "sonner";
 import useSWR from "swr";
 
 import BookCard from "@/components/book/book-card";
+import ProfileBooksSkeleton from "@/components/skeletons/profile-books";
 import { BookType } from "@/types/book";
-
-
 
 export default function BookManagementDashboard() {
   const { data: session } = useSession();
@@ -67,25 +66,10 @@ export default function BookManagementDashboard() {
 
         {/* Books Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 px-3 gap-6">
-          {userId && books?.map((book: BookType, index: number) =>(
-            <BookCard
-            id={book.id} 
-            title={book.title} 
-            key={index}
-            status={"Private"}
-          />
-          ))}
+          {userId && books?.map((book: BookType, index: number) => <BookCard id={book.id} title={book.title} cover={book.cover || undefined} key={index} status={book.status} />)}
+
+          {isLoading && Array.from({ length: 4 }).map((_, index) => <ProfileBooksSkeleton key={index} />)}
         </div>
-
-
-
-
-
-
-
-
-
-
 
         {!isLoading && books?.length === 0 && <Empty size="lg" text={t("empty_message")} />}
       </div>

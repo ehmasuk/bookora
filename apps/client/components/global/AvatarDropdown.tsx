@@ -3,7 +3,14 @@
 import { Book, LogOutIcon, User } from "lucide-react";
 
 import useAuth from "@/hooks/useAuth";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@workspace/ui/components/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@workspace/ui/components/dropdown-menu";
 import Link from "next/link";
 
 export default function AvatarDropdown() {

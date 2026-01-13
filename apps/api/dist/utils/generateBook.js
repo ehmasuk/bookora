@@ -7,12 +7,19 @@ const generateBookWithGemini = async (payload, chaptersCount = 5, sectionsPerCha
         chapters: z
             .array(z.object({
             title: z.string().describe("Chapter title"),
-            summary: z.string().describe("Short paragraph summarizing the chapter"),
-            position: z.number().describe("1-based index of the chapter in the book"),
+            summary: z
+                .string()
+                .describe("Short paragraph summarizing the chapter"),
+            position: z
+                .number()
+                .describe("1-based index of the chapter in the book"),
             sections: z
                 .array(z.object({
                 title: z.string().describe("Section title"),
-                position: z.number().optional().describe("0-based position within the chapter"),
+                position: z
+                    .number()
+                    .optional()
+                    .describe("0-based position within the chapter"),
             }))
                 .length(sectionsPerChapter)
                 .describe(`Exactly ${sectionsPerChapter} sections for this chapter`),

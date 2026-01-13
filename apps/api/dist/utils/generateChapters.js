@@ -8,8 +8,12 @@ const generateChapters = async (payload, count) => {
             chapters: z
                 .array(z.object({
                 title: z.string().describe("Chapter title"),
-                summary: z.string().describe("Short paragraph summarizing the chapter"),
-                position: z.number().describe("1-based index of the chapter in the book"),
+                summary: z
+                    .string()
+                    .describe("Short paragraph summarizing the chapter"),
+                position: z
+                    .number()
+                    .describe("1-based index of the chapter in the book"),
             }))
                 .length(count)
                 .describe(`Exactly ${count} chapters for the book outline`),
@@ -45,10 +49,16 @@ const generateChapters = async (payload, count) => {
         console.error("Error generating chapters:", error);
         // Handle Groq/LangChain specific errors
         if (error?.message?.includes("429") || error?.status === 429) {
-            throw newError({ message: "AI Service Rate Limit Exceeded. Please try again later.", statusCode: 429 });
+            throw newError({
+                message: "AI Service Rate Limit Exceeded. Please try again later.",
+                statusCode: 429,
+            });
         }
         if (error?.message?.includes("503") || error?.status === 503) {
-            throw newError({ message: "AI Service Unavailable. Please try again later.", statusCode: 503 });
+            throw newError({
+                message: "AI Service Unavailable. Please try again later.",
+                statusCode: 503,
+            });
         }
         throw newError({ message: "Failed to generate chapters", statusCode: 500 });
     }

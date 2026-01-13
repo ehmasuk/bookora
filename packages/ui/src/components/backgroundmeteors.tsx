@@ -13,7 +13,9 @@ interface BackgroundMeteorsProps {
   children?: ReactNode;
 }
 
-export default function BackgroundMeteors({ children }: BackgroundMeteorsProps) {
+export default function BackgroundMeteors({
+  children,
+}: BackgroundMeteorsProps) {
   const [beams, setBeams] = useState<Beam[]>([]);
   const gridSize = 40;
   const totalLines = 35;
@@ -29,7 +31,11 @@ export default function BackgroundMeteors({ children }: BackgroundMeteorsProps) 
       const idx = Math.floor(Math.random() * available.length);
       const value = available[idx] || 0;
       selected.push(value);
-      available.splice(0, available.length, ...available.filter((v) => Math.abs(v - value) > 1));
+      available.splice(
+        0,
+        available.length,
+        ...available.filter((v) => Math.abs(v - value) > 1),
+      );
     }
 
     return selected.map((line) => line * gridSize);
@@ -61,14 +67,16 @@ export default function BackgroundMeteors({ children }: BackgroundMeteorsProps) 
         className="absolute inset-0"
         style={{
           backgroundSize: `${gridSize}px ${gridSize}px`,
-          backgroundImage: "linear-gradient(to right, #e4e4e7 1px, transparent 1px), linear-gradient(to bottom, #e4e4e7 1px, transparent 1px)",
+          backgroundImage:
+            "linear-gradient(to right, #e4e4e7 1px, transparent 1px), linear-gradient(to bottom, #e4e4e7 1px, transparent 1px)",
         }}
       />
       <div
         className="absolute inset-0 dark:block hidden"
         style={{
           backgroundSize: `${gridSize}px ${gridSize}px`,
-          backgroundImage: "linear-gradient(to right, #262626 1px, transparent 1px), linear-gradient(to bottom, #024e6b  1px, transparent 1px)",
+          backgroundImage:
+            "linear-gradient(to right, #262626 1px, transparent 1px), linear-gradient(to bottom, #024e6b  1px, transparent 1px)",
         }}
       />
       <div
@@ -96,7 +104,9 @@ export default function BackgroundMeteors({ children }: BackgroundMeteorsProps) 
         </motion.div>
       ))}
 
-      <div className="absolute inset-0 z-10 flex items-center justify-center">{children}</div>
+      <div className="absolute inset-0 z-10 flex items-center justify-center">
+        {children}
+      </div>
     </div>
   );
 }

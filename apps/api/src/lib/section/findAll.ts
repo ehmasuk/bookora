@@ -1,24 +1,29 @@
 import { Section } from "../../models/index.js";
 import type { SortTypes } from "../../types/index.js";
 
-
-
 export interface Props {
   filter?: object;
   select?: Record<string, string | number | boolean | object> | null;
   populate?: string[] | null;
-  limit?: number | 'none';
+  limit?: number | "none";
   page?: number;
   sort?: SortTypes;
 }
 // find alll sections
-const findAll = async ({ filter = {}, select = null, populate = null, limit = 10, page = 1, sort = "ASC" }: Props) => {
+const findAll = async ({
+  filter = {},
+  select = null,
+  populate = null,
+  limit = 10,
+  page = 1,
+  sort = "ASC",
+}: Props) => {
   try {
     const query = Section.find(filter);
-    
-    if(limit == 'none'){
+
+    if (limit == "none") {
       query.limit(10_000);
-    }else{
+    } else {
       query.limit(limit);
       query.skip((page - 1) * limit);
     }

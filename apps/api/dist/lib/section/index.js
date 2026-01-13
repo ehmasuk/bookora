@@ -8,6 +8,6 @@ export default {
     findAll,
     findOne,
     deleteOne,
-    updateOne
+    updateOne,
 };
 //# sourceMappingURL=index.js.map

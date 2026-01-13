@@ -13,11 +13,16 @@ const createOne = async ({ name, email, password }: Props) => {
   try {
     // check user already exist
     const userIsExist = await checkUserExist(email);
-    if (userIsExist) throw newError({ message: "User already register, please login", statusCode: 409 });
+    if (userIsExist)
+      throw newError({
+        message: "User already register, please login",
+        statusCode: 409,
+      });
 
     // hash user password
     const hashedPassword = hashPassword(password);
-    if (!hashedPassword) throw newError({ message: "Cannot hash password", statusCode: 500 });
+    if (!hashedPassword)
+      throw newError({ message: "Cannot hash password", statusCode: 500 });
 
     // create new user
     const newUser = new User({ name, email, password: hashedPassword });

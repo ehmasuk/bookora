@@ -42,7 +42,8 @@ const bookstepsEnglish: Tour[] = [
       {
         icon: "✍️",
         title: "Sections",
-        content: "Each chapter can have sections. Add section names and start writing inside them.",
+        content:
+          "Each chapter can have sections. Add section names and start writing inside them.",
         side: "right",
         showControls: true,
         showSkip: true,
@@ -93,7 +94,8 @@ const bookstepsSpanish: Tour[] = [
       {
         icon: "✍️",
         title: "Secciones",
-        content: "Cada capítulo puede tener secciones. Añade nombres de secciones y empieza a escribir en ellas.",
+        content:
+          "Cada capítulo puede tener secciones. Añade nombres de secciones y empieza a escribir en ellas.",
         side: "right",
         showControls: true,
         showSkip: true,
@@ -126,7 +128,8 @@ const bookstepsGerman: Tour[] = [
       {
         icon: "🙂",
         title: "Leiste",
-        content: "Mit diesem Schalter kannst du die Seitenleiste ein- oder ausblenden.",
+        content:
+          "Mit diesem Schalter kannst du die Seitenleiste ein- oder ausblenden.",
         selector: "#book-sidebar-toggler",
         side: "bottom",
         showControls: true,
@@ -144,7 +147,8 @@ const bookstepsGerman: Tour[] = [
       {
         icon: "✍️",
         title: "Abschnitte",
-        content: "Jedes Kapitel kann Abschnitte enthalten. Füge Abschnittsnamen hinzu und beginne darin zu schreiben.",
+        content:
+          "Jedes Kapitel kann Abschnitte enthalten. Füge Abschnittsnamen hinzu und beginne darin zu schreiben.",
         side: "right",
         showControls: true,
         showSkip: true,
@@ -195,7 +199,8 @@ const bookstepsFrench: Tour[] = [
       {
         icon: "✍️",
         title: "Sections",
-        content: "Chaque chapitre peut contenir des sections. Ajoute des noms de sections et commence à écrire dedans.",
+        content:
+          "Chaque chapitre peut contenir des sections. Ajoute des noms de sections et commence à écrire dedans.",
         side: "right",
         showControls: true,
         showSkip: true,

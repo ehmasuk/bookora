@@ -10,7 +10,9 @@ const generateSections = async (chapters, count) => {
                 sections: z
                     .array(z.object({
                     title: z.string().describe("Section title"),
-                    position: z.number().describe("1-based position within the chapter"),
+                    position: z
+                        .number()
+                        .describe("1-based position within the chapter"),
                 }))
                     .length(count)
                     .describe(`Exactly ${count} sections for this chapter`),
@@ -49,10 +51,16 @@ const generateSections = async (chapters, count) => {
         console.error("Error generating sections:", error);
         // Handle Groq/LangChain specific errors
         if (error?.message?.includes("429") || error?.status === 429) {
-            throw newError({ message: "AI Service Rate Limit Exceeded. Please try again later.", statusCode: 429 });
+            throw newError({
+                message: "AI Service Rate Limit Exceeded. Please try again later.",
+                statusCode: 429,
+            });
         }
         if (error?.message?.includes("503") || error?.status === 503) {
-            throw newError({ message: "AI Service Unavailable. Please try again later.", statusCode: 503 });
+            throw newError({
+                message: "AI Service Unavailable. Please try again later.",
+                statusCode: 503,
+            });
         }
         throw newError({ message: "Failed to generate sections", statusCode: 500 });
     }

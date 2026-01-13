@@ -9,5 +9,5 @@ export default {
   findAll,
   findOne,
   deleteOne,
-  updateOne
+  updateOne,
 };

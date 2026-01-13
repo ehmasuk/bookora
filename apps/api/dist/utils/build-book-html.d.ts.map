@@ -1,1 +1,1 @@
-{"version":3,"file":"build-book-html.d.ts","sourceRoot":"","sources":["../../src/utils/build-book-html.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,2BAA2B,EAAmE,MAAM,mBAAmB,CAAC;AAGtI,iBAAS,aAAa,CAAC,IAAI,EAAE,2BAA2B,UA+BvD;AAGD,eAAe,aAAa,CAAA"}
+{"version":3,"file":"build-book-html.d.ts","sourceRoot":"","sources":["../../src/utils/build-book-html.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EACV,2BAA2B,EAG5B,MAAM,mBAAmB,CAAC;AAE3B,iBAAS,aAAa,CAAC,IAAI,EAAE,2BAA2B,UAqDvD;AAED,eAAe,aAAa,CAAC"}

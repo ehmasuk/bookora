@@ -4,7 +4,7 @@ import newError from "../utils/newError.js";
 import { verifyPassword } from "../utils/passwordHandlers.js";
 import successResponse from "../utils/successResponse.js";
 import { createToken } from "../utils/tokenHandlers.js";
-import { userLoginSchema, userRegisterSchema } from "../zodSchemas/userSchemas.js";
+import { userLoginSchema, userRegisterSchema, } from "../zodSchemas/userSchemas.js";
 // register User
 const registerUser = async (req, res, next) => {
     try {
@@ -19,7 +19,12 @@ const registerUser = async (req, res, next) => {
         };
         // create token
         const token = createToken(userResponse.id);
-        successResponse({ res, statusCode: 201, data: userResponse, extra: { token } });
+        successResponse({
+            res,
+            statusCode: 201,
+            data: userResponse,
+            extra: { token },
+        });
     }
     catch (error) {
         next(error);
@@ -46,7 +51,12 @@ const loginUser = async (req, res, next) => {
         // create token
         const token = createToken(userResponse.id);
         // send response
-        successResponse({ res, statusCode: 200, data: userResponse, extra: { token } });
+        successResponse({
+            res,
+            statusCode: 200,
+            data: userResponse,
+            extra: { token },
+        });
     }
     catch (error) {
         next(error);

@@ -1,4 +1,4 @@
-import type { NextFunction, RequestHandler,Response } from "express";
+import type { NextFunction, RequestHandler, Response } from "express";
 
 import type { Types } from "mongoose";
 import userServices from "../lib/user/index.js";
@@ -7,7 +7,10 @@ import newError from "../utils/newError.js";
 import { verifyPassword } from "../utils/passwordHandlers.js";
 import successResponse from "../utils/successResponse.js";
 import { createToken } from "../utils/tokenHandlers.js";
-import { userLoginSchema, userRegisterSchema } from "../zodSchemas/userSchemas.js";
+import {
+  userLoginSchema,
+  userRegisterSchema,
+} from "../zodSchemas/userSchemas.js";
 import type { CustomRequest } from "../types/index.js";
 
 export interface AuthResponseTypes {
@@ -18,7 +21,11 @@ export interface AuthResponseTypes {
 }
 
 // register User
-const registerUser = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const registerUser = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { name, email, password } = userRegisterSchema.parse(req.body);
 
@@ -35,24 +42,35 @@ const registerUser = async (req:CustomRequest, res:Response, next:NextFunction) 
     // create token
     const token = createToken(userResponse.id);
 
-    successResponse({ res, statusCode: 201, data: userResponse, extra: { token } });
+    successResponse({
+      res,
+      statusCode: 201,
+      data: userResponse,
+      extra: { token },
+    });
   } catch (error) {
     next(error);
   }
 };
 
 // login User
-const loginUser = async (req:CustomRequest, res:Response, next:NextFunction) => {
+const loginUser = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { email, password } = userLoginSchema.parse(req.body);
 
     // check user exist
     const user = await checkUserExist(email);
-    if (!user) throw newError({ message: "Authentication failed", statusCode: 401 });
+    if (!user)
+      throw newError({ message: "Authentication failed", statusCode: 401 });
 
     // check password
     const validPass = await verifyPassword(password, user.password);
-    if (!validPass) throw newError({ message: "Authentication failed", statusCode: 401 });
+    if (!validPass)
+      throw newError({ message: "Authentication failed", statusCode: 401 });
 
     const userResponse: AuthResponseTypes = {
       id: user._id,
@@ -65,7 +83,12 @@ const loginUser = async (req:CustomRequest, res:Response, next:NextFunction) => 
     const token = createToken(userResponse.id);
 
     // send response
-    successResponse({ res, statusCode: 200, data: userResponse, extra: { token } });
+    successResponse({
+      res,
+      statusCode: 200,
+      data: userResponse,
+      extra: { token },
+    });
   } catch (error) {
     next(error);
   }

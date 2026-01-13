@@ -1,4 +1,4 @@
-const successResponse = ({ res, statusCode = 200, message = "Success", data, extra = {} }) => {
+const successResponse = ({ res, statusCode = 200, message = "Success", data, extra = {}, }) => {
     const responseBody = {
         code: statusCode,
         message,

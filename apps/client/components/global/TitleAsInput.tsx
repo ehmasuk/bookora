@@ -7,7 +7,12 @@ interface Props {
   maxCharachter?: number | null;
 }
 
-function TitleAsInput({ title, handleSubmit, className = "", maxCharachter = null }: Props) {
+function TitleAsInput({
+  title,
+  handleSubmit,
+  className = "",
+  maxCharachter = null,
+}: Props) {
   const [inputTitle, setInputTitle] = useState<string>(title || "");
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -53,8 +58,14 @@ function TitleAsInput({ title, handleSubmit, className = "", maxCharachter = nul
           />
         </form>
       ) : (
-        <div onClick={startEditing} className="cursor-pointer text-slate-800 dark:text-slate-100 truncate transition hover:opacity-80" title={inputTitle}>
-          {maxCharachter && inputTitle.length > maxCharachter ? inputTitle.slice(0, maxCharachter) + "..." : inputTitle || "Untitled"}
+        <div
+          onClick={startEditing}
+          className="cursor-pointer text-slate-800 dark:text-slate-100 truncate transition hover:opacity-80"
+          title={inputTitle}
+        >
+          {maxCharachter && inputTitle.length > maxCharachter
+            ? inputTitle.slice(0, maxCharachter) + "..."
+            : inputTitle || "Untitled"}
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 declare const _default: {
     createOne: ({ title, chapterId }: import("./createOne.js").Props) => Promise<object>;
-    findAll: ({ filter, select, populate, limit, page, sort }: import("./findAll.js").Props) => Promise<(import("mongoose").Document<unknown, {}, {
+    findAll: ({ filter, select, populate, limit, page, sort, }: import("./findAll.js").Props) => Promise<(import("mongoose").Document<unknown, {}, {
         title: string;
         chapter: import("mongoose").Types.ObjectId;
         position: number;

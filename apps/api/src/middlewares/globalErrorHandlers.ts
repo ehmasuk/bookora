@@ -1,4 +1,9 @@
-import type { ErrorRequestHandler, NextFunction, Request, Response } from "express";
+import type {
+  ErrorRequestHandler,
+  NextFunction,
+  Request,
+  Response,
+} from "express";
 import { Error as MongooseError } from "mongoose";
 import { ZodError } from "zod";
 // import { logger } from "../config/logger.js";
@@ -10,17 +15,32 @@ const notFound = (_req: Request, _res: Response, next: NextFunction): void => {
   next(error);
 };
 
-const catchGlobalErrors: ErrorRequestHandler = (err: ErrorWithStatusCode, _req: Request, res: Response, _next: NextFunction): Response => {
+const catchGlobalErrors: ErrorRequestHandler = (
+  err: ErrorWithStatusCode,
+  _req: Request,
+  res: Response,
+  _next: NextFunction,
+): Response => {
   // global error consoler, it must be removed in prod server
   console.log(err);
 
   if (err instanceof MongooseError) {
-    return res.status(400).json({ code: 400, message: "Bad request", requestId: res.getHeader("x-request-id") });
+    return res
+      .status(400)
+      .json({
+        code: 400,
+        message: "Bad request",
+        requestId: res.getHeader("x-request-id"),
+      });
   }
 
   if (err instanceof ZodError) {
-    const message = err.issues.map((e) => `${e.path.join(".")} : ${e.message}`).join(", ");
-    return res.status(400).json({ code: 400, message, requestId: res.getHeader("x-request-id") });
+    const message = err.issues
+      .map((e) => `${e.path.join(".")} : ${e.message}`)
+      .join(", ");
+    return res
+      .status(400)
+      .json({ code: 400, message, requestId: res.getHeader("x-request-id") });
   }
 
   // if there is a statusCode that means its our newError

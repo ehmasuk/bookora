@@ -19,16 +19,23 @@ export type GeneratedChapter = {
 
 import newError from "./newError.js";
 
-const generateChapters = async (payload: DraftPayloadTypes, count: number): Promise<GeneratedChapter[]> => {
+const generateChapters = async (
+  payload: DraftPayloadTypes,
+  count: number,
+): Promise<GeneratedChapter[]> => {
   try {
     const ChaptersSchema = z.object({
       chapters: z
         .array(
           z.object({
             title: z.string().describe("Chapter title"),
-            summary: z.string().describe("Short paragraph summarizing the chapter"),
-            position: z.number().describe("1-based index of the chapter in the book"),
-          })
+            summary: z
+              .string()
+              .describe("Short paragraph summarizing the chapter"),
+            position: z
+              .number()
+              .describe("1-based index of the chapter in the book"),
+          }),
         )
         .length(count)
         .describe(`Exactly ${count} chapters for the book outline`),
@@ -57,23 +64,31 @@ const generateChapters = async (payload: DraftPayloadTypes, count: number): Prom
 
     const result = await structuredModel.invoke(promptText);
 
-    const chapters: GeneratedChapter[] = result.chapters.map((c: any, index: number) => ({
-      title: String(c.title ?? `Chapter ${index + 1}`),
-      summary: String(c.summary ?? ""),
-      position: typeof c.position === "number" ? c.position : index + 1,
-    }));
+    const chapters: GeneratedChapter[] = result.chapters.map(
+      (c: any, index: number) => ({
+        title: String(c.title ?? `Chapter ${index + 1}`),
+        summary: String(c.summary ?? ""),
+        position: typeof c.position === "number" ? c.position : index + 1,
+      }),
+    );
 
     return chapters;
   } catch (error: any) {
     console.error("Error generating chapters:", error);
-    
+
     // Handle Groq/LangChain specific errors
     if (error?.message?.includes("429") || error?.status === 429) {
-      throw newError({ message: "AI Service Rate Limit Exceeded. Please try again later.", statusCode: 429 });
+      throw newError({
+        message: "AI Service Rate Limit Exceeded. Please try again later.",
+        statusCode: 429,
+      });
     }
-    
+
     if (error?.message?.includes("503") || error?.status === 503) {
-       throw newError({ message: "AI Service Unavailable. Please try again later.", statusCode: 503 });
+      throw newError({
+        message: "AI Service Unavailable. Please try again later.",
+        statusCode: 503,
+      });
     }
 
     throw newError({ message: "Failed to generate chapters", statusCode: 500 });

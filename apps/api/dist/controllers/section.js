@@ -69,10 +69,14 @@ const updateSection = async (req, res, next) => {
         const update = {
             title,
             content,
-            position
+            position,
         };
         const updated = await sectionServices.updateOne({ id: sectionId, update });
-        return successResponse({ res, message: "Section updated successfully", data: updated });
+        return successResponse({
+            res,
+            message: "Section updated successfully",
+            data: updated,
+        });
     }
     catch (error) {
         next(error);

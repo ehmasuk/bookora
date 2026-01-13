@@ -1,12 +1,26 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
 import { Input } from "@workspace/ui/components/input";
 import Link from "next/link";
 
 import { BorderBeam } from "@/components/magicui/border-beam";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@workspace/ui/components/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@workspace/ui/components/form";
 import useAuth from "@/hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -20,7 +34,11 @@ export default function LoginPage() {
   const { handleLogin, loading } = useAuth();
 
   const formSchema = z.object({
-    email: z.string().min(1, { message: "Email is required" }).max(50, { message: "Email is too long" }).email({ message: "Invalid email" }),
+    email: z
+      .string()
+      .min(1, { message: "Email is required" })
+      .max(50, { message: "Email is too long" })
+      .email({ message: "Invalid email" }),
     password: z.string().min(1, { message: "Password is required" }),
   });
 
@@ -42,12 +60,19 @@ export default function LoginPage() {
         <Card className="w-full max-w-md relative dark:bg-slate-800">
           <BorderBeam duration={8} size={100} />
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">{t("title")}</CardTitle>
-            <CardDescription className="text-center">{t("description")}</CardDescription>
+            <CardTitle className="text-2xl font-bold text-center">
+              {t("title")}
+            </CardTitle>
+            <CardDescription className="text-center">
+              {t("description")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={form.control}
                   name="email"
@@ -74,7 +99,12 @@ export default function LoginPage() {
                     </FormItem>
                   )}
                 />
-                <Button loading={loading} variant="primary" type="submit" className="w-full">
+                <Button
+                  loading={loading}
+                  variant="primary"
+                  type="submit"
+                  className="w-full"
+                >
                   {t("submit")}
                 </Button>
               </form>

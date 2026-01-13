@@ -1,7 +1,7 @@
 "use client";
 
-import BookNav from "@/components/book/BookNav";
-import BookSidebar from "@/components/book/BookSidebar";
+import BookNav from "@/components/book/editor-nav";
+import BookSidebar from "@/components/book/editor-sidebar";
 
 import { notFound, useParams } from "next/navigation";
 
@@ -39,7 +39,9 @@ function BookLayout({ children }: Props) {
   return (
     <main className="h-screen overflow-hidden">
       <BookSidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen} />
-      <div className={`flex-1 transition-all duration-300 ${sidebarIsOpen && !isMobile ? "ml-87.5" : "ml-0"}`}>
+      <div
+        className={`flex-1 transition-all duration-300 ${sidebarIsOpen && !isMobile ? "ml-87.5" : "ml-0"}`}
+      >
         <BookNav isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen} />
         <div className="h-[calc(100vh-100px)] overflow-y-auto px-5 relative">
           <div className="max-w-4xl mx-auto">{children}</div>

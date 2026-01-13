@@ -2,21 +2,16 @@
 
 import useUpdate from "@/hooks/useUpdate";
 import { StoreType } from "@/store/store";
-import { Button } from "@workspace/ui/components/button";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { useStoreState } from "easy-peasy";
 import { CloudCheck, HomeIcon, LoaderIcon, Menu, PanelRightClose, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useNextStep } from "nextstepjs";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
-import AvatarDropdown from "../global/AvatarDropdown";
-import LanguageChanger from "../global/LanguageChanger";
 import TitleAsInput from "../global/TitleAsInput";
-import { AnimatedThemeToggler } from "../magicui/animated-theme-toggler";
 import ManageBookDropdown from "./manage-book-dropdown";
 
 interface Props {
@@ -28,8 +23,6 @@ function BookNav({ isOpen, setIsOpen }: Props) {
   const bookIsUpdating = useStoreState<StoreType>((state) => state.book.bookIsUpdating);
 
   const { updateData } = useUpdate();
-
-
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -43,8 +36,6 @@ function BookNav({ isOpen, setIsOpen }: Props) {
 
   // get book id from url
   const { bookId } = useParams();
-
-
 
   // fetch book data and set in bookinfo and chapters in store from the book data
   const { data: res, error, isLoading } = useSWR(bookId ? `/book/${bookId}` : null);
@@ -80,13 +71,8 @@ function BookNav({ isOpen, setIsOpen }: Props) {
 
       {/* desktop */}
       <div className="hidden md:flex gap-3 items-center">
-        {/* <AvatarDropdown />
-        <AnimatedThemeToggler />
-        <Button variant="outline" onClick={handleHelp}>Help</Button> */}
         <ManageBookDropdown />
       </div>
-
-
 
       {/* Mobile Hamburger */}
       <div className="md:hidden flex items-center gap-2">
@@ -109,9 +95,7 @@ function BookNav({ isOpen, setIsOpen }: Props) {
               <Link href="/">
                 <HomeIcon size={18} className="w-6 h-6" />
               </Link>
-              <AvatarDropdown />
-              <LanguageChanger />
-              <AnimatedThemeToggler />
+              <ManageBookDropdown />
             </div>
           </motion.div>
         )}

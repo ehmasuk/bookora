@@ -2,8 +2,14 @@ export interface BookType {
   id: string;
   title: string;
   summary: string;
-  author: string;
-  status: string[];
+  author:
+    | string
+    | {
+        id: string;
+        name: string;
+        email: string;
+      };
+  status: string;
   cover: string | null;
   chapters?: ChapterType[];
 }

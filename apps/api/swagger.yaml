@@ -323,6 +323,55 @@ paths:
         "404": { $ref: "#/components/responses/404" }
         "500": { $ref: "#/components/responses/500" }
 
+  /book/{bookId}/cover:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Book
+      summary: Upload book cover
+      description: Upload book cover image to Cloudinary
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                cover:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Cover updated successfully
+                  data:
+                    type: object
+                    properties:
+                      cover:
+                        type: string
+                        example: "https://cloudinary.com/..."
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "500": { $ref: "#/components/responses/500" }
+
   /book:
     get:
       tags:
@@ -1415,72 +1464,6 @@ components:
           type: string
           format: date-time
           example: "2025-11-07T12:00:00Z"
-
-    # ===================== Draft AI book =====================
-    DraftAiBook:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "6FGY8767HJG25H07P"
-        user:
-          type: string
-          example: "6FGY8767HJG25H07P"
-        prompt:
-          type: string
-          example: "An adventurous fantasy story about a young hero discovering a hidden kingdom."
-        category:
-          type: string
-          example: "Fiction"
-        genre:
-          type: string
-          example: "Fantasy"
-        tone:
-          type: string
-          example: "Inspiring and adventurous"
-        targetAudience:
-          type: string
-          example: "Young adults"
-        timestamp:
-          type: string
-          format: date-time
-          example: "2025-11-07T12:00:00Z"
-
-    # ===================== Generated chapter for draft =====================
-    GeneratedChapter:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "6FGY8767HJG25H07P"
-        title:
-          type: string
-          example: "Chapter 1: The Hidden Kingdom"
-        summary:
-          type: string
-          example: "The protagonist stumbles upon clues that reveal the existence of a hidden kingdom."
-        position:
-          type: number
-          example: 1
-        book:
-          type: string
-          description: Id of the draftAiBook this chapter belongs to
-          example: "6FGY8767HJG25H07P"
-        timestamp:
-          type: string
-          format: date-time
-          example: "2025-11-07T12:00:00Z"
-
-    # ===================== Draft AI book with chapters response =====================
-    DraftAiBookWithChapters:
-      type: object
-      properties:
-        draft:
-          $ref: "#/components/schemas/DraftAiBook"
-        chapters:
-          type: array
-          items:
-            $ref: "#/components/schemas/GeneratedChapter"
 
   securitySchemes:
     bearerAuth:

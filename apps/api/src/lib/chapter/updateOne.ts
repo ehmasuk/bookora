@@ -10,9 +10,13 @@ export interface Props {
 const updateOne = async ({ id, update }: Props) => {
   try {
     const chapter = await Chapter.findById(id);
-    if (!chapter) throw newError({ message: "Chapter not found", statusCode: 404 });
+    if (!chapter)
+      throw newError({ message: "Chapter not found", statusCode: 404 });
 
-    const updatedChapter = await Chapter.findByIdAndUpdate(id, update, { new: true, runValidators: true });
+    const updatedChapter = await Chapter.findByIdAndUpdate(id, update, {
+      new: true,
+      runValidators: true,
+    });
     return updatedChapter;
   } catch (error) {
     throw error;

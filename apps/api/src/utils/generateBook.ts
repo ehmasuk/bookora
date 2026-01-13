@@ -25,27 +25,42 @@ export type GeneratedChapterWithSections = {
   sections: GeneratedSection[];
 };
 
-const generateBookWithGemini = async (payload: DraftPayloadTypes, chaptersCount: number = 5, sectionsPerChapter: number = DEFAULT_SECTIONS_PER_CHAPTER): Promise<GeneratedChapterWithSections[]> => {
+const generateBookWithGemini = async (
+  payload: DraftPayloadTypes,
+  chaptersCount: number = 5,
+  sectionsPerChapter: number = DEFAULT_SECTIONS_PER_CHAPTER,
+): Promise<GeneratedChapterWithSections[]> => {
   const BookSchema = z.object({
     chapters: z
       .array(
         z.object({
           title: z.string().describe("Chapter title"),
-          summary: z.string().describe("Short paragraph summarizing the chapter"),
-          position: z.number().describe("1-based index of the chapter in the book"),
+          summary: z
+            .string()
+            .describe("Short paragraph summarizing the chapter"),
+          position: z
+            .number()
+            .describe("1-based index of the chapter in the book"),
           sections: z
             .array(
               z.object({
                 title: z.string().describe("Section title"),
-                position: z.number().optional().describe("0-based position within the chapter"),
-              })
+                position: z
+                  .number()
+                  .optional()
+                  .describe("0-based position within the chapter"),
+              }),
             )
             .length(sectionsPerChapter)
-            .describe(`Exactly ${sectionsPerChapter} sections for this chapter`),
-        })
+            .describe(
+              `Exactly ${sectionsPerChapter} sections for this chapter`,
+            ),
+        }),
       )
       .length(chaptersCount)
-      .describe(`Exactly ${chaptersCount} chapters for the book outline with sections`),
+      .describe(
+        `Exactly ${chaptersCount} chapters for the book outline with sections`,
+      ),
   });
 
   const model = new ChatGroq({
@@ -70,21 +85,22 @@ const generateBookWithGemini = async (payload: DraftPayloadTypes, chaptersCount:
 
   const result = await structuredModel.invoke(promptText);
 
-  const chapters: GeneratedChapterWithSections[] = result.chapters.map((c: any, cIndex: number) => {
-    const sections = Array.isArray(c.sections) ? c.sections : [];
-    return {
-      title: String(c.title ?? `Chapter ${cIndex + 1}`),
-      summary: String(c.summary ?? ""),
-      position: typeof c.position === "number" ? c.position : cIndex + 1,
-      sections: sections.map((s: any, sIndex: number) => ({
-        title: String(s.title ?? `Section ${sIndex + 1}`),
-        position: typeof s.position === "number" ? s.position : sIndex,
-      })),
-    };
-  });
+  const chapters: GeneratedChapterWithSections[] = result.chapters.map(
+    (c: any, cIndex: number) => {
+      const sections = Array.isArray(c.sections) ? c.sections : [];
+      return {
+        title: String(c.title ?? `Chapter ${cIndex + 1}`),
+        summary: String(c.summary ?? ""),
+        position: typeof c.position === "number" ? c.position : cIndex + 1,
+        sections: sections.map((s: any, sIndex: number) => ({
+          title: String(s.title ?? `Section ${sIndex + 1}`),
+          position: typeof s.position === "number" ? s.position : sIndex,
+        })),
+      };
+    },
+  );
 
   return chapters;
 };
 
 export default generateBookWithGemini;
-

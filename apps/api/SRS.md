@@ -189,21 +189,6 @@ User :
   Error response = {code,message}
   ```
 
-- GET - /user/:id/draft_book - get all draft books of a user - private(auth)
-
-  ```json
-  Success response = {
-  	 code: 200,
-  	 message: success,
-  	 data: [
-  		 { ...draft_book },
-  		 { ...draft_book }
-     ]
-  }
-
-  Error response = {code,message}
-  ```
-
 Book :
 
 - GET - /book - get all books - public
@@ -352,11 +337,8 @@ Section :
 - DELETE - /section/:id - delete a section - private (authenticated)
 - PATCH - /section/:id - update section - private (auth+owner)
 
-
-
-
-
 ## Pendings:
+
 - Setup file logger
 - Realtime collaboration
 - AI endpoints for book generation

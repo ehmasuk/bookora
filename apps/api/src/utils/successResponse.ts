@@ -8,7 +8,13 @@ interface SuccessResponseParams {
   extra?: object;
 }
 
-const successResponse = ({ res, statusCode = 200, message = "Success", data, extra = {} }: SuccessResponseParams): Response => {
+const successResponse = ({
+  res,
+  statusCode = 200,
+  message = "Success",
+  data,
+  extra = {},
+}: SuccessResponseParams): Response => {
   const responseBody: { code: number; message: string; data?: unknown } = {
     code: statusCode,
     message,

@@ -28,7 +28,7 @@ const draftAiBookSchema = new Schema(
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  }
+  },
 );
 
 draftAiBookSchema.virtual("chapters", {
@@ -39,4 +39,3 @@ draftAiBookSchema.virtual("chapters", {
 });
 
 export default model("draftAiBook", draftAiBookSchema);
-

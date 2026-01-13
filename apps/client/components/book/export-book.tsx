@@ -4,12 +4,11 @@ type Props = {
   children: React.ReactNode;
   bookId: string;
   format: "pdf" | "docx";
-}
+};
 
-const ExportBook = ({children,bookId,format}:Props) => {
-    const handleExport = async () => {
-
-    const fetchUrl = `${process.env.NEXT_PUBLIC_API_URI}/book/${bookId}/export?format=${format}`  
+const ExportBook = ({ children, bookId, format }: Props) => {
+  const handleExport = async () => {
+    const fetchUrl = `${process.env.NEXT_PUBLIC_API_URI}/book/${bookId}/export?format=${format}`;
 
     const res = await fetch(fetchUrl);
 
@@ -22,7 +21,13 @@ const ExportBook = ({children,bookId,format}:Props) => {
     const url = window.URL.createObjectURL(blob);
 
     const disposition = res.headers.get("content-disposition");
-    const fileName = disposition?.match(/filename="(.+)"/)?.[1] ?? "bookora";
+    let fileName = "bookora";
+    if (disposition) {
+      const filenameMatch = disposition.match(/filename="?([^"]+)"?/);
+      if (filenameMatch?.[1]) {
+        fileName = filenameMatch[1];
+      }
+    }
 
     const a = document.createElement("a");
     a.href = url;
@@ -32,10 +37,9 @@ const ExportBook = ({children,bookId,format}:Props) => {
 
     a.remove();
     window.URL.revokeObjectURL(url);
-
   };
 
-  return <div onClick={handleExport}>{children}</div>
-}
+  return <div onClick={handleExport}>{children}</div>;
+};
 
-export default ExportBook
+export default ExportBook;

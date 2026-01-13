@@ -1,7 +1,7 @@
 import { Chapter } from "../../models/index.js";
 import newError from "../../utils/newError.js";
 import bookServices from "../book/index.js";
-const createOne = async ({ title, bookId }) => {
+const createOne = async ({ title, bookId, summary, }) => {
     try {
         // book is available or not
         const book = await bookServices.findOne({ filter: { _id: bookId } });
@@ -9,7 +9,10 @@ const createOne = async ({ title, bookId }) => {
             throw newError({ message: "Book not found", statusCode: 404 });
         }
         // get the last chapter's position for this book
-        const lastChapter = await Chapter.findOne({ book: bookId }).sort({ position: -1 }).select("position").lean();
+        const lastChapter = await Chapter.findOne({ book: bookId })
+            .sort({ position: -1 })
+            .select("position")
+            .lean();
         // assign next position safely
         const nextPosition = lastChapter ? lastChapter.position + 1 : 0;
         // create new chapter
@@ -17,6 +20,7 @@ const createOne = async ({ title, bookId }) => {
             title,
             book: bookId,
             position: nextPosition,
+            summary,
         });
         return await newChapter.save();
     }

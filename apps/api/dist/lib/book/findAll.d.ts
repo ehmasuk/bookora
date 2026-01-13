@@ -7,7 +7,7 @@ export interface Props {
     page?: number;
     sort?: SortTypes;
 }
-declare const findAll: ({ filter, select, populate, limit, page, sort }: Props) => Promise<(import("mongoose").Document<unknown, {}, {
+declare const findAll: ({ filter, select, populate, limit, page, sort, }: Props) => Promise<(import("mongoose").Document<unknown, {}, {
     title: string;
     author: import("mongoose").Types.ObjectId;
     status: "public" | "private";

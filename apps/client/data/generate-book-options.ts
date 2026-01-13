@@ -1,0 +1,150 @@
+export const categoryOptions = [
+  { value: "fiction", label: "Fiction" },
+  { value: "non-fiction", label: "Non-Fiction" },
+  { value: "mystery", label: "Mystery" },
+  { value: "thriller", label: "Thriller" },
+  { value: "fantasy", label: "Fantasy" },
+  { value: "science-fiction", label: "Science Fiction" },
+  { value: "romance", label: "Romance" },
+  { value: "historical-fiction", label: "Historical Fiction" },
+  { value: "horror", label: "Horror" },
+  { value: "adventure", label: "Adventure" },
+
+  { value: "biography", label: "Biography" },
+  { value: "autobiography", label: "Autobiography" },
+  { value: "memoir", label: "Memoir" },
+  { value: "history", label: "History" },
+  { value: "philosophy", label: "Philosophy" },
+  { value: "psychology", label: "Psychology" },
+  { value: "business", label: "Business" },
+  { value: "finance", label: "Finance" },
+  { value: "technology", label: "Technology" },
+  { value: "science", label: "Science" },
+
+  { value: "educational", label: "Educational" },
+  { value: "academic", label: "Academic" },
+  { value: "textbook", label: "Textbook" },
+  { value: "language-learning", label: "Language Learning" },
+  { value: "programming", label: "Programming" },
+  { value: "engineering", label: "Engineering" },
+  { value: "mathematics", label: "Mathematics" },
+
+  { value: "self-help", label: "Self-Help" },
+  { value: "personal-development", label: "Personal Development" },
+  { value: "motivation", label: "Motivation" },
+  { value: "mental-health", label: "Mental Health" },
+  { value: "productivity", label: "Productivity" },
+  { value: "leadership", label: "Leadership" },
+
+  { value: "health", label: "Health" },
+  { value: "fitness", label: "Fitness" },
+  { value: "nutrition", label: "Nutrition" },
+  { value: "parenting", label: "Parenting" },
+  { value: "relationships", label: "Relationships" },
+
+  { value: "children", label: "Children’s Books" },
+  { value: "young-adult", label: "Young Adult" },
+  { value: "comics", label: "Comics & Graphic Novels" },
+  { value: "poetry", label: "Poetry" },
+
+  { value: "religion", label: "Religion & Spirituality" },
+  { value: "travel", label: "Travel" },
+  { value: "cooking", label: "Cooking & Recipes" },
+  { value: "art", label: "Art & Design" },
+  { value: "music", label: "Music" },
+];
+
+export const genreOptions = [
+  { value: "science-fiction", label: "Science Fiction" },
+  { value: "fantasy", label: "Fantasy" },
+  { value: "romance", label: "Romance" },
+  { value: "thriller", label: "Thriller" },
+  { value: "mystery", label: "Mystery" },
+  { value: "horror", label: "Horror" },
+  { value: "adventure", label: "Adventure" },
+  { value: "historical", label: "Historical" },
+  { value: "crime", label: "Crime" },
+  { value: "dystopian", label: "Dystopian" },
+  { value: "post-apocalyptic", label: "Post-Apocalyptic" },
+  { value: "superhero", label: "Superhero" },
+
+  { value: "biography", label: "Biography" },
+  { value: "autobiography", label: "Autobiography" },
+  { value: "memoir", label: "Memoir" },
+  { value: "true-crime", label: "True Crime" },
+  { value: "documentary", label: "Documentary" },
+
+  { value: "self-help", label: "Self-Help" },
+  { value: "personal-development", label: "Personal Development" },
+  { value: "motivation", label: "Motivation" },
+  { value: "mindfulness", label: "Mindfulness" },
+  { value: "productivity", label: "Productivity" },
+  { value: "mental-health", label: "Mental Health" },
+
+  { value: "educational", label: "Educational" },
+  { value: "academic", label: "Academic" },
+  { value: "textbook", label: "Textbook" },
+  { value: "programming", label: "Programming" },
+  { value: "science", label: "Science" },
+  { value: "technology", label: "Technology" },
+
+  { value: "poetry", label: "Poetry" },
+  { value: "drama", label: "Drama" },
+  { value: "comedy", label: "Comedy" },
+  { value: "satire", label: "Satire" },
+  { value: "graphic-novel", label: "Graphic Novel" },
+  { value: "young-adult", label: "Young Adult" },
+  { value: "children", label: "Children’s" },
+];
+
+export const targetAudienceOptions = [
+  { value: "children", label: "Children (Ages 3–8)" },
+  { value: "preteens", label: "Pre-Teens (Ages 9–12)" },
+  { value: "teens", label: "Teens (Ages 13–18)" },
+  { value: "young-adults", label: "Young Adults (18–25)" },
+  { value: "adults", label: "Adults (25+)" },
+  { value: "seniors", label: "Seniors (60+)" },
+
+  { value: "students", label: "Students" },
+  { value: "teachers", label: "Teachers & Educators" },
+  { value: "professionals", label: "Professionals" },
+  { value: "entrepreneurs", label: "Entrepreneurs" },
+  { value: "developers", label: "Developers & Engineers" },
+  { value: "creators", label: "Writers & Creators" },
+
+  { value: "parents", label: "Parents" },
+  { value: "beginners", label: "Beginners" },
+  { value: "intermediate", label: "Intermediate Learners" },
+  { value: "advanced", label: "Advanced Readers" },
+
+  { value: "general", label: "General Audience" },
+];
+
+export const toneOptions = [
+  { value: "formal", label: "Formal" },
+  { value: "professional", label: "Professional" },
+  { value: "academic", label: "Academic" },
+  { value: "casual", label: "Casual" },
+  { value: "conversational", label: "Conversational" },
+  { value: "friendly", label: "Friendly" },
+
+  { value: "serious", label: "Serious" },
+  { value: "dramatic", label: "Dramatic" },
+  { value: "dark", label: "Dark" },
+  { value: "emotional", label: "Emotional" },
+
+  { value: "humorous", label: "Humorous" },
+  { value: "witty", label: "Witty" },
+  { value: "satirical", label: "Satirical" },
+  { value: "playful", label: "Playful" },
+
+  { value: "inspirational", label: "Inspirational" },
+  { value: "motivational", label: "Motivational" },
+  { value: "uplifting", label: "Uplifting" },
+
+  { value: "mysterious", label: "Mysterious" },
+  { value: "suspenseful", label: "Suspenseful" },
+  { value: "romantic", label: "Romantic" },
+
+  { value: "neutral", label: "Neutral" },
+];

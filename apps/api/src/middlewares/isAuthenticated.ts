@@ -5,7 +5,11 @@ import type { CustomRequest } from "../types/index.js";
 import newError from "../utils/newError.js";
 import { verifyToken } from "../utils/tokenHandlers.js";
 
-const isAuthenticated = async (req: CustomRequest, _res:Response, next:NextFunction): Promise<void> => {
+const isAuthenticated = async (
+  req: CustomRequest,
+  _res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
