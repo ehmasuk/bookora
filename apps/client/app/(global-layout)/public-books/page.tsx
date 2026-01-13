@@ -33,9 +33,9 @@ const PublicBooksPage = () => {
       },
     ],
     images: [
-      "https://blog-cdn.reedsy.com/directories/gallery/248/large_65b0ae90317f7596d6f95bfdd6131398.jpg",
-      "https://blog-cdn.reedsy.com/directories/gallery/294/large_41212c037ab6d53f97027d0293099b31.jpg",
-      "https://blog-cdn.reedsy.com/directories/gallery/118/large_52ecd3c8a4ca8bd258bed44d68cc6c63.jpg",
+      "/images/public-hero-1.jpg",
+      "/images/public-hero-2.jpg",
+      "/images/public-hero-3.jpg",
     ],
   };
 
