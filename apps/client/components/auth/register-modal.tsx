@@ -7,30 +7,15 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import usePost from "@/hooks/usePost";
+import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@workspace/ui/components/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@workspace/ui/components/form";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
-import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import { CommingSoon } from "../global/CommingSoon";
 
-const RegisterModal = () => {
+const RegisterModal = ({ children }: { children: React.ReactNode }) => {
   const id = useId();
   const router = useRouter();
   const { postData, loading } = usePost();
@@ -38,14 +23,8 @@ const RegisterModal = () => {
   const formSchema = z.object({
     firstname: z.string().min(1, { message: "First name is required" }),
     lastname: z.string().min(1, { message: "Last name is required" }),
-    email: z
-      .string()
-      .min(1, { message: "Email is required" })
-      .email({ message: "Invalid email" }),
-    password: z
-      .string()
-      .min(1, { message: "Password is required" })
-      .min(8, { message: "Password must be 8 characters long" }),
+    email: z.string().min(1, { message: "Email is required" }).email({ message: "Invalid email" }),
+    password: z.string().min(1, { message: "Password is required" }).min(8, { message: "Password must be 8 characters long" }),
     terms: z.literal(true, {
       errorMap: () => ({ message: "You must accept the terms and conditions" }),
     }),
@@ -87,21 +66,14 @@ const RegisterModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="black">Get Started</Button>
-      </DialogTrigger>
-      <DialogContent className="to-card bg-gradient-to-b from-green-100 to-40% [background-size:100%_101%] sm:max-w-sm dark:from-green-900">
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="to-card bg-linear-to-b from-green-100 to-40% bg-size-[100%_101%] sm:max-w-sm dark:from-green-900">
         <DialogHeader className="items-center">
           <DialogTitle>Sign Up</DialogTitle>
-          <DialogDescription>
-            Start your 60-day free trial now.
-          </DialogDescription>
+          <DialogDescription>Start your 60-day free trial now.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -137,11 +109,7 @@ const RegisterModal = () => {
                 <FormItem className="grid gap-3 space-y-0">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="example@gmail.com"
-                      {...field}
-                    />
+                    <Input type="email" placeholder="example@gmail.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -167,11 +135,7 @@ const RegisterModal = () => {
                 <FormItem className="flex flex-col space-y-2">
                   <div className="flex items-center gap-2">
                     <FormControl>
-                      <Checkbox
-                        id={id}
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Checkbox id={id} checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                     <FormLabel htmlFor={id} className="gap-1 font-normal">
                       I agree with{" "}
@@ -190,7 +154,7 @@ const RegisterModal = () => {
             />
             <DialogFooter className="pt-4 sm:flex-col">
               <Button type="submit" loading={loading}>
-                Start your trial
+                Create account
               </Button>
               <div className="before:bg-border after:bg-border flex items-center gap-4 before:h-px before:flex-1 after:h-px after:flex-1">
                 <span className="text-muted-foreground text-xs">Or</span>

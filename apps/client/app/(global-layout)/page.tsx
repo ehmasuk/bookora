@@ -1,8 +1,8 @@
 "use client";
 
-import { Features } from "@/components/Feautres";
-import HeroSection from "@/components/HeroSection";
-import { ReviewsSection } from "@/components/ReviewsSection";
+import { Features } from "@/components/home/features";
+import HeroSection from "@/components/home/hero";
+import { ReviewsSection } from "@/components/home/reviews";
 
 function HomePage() {
   return (

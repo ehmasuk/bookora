@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LogInIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -12,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@workspace/ui/components/input";
 import { CommingSoon } from "../global/CommingSoon";
 
-const LoginModal = () => {
+const LoginModal = ({ children }: { children: React.ReactNode }) => {
   const { handleLogin, loading } = useAuth();
 
   const formSchema = z.object({
@@ -34,9 +33,7 @@ const LoginModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Log In</Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="to-card bg-linear-to-b from-sky-100 to-40% bg-size-[100%_101%] sm:max-w-sm dark:from-sky-900">
         <DialogHeader className="items-center">
           <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-sky-600/10 sm:mx-0 dark:bg-sky-400/10">

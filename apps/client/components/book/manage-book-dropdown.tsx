@@ -38,15 +38,45 @@ function ManageBookDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="md:mr-5">
-        <DropdownMenuLabel>Options</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuLabel className="text-xs text-foreground/50">Links</DropdownMenuLabel>
+          {/* links */}
           <Link href="/profile">
             <DropdownMenuItem>
               <IconBook className="mr-2 size-4" />
               <span>My books</span>
             </DropdownMenuItem>
           </Link>
+
+          {/* book options */}
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel className="text-xs text-foreground/50">Book options</DropdownMenuLabel>
+          {bookId && (
+            <>
+              <BookStatusModal bookId={bookId}>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  <Globe className="mr-2 size-4" />
+                  <span>Publish</span>
+                </DropdownMenuItem>
+              </BookStatusModal>
+              <BookCoverUploadModal bookId={bookId} onSuccess={() => mutate(`/book/${bookId}`)}>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  <ImagePlus className="mr-2 size-4" />
+                  <span>Upload Cover</span>
+                </DropdownMenuItem>
+              </BookCoverUploadModal>
+              <ExportBook bookId={bookId} format="docx">
+                <DropdownMenuItem>
+                  <Share className="mr-2 size-4" />
+                  <span>Download</span>
+                </DropdownMenuItem>
+              </ExportBook>
+            </>
+          )}
+
+          {/* settings */}
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel className="text-xs text-foreground/50">Settings</DropdownMenuLabel>
           {theme === "dark" ? (
             <DropdownMenuItem onClick={() => setTheme("light")}>
               <Sun className="mr-2 size-4" />
@@ -57,33 +87,6 @@ function ManageBookDropdown() {
               <Moon className="mr-2 size-4" />
               <span>Dark</span>
             </DropdownMenuItem>
-          )}
-
-          {bookId && (
-            <ExportBook bookId={bookId} format="docx">
-              <DropdownMenuItem>
-                <Share className="mr-2 size-4" />
-                <span>Export</span>
-              </DropdownMenuItem>
-            </ExportBook>
-          )}
-
-          {bookId && (
-            <BookCoverUploadModal bookId={bookId} onSuccess={() => mutate(`/book/${bookId}`)}>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <ImagePlus className="mr-2 size-4" />
-                <span>Upload Cover</span>
-              </DropdownMenuItem>
-            </BookCoverUploadModal>
-          )}
-
-          {bookId && (
-            <BookStatusModal bookId={bookId}>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <Globe className="mr-2 size-4" />
-                <span>Status</span>
-              </DropdownMenuItem>
-            </BookStatusModal>
           )}
 
           <LanguageModal>
@@ -98,6 +101,7 @@ function ManageBookDropdown() {
           <LifeBuoy className="mr-2 size-4" />
           <span>Help</span>
         </DropdownMenuItem>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <LogOut className="mr-2 size-4" />

@@ -54,8 +54,16 @@ function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           {status === "unauthenticated" && (
             <>
-              <RegisterModal />
-              <LoginModal />
+              <RegisterModal>
+                <Button variant="black" size="sm">
+                  Get Started
+                </Button>
+              </RegisterModal>
+              <LoginModal>
+                <Button variant="outline" size="sm">
+                  Log In
+                </Button>
+              </LoginModal>
             </>
           )}
 
