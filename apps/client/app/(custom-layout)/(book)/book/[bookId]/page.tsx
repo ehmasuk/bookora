@@ -1,6 +1,5 @@
 /**
  * ! This is the editor component
- *
  */
 
 "use client";
@@ -10,56 +9,41 @@ import EditorFloatingToolbar from "@/components/book/EditorFloatingToolbar";
 import EditorToolbar from "@/components/book/EditorToolbar";
 import SelectSection from "@/components/book/SelectSection";
 import BookEditorSkeleton from "@/components/skeletons/book-editor";
+import useDebounce from "@/hooks/useDebounce";
 import useUpdate from "@/hooks/useUpdate";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
-import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
+import { BubbleMenu, EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useTranslations } from "next-intl";
-import { notFound, useParams, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { notFound, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 function BookTiptapEditor() {
   const searchParams = useSearchParams();
   const querySectionId = searchParams.get("section");
-  const querySectionIdRef = useRef(querySectionId);
   const t = useTranslations("bookpage");
 
-
-  // Update the ref whenever querySectionId changes
-  useEffect(() => {
-    querySectionIdRef.current = querySectionId;
-  }, [querySectionId]);
-
-  const {
-    data: res,
-    isLoading,
-    error,
-  } = useSWR(querySectionId ? `/section/${querySectionId}` : null);
+  const { data: res, isLoading, error } = useSWR(querySectionId ? `/section/${querySectionId}` : null);
 
   const { updateData } = useUpdate();
 
-  const debounceRef = useRef<
-    ((content: Record<string, unknown>) => void) | null
-  >(null);
+  const [content, setContent] = useState<JSONContent | null>(null);
 
-  // Define the debounce function inside the component, but memoize it with useRef
-  if (!debounceRef.current) {
-    let timeout: NodeJS.Timeout;
-    debounceRef.current = (content: Record<string, unknown>) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        if (querySectionIdRef.current) {
-          updateData({
-            data: { content },
-            endpoint: `/section/${querySectionIdRef.current}`,
-          });
-        }
-      }, 1000);
-    };
-  }
+  const debounce = useDebounce({ value: content, delay: 1000 });
+
+  const [isUpdateable, setIsUpdateable] = useState(false);
+
+  useEffect(() => {
+    if (!content || !querySectionId || !isUpdateable) return;
+    updateData({
+      data: { content },
+      endpoint: `/section/${querySectionId}`,
+    });
+    setIsUpdateable(false);
+  }, [debounce]);
 
   // init the editor
   const editor = useEditor({
@@ -76,7 +60,8 @@ function BookTiptapEditor() {
     ],
 
     onUpdate: ({ editor }) => {
-      debounceRef.current?.(editor.getJSON());
+      setContent(editor.getJSON());
+      setIsUpdateable(true);
     },
 
     content: null,
@@ -86,11 +71,13 @@ function BookTiptapEditor() {
         class: "main-book-editor",
       },
     },
+    immediatelyRender: false,
   });
 
   // when the content is updated, update the editor content
   useEffect(() => {
     if (res?.data?.content) {
+      setContent(res?.data?.content);
       editor?.commands.setContent(res?.data?.content);
     } else {
       editor?.commands.setContent(null);
@@ -116,14 +103,8 @@ function BookTiptapEditor() {
         <EditorToolbar editor={editor} />
         <div className="text-xs flex gap-5 items-center md:relative fixed bottom-0 right-0">
           <div>
-            <span className="font-semibold text-slate-800 dark:text-white">
-              {editor?.storage.characterCount.characters()}
-            </span>{" "}
-            {t("characters")},{" "}
-            <span className="font-semibold text-slate-800 dark:text-white">
-              {editor?.storage.characterCount.words()}
-            </span>{" "}
-            {t("words")}
+            <span className="font-semibold text-slate-800 dark:text-white">{editor?.storage.characterCount.characters()}</span> {t("characters")},{" "}
+            <span className="font-semibold text-slate-800 dark:text-white">{editor?.storage.characterCount.words()}</span> {t("words")}
           </div>
         </div>
 
@@ -136,11 +117,7 @@ function BookTiptapEditor() {
       {/* editor */}
       <div>
         {editor && (
-          <BubbleMenu
-            key="bubble"
-            editor={editor}
-            tippyOptions={{ duration: 100 }}
-          >
+          <BubbleMenu key="bubble" editor={editor} tippyOptions={{ duration: 100 }}>
             <EditorFloatingToolbar editor={editor} />
           </BubbleMenu>
         )}

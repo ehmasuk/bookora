@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { memo } from "react";
 
-function Logo() {
+const Logo = memo(function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2">
       <Image
@@ -13,6 +14,6 @@ function Logo() {
       <h1 className="text-base font-bold md:text-2xl">BookOra</h1>
     </Link>
   );
-}
+})
 
 export default Logo;

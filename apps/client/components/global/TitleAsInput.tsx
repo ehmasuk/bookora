@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 
 interface Props {
   title: string;
@@ -7,7 +7,7 @@ interface Props {
   maxCharachter?: number | null;
 }
 
-function TitleAsInput({
+const TitleAsInput = memo(function TitleAsInput({
   title,
   handleSubmit,
   className = "",
@@ -70,6 +70,6 @@ function TitleAsInput({
       )}
     </div>
   );
-}
+})
 
 export default TitleAsInput;

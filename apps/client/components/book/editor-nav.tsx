@@ -3,34 +3,24 @@
 import useUpdate from "@/hooks/useUpdate";
 import { StoreType } from "@/store/store";
 import { Skeleton } from "@workspace/ui/components/skeleton";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { CloudCheck, HomeIcon, LoaderIcon, Menu, PanelRightClose, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 import TitleAsInput from "../global/TitleAsInput";
 import ManageBookDropdown from "./manage-book-dropdown";
 
-interface Props {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function BookNav({ isOpen, setIsOpen }: Props) {
+function BookNav() {
   const bookIsUpdating = useStoreState<StoreType>((state) => state.book.bookIsUpdating);
 
+  const bookSidebarIsOpen = useStoreState<StoreType>((state) => state.book.bookSidebarIsOpen);
+  const setBookSidebarIsOpen = useStoreActions<StoreType>((model) => model.book.setBookSidebarIsOpen);
+
   const { updateData } = useUpdate();
-
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      setIsMobile(true);
-    }
-  }, []);
 
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState<boolean>(false);
 
@@ -46,21 +36,24 @@ function BookNav({ isOpen, setIsOpen }: Props) {
 
   const book = res?.data;
 
-  const updateBookTitle = (title: string) => {
-    updateData({ data: { title }, endpoint: `/book/${bookId}` });
-  };
+  const updateBookTitle = useCallback(
+    (title: string) => {
+      updateData({ data: { title }, endpoint: `/book/${bookId}` });
+    },
+    [bookId, updateData]
+  );
 
   return (
     <nav className="flex border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 w-full sticky top-0 flex-wrap gap-2 items-center justify-between md:px-8 px-2 py-2 dark:bg-gray-900">
       <div className="flex gap-5 items-center">
-        {!isOpen && <PanelRightClose onClick={() => setIsOpen(!isOpen)} size={20} className="hover:text-blue-500 duration-300 cursor-pointer" />}
+        {!bookSidebarIsOpen && <PanelRightClose onClick={() => setBookSidebarIsOpen(!bookSidebarIsOpen)} size={20} className="hover:text-blue-500 duration-300 cursor-pointer" />}
 
         {isLoading && <Skeleton className="w-50 h-5 mt-2" />}
 
         {/* Book title */}
         {!isLoading && (
           <div id="book-name">
-            <TitleAsInput maxCharachter={isMobile ? 30 : null} title={book?.title} handleSubmit={updateBookTitle} />
+            <TitleAsInput maxCharachter={30} title={book?.title} handleSubmit={updateBookTitle} />
           </div>
         )}
 

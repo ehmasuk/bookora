@@ -2,32 +2,29 @@
 
 import useUpdate from "@/hooks/useUpdate";
 import handleDragEnd from "@/lib/handleDragEnd";
+import { StoreType } from "@/store/store";
 import { ChapterType } from "@/types/book";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { Skeleton } from "@workspace/ui/components/skeleton";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { ChevronRight, PanelLeftClose, Plus } from "lucide-react";
+import { motion, Variants } from "motion/react";
 import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import useSWR from "swr";
+import { CommingSoon } from "../global/CommingSoon";
 import Empty from "../global/Empty";
 import Logo from "../global/Logo";
 import TitleBox from "../global/TitleBox";
 import CreateChapterModal from "../modals/CreateChapterModal";
-import { Skeleton } from "@workspace/ui/components/skeleton";
-import { CommingSoon } from "../global/CommingSoon";
 
-interface Props {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+function BookSidebar() {
+  const bookSidebarIsOpen = useStoreState<StoreType>((state) => state.book.bookSidebarIsOpen);
+  const setBookSidebarIsOpen = useStoreActions<StoreType>((models) => models.book.setBookSidebarIsOpen);
 
-function BookSidebar({ isOpen, setIsOpen }: Props) {
   // get book id from url
   const { bookId } = useParams();
   const { updateData } = useUpdate();
@@ -35,14 +32,10 @@ function BookSidebar({ isOpen, setIsOpen }: Props) {
   const t = useTranslations("bookpage");
 
   // fetch chapters
-  const {
-    data: res,
-    error,
-    isLoading,
-  } = useSWR(bookId ? `/book/${bookId}/chapter` : null);
+  const { data: res, error, isLoading } = useSWR(bookId ? `/book/${bookId}/chapter` : null);
 
   if (error) {
-    toast.error(error.message);
+    notFound();
   }
 
   const [chapterIsOpen, setChapterIsOpen] = useState<boolean>(true);
@@ -69,21 +62,34 @@ function BookSidebar({ isOpen, setIsOpen }: Props) {
     setAllChapters(res?.data || []);
   }, [res]);
 
+  const sidebarVariant: Variants = {
+    open: {
+      x: 0,
+      width: "350px",
+      transition: {
+        duration: 0.1,
+      },
+    },
+    close: {
+      x: "-350px",
+      width: "0",
+      transition: {
+        duration: 0.1,
+      },
+    },
+  };
+
   return (
-    <div
-      className={`absolute top-0 ${
-        isOpen ? "left-0" : "left-[-350px]"
-      } min-w-[350px] h-screen transition-all duration-300 shadow border border-slate-200 dark:border-gray-700 flex flex-col p-1 bg-slate-50 dark:bg-gray-900 z-50`}
+    <motion.div
+      variants={sidebarVariant}
+      animate={bookSidebarIsOpen ? "open" : "close"}
+      className="w-[350px] h-screen overflow-hidden transition-all duration-300 shadow border border-slate-200 dark:border-gray-700 flex flex-col p-1 bg-slate-50 dark:bg-gray-900 z-50"
     >
       {/* header => toggler */}
       <div className="flex w-full p-1.5 justify-between items-center">
         <Logo />
         <div id="book-sidebar-toggler">
-          <PanelLeftClose
-            onClick={() => setIsOpen(!isOpen)}
-            size={20}
-            className="hover:text-blue-500 duration-300 cursor-pointer"
-          />
+          <PanelLeftClose onClick={() => setBookSidebarIsOpen(false)} size={20} className="hover:text-blue-500 duration-300 cursor-pointer" />
         </div>
       </div>
 
@@ -105,24 +111,14 @@ function BookSidebar({ isOpen, setIsOpen }: Props) {
         <div className="chapters mt-3 flex-1 hover:overflow-y-auto md:overflow-hidden">
           <div className="text-sm group h-[40px] font-medium p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded cursor-pointer gap-2 flex items-center justify-between">
             <div className="text-slate-600 dark:text-slate-300 flex items-center gap-1 flex-1">
-              <div
-                onClick={() => setChapterIsOpen(!chapterIsOpen)}
-                className="w-4 rounded hover:bg-slate-200 dark:hover:bg-blue-400 dark:hover:text-white"
-              >
-                {allChapters.length > 0 && (
-                  <ChevronRight
-                    className={`w-4 outline-none transition ${chapterIsOpen ? "rotate-90" : ""}`}
-                  />
-                )}
+              <div onClick={() => setChapterIsOpen(!chapterIsOpen)} className="w-4 rounded hover:bg-slate-200 dark:hover:bg-blue-400 dark:hover:text-white">
+                {allChapters.length > 0 && <ChevronRight className={`w-4 outline-none transition ${chapterIsOpen ? "rotate-90" : ""}`} />}
               </div>
               <p>{t("chapters")}</p>
             </div>
             <div className="flex gap-2 items-center">
               <CreateChapterModal bookId={bookId as string}>
-                <Plus
-                  id="create-new-chapter-icon"
-                  className="p-1 transition text-gray-500 dark:text-gray-400 size-6 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-                />
+                <Plus id="create-new-chapter-icon" className="p-1 transition text-gray-500 dark:text-gray-400 size-6 rounded hover:bg-gray-200 dark:hover:bg-gray-700" />
               </CreateChapterModal>
             </div>
           </div>
@@ -137,22 +133,10 @@ function BookSidebar({ isOpen, setIsOpen }: Props) {
 
           {chapterIsOpen && allChapters.length > 0 && (
             <div>
-              <DndContext
-                modifiers={[restrictToVerticalAxis]}
-                onDragEnd={handleChapterDragEnd}
-              >
-                <SortableContext
-                  items={allChapters.map((item) => item.id)}
-                  strategy={verticalListSortingStrategy}
-                >
+              <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={handleChapterDragEnd}>
+                <SortableContext items={allChapters.map((item) => item.id)} strategy={verticalListSortingStrategy}>
                   {allChapters?.map((chapter: ChapterType, index: number) => (
-                    <TitleBox
-                      key={chapter.id}
-                      id={chapter.id}
-                      title={chapter.title}
-                      index={index}
-                      isSection={false}
-                    />
+                    <TitleBox key={chapter.id} id={chapter.id} title={chapter.title} index={index} isSection={false} />
                   ))}
                 </SortableContext>
               </DndContext>
@@ -171,19 +155,13 @@ function BookSidebar({ isOpen, setIsOpen }: Props) {
       <div className="p-2 flex justify-between">
         <p className="text-slate-400 text-xs dark:text-slate-500">
           A product by{" "}
-          <a
-            href="https://ehmasuk.vercel.app/"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="https://ehmasuk.vercel.app/" target="_blank" rel="noreferrer">
             Eh Masuk
           </a>
         </p>
-        <p className="text-slate-400 text-xs dark:text-slate-500">
-          Bookora v 2.1.1
-        </p>
+        <p className="text-slate-400 text-xs dark:text-slate-500">Bookora v 2.1.1</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

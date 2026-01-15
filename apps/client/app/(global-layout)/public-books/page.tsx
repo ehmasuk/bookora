@@ -19,7 +19,7 @@ const PublicBooksPage = () => {
       </>
     ),
     subtitle:
-      "EduFlex provides a platform for writers to share their knowledge. Browse through various books and materials from our community.",
+      "Bookora provides a platform for writers to share their knowledge. Browse through various books and materials from our community.",
     stats: [
       {
         value: "150+",

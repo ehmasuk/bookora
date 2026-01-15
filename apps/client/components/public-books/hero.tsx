@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils"; // Your utility for class names
 import { Button } from "@workspace/ui/components/button";
-import { motion, Variants } from "motion/react";
+import { animate, motion, Variants } from "motion/react";
 import Image from "next/image";
 import React from "react";
 
@@ -54,6 +54,14 @@ const imageVariants: Variants = {
       ease: "easeOut",
     },
   },
+  animate: (custom_delay:number)=>({
+    y: [0, -1*custom_delay, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  })
 };
 
 const floatingVariants: Variants = {
@@ -120,6 +128,8 @@ const HeroSection = ({ title, subtitle, stats, images, className, onExploreClick
             className="absolute left-1/2 top-0 h-64 w-44 -translate-x-1/2 rounded-r-xl bg-muted p-1 shadow-2xl sm:h-80 sm:w-56 border-l-4 border-black/10"
             style={{ transformOrigin: "bottom center", rotate: "-2deg" }}
             variants={imageVariants}
+            animate="animate"
+            custom={8}
           >
             {images[0] && <Image fill src={images[0]} alt="Book 1" className="h-full w-full rounded-r-lg object-cover" />}
           </motion.div>
@@ -129,6 +139,7 @@ const HeroSection = ({ title, subtitle, stats, images, className, onExploreClick
             className="absolute right-4 top-1/4 h-56 w-36 rounded-r-xl bg-muted p-1 shadow-2xl sm:h-72 sm:w-48 border-l-4 border-black/10 z-10"
             style={{ transformOrigin: "left center", rotate: "8deg" }}
             variants={imageVariants}
+            animate="animate"
           >
             {images[1] && <Image fill src={images[1]} alt="Book 2" className="h-full w-full rounded-r-lg object-cover" />}
           </motion.div>

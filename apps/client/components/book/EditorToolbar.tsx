@@ -1,9 +1,10 @@
 import { Editor } from "@tiptap/react";
 import { Bold, Heading, ListIcon, ListOrdered, QuoteIcon } from "lucide-react";
+import { memo } from "react";
 interface Props {
   editor: Editor;
 }
-function EditorToolbar({ editor }: Props) {
+const EditorToolbar = memo(function EditorToolbar({ editor }: Props) {
   return (
     <div className="flex flex-wrap md:gap-3 gap-2 align-center">
       <div
@@ -57,6 +58,6 @@ function EditorToolbar({ editor }: Props) {
       </div>
     </div>
   );
-}
+});
 
 export default EditorToolbar;
