@@ -8,7 +8,7 @@ import { CloudCheck, HomeIcon, LoaderIcon, Menu, PanelRightClose, X } from "luci
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 import TitleAsInput from "../global/TitleAsInput";
@@ -97,4 +97,4 @@ function BookNav() {
   );
 }
 
-export default BookNav;
+export default memo(BookNav);

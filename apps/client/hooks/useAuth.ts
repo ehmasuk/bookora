@@ -16,6 +16,7 @@ function useAuth() {
     if (!result?.error) {
       toast.success("Logged in successfully.");
       setLoading(false);
+      router.refresh();
       router.push("/profile");
     } else {
       toast.error("Authentication failed");
@@ -25,6 +26,7 @@ function useAuth() {
 
   const handleLogout = async () => {
     await signOut({ redirect: false });
+    router.refresh();
     router.push("/");
     toast.success("Logged out successfully.");
   };

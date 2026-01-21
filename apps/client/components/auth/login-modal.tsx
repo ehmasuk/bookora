@@ -4,12 +4,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import useAuth from "@/hooks/useAuth";
-import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import { Button } from "@workspace/ui/components/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
-import { CommingSoon } from "../global/CommingSoon";
 
 const LoginModal = ({ children }: { children: React.ReactNode }) => {
   const { handleLogin, loading } = useAuth();
@@ -40,7 +38,7 @@ const LoginModal = ({ children }: { children: React.ReactNode }) => {
             <LogInIcon className="size-6 text-sky-600 dark:text-sky-400" />
           </div>
           <DialogTitle>Sign in with email</DialogTitle>
-          <DialogDescription className="text-center">Make a new doc to bring your words, data and teams together. For free.</DialogDescription>
+          <DialogDescription className="text-center">Write new books to bring your words, to the world. For free.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -72,17 +70,8 @@ const LoginModal = ({ children }: { children: React.ReactNode }) => {
             />
             <DialogFooter className="space-y-2 pt-4 sm:flex-col">
               <Button type="submit" loading={loading}>
-                Get Started
+                Login
               </Button>
-              <div className="before:bg-border after:bg-border flex items-center gap-4 before:h-px before:flex-1 after:h-px after:flex-1">
-                <span className="text-muted-foreground text-xs">Or</span>
-              </div>
-              <CommingSoon>
-                <Button type="button" variant="outline">
-                  <IconBrandGoogleFilled />
-                  Continue with Google
-                </Button>
-              </CommingSoon>
             </DialogFooter>
           </form>
         </Form>

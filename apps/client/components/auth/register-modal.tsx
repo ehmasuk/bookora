@@ -7,13 +7,11 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import usePost from "@/hooks/usePost";
-import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@workspace/ui/components/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
-import { CommingSoon } from "../global/CommingSoon";
 
 const RegisterModal = ({ children }: { children: React.ReactNode }) => {
   const id = useId();
@@ -55,6 +53,7 @@ const RegisterModal = ({ children }: { children: React.ReactNode }) => {
           password: values.password,
           redirect: false,
         });
+        router.refresh();
         toast.success("Registered successfully");
         router.push("/profile");
       },
@@ -70,7 +69,7 @@ const RegisterModal = ({ children }: { children: React.ReactNode }) => {
       <DialogContent className="to-card bg-linear-to-b from-green-100 to-40% bg-size-[100%_101%] sm:max-w-sm dark:from-green-900">
         <DialogHeader className="items-center">
           <DialogTitle>Sign Up</DialogTitle>
-          <DialogDescription>Start your 60-day free trial now.</DialogDescription>
+          <DialogDescription>Start writing your book for free.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -156,15 +155,6 @@ const RegisterModal = ({ children }: { children: React.ReactNode }) => {
               <Button type="submit" loading={loading}>
                 Create account
               </Button>
-              <div className="before:bg-border after:bg-border flex items-center gap-4 before:h-px before:flex-1 after:h-px after:flex-1">
-                <span className="text-muted-foreground text-xs">Or</span>
-              </div>
-              <CommingSoon>
-                <Button type="button" variant="outline">
-                  <IconBrandGoogleFilled />
-                  Continue with Google
-                </Button>
-              </CommingSoon>
             </DialogFooter>
           </form>
         </Form>
