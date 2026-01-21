@@ -1,23 +1,18 @@
 // USE CASE: signin and signout user with auth js
 
 import { signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 function useAuth() {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const router = useRouter();
-
   const handleLogin = async (data: object) => {
     setLoading(true);
     const result = await signIn("credentials", { ...data, redirect: false });
     if (!result?.error) {
-      toast.success("Logged in successfully.");
       setLoading(false);
-      router.refresh();
-      router.push("/profile");
+      window.location.href = "/profile";
     } else {
       toast.error("Authentication failed");
       setLoading(false);
@@ -26,9 +21,7 @@ function useAuth() {
 
   const handleLogout = async () => {
     await signOut({ redirect: false });
-    router.refresh();
-    router.push("/");
-    toast.success("Logged out successfully.");
+    window.location.href = "/";
   };
 
   return { handleLogin, handleLogout, loading };
